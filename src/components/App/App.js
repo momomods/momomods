@@ -11,6 +11,7 @@ import Drawer from 'react-mdl/lib/Layout/Drawer';
 import Header from 'react-mdl/lib/Layout/Header';
 import Layout from 'react-mdl/lib/Layout/Layout';
 import Navigation from 'react-mdl/lib/Layout/Navigation';
+import Textfield from 'react-mdl/lib/TextField'
 import React, { Component, PropTypes } from 'react';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import { Provider } from 'react-redux';
@@ -18,6 +19,7 @@ import { Provider } from 'react-redux';
 import s from './App.css';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
+import Link from '../Link';
 
 class App extends Component {
 
@@ -69,20 +71,22 @@ class App extends Component {
       <Provider store={store}>
         <div>
           <Layout fixedHeader>
-            <Header title="stuff">
+            <Header title="MoMoMods">
               <Navigation>
-                  <a href="">Link</a>
-                  <a href="">Link</a>
-                  <a href="">Link</a>
-                  <a href="">Link</a>
+                  <Textfield
+                    onChange={() => {}}
+                    label=""
+                    expandable
+                    expandableIcon="search"
+                  />
               </Navigation>
             </Header>
             <Drawer title="Title">
                 <Navigation>
-                    <a href="">Link</a>
-                    <a href="">Link</a>
-                    <a href="">Link</a>
-                    <a href="">Link</a>
+                  <Link to="/about">About</Link>
+                  <Link to="/contact">Contact</Link>
+                  <Link to="/login">Log in</Link>
+                  <Link to="/register">Sign up</Link>
                 </Navigation>
             </Drawer>
             {this.props.children}
