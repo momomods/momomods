@@ -7,11 +7,15 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
+import Drawer from 'react-mdl/lib/Layout/Drawer';
+import Header from 'react-mdl/lib/Layout/Header';
+import Layout from 'react-mdl/lib/Layout/Layout';
+import Navigation from 'react-mdl/lib/Layout/Navigation';
 import React, { Component, PropTypes } from 'react';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import { Provider } from 'react-redux';
+
 import s from './App.css';
-import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
 
@@ -64,10 +68,27 @@ class App extends Component {
     return (
       <Provider store={store}>
         <div>
-          <Header />
-          {this.props.children}
-          <Feedback />
-          <Footer />
+          <Layout fixedHeader>
+            <Header title="stuff">
+              <Navigation>
+                  <a href="">Link</a>
+                  <a href="">Link</a>
+                  <a href="">Link</a>
+                  <a href="">Link</a>
+              </Navigation>
+            </Header>
+            <Drawer title="Title">
+                <Navigation>
+                    <a href="">Link</a>
+                    <a href="">Link</a>
+                    <a href="">Link</a>
+                    <a href="">Link</a>
+                </Navigation>
+            </Drawer>
+            {this.props.children}
+            <Feedback />
+            <Footer />
+          </Layout>
         </div>
       </Provider>
     );
