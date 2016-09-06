@@ -3,14 +3,10 @@ export default function user(state = {}, action) {
   switch (action.type) {
     case LOG_USER_IN:
       return {
-        ...state,
-        user: action.payload.user,
+        ...action.payload.user,
       };
     case LOG_USER_OUT:
-      return {
-        ...state,
-        user: {},
-      };
+      return {};
     default:
       return state;
   }
