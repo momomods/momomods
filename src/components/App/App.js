@@ -7,19 +7,19 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import Drawer from 'react-mdl/lib/Layout/Drawer';
 import Header from 'react-mdl/lib/Layout/Header';
 import Layout from 'react-mdl/lib/Layout/Layout';
-import Navigation from 'react-mdl/lib/Layout/Navigation';
-import Textfield from 'react-mdl/lib/TextField'
 import React, { Component, PropTypes } from 'react';
+import Textfield from 'react-mdl/lib/TextField'
+import { connect } from 'react-redux'
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import { Provider } from 'react-redux';
 
 import s from './App.css';
+import Drawer from '../Drawer';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
-import Link from '../Link';
+import Navigation from 'react-mdl/lib/Layout/Navigation';
 
 class App extends Component {
 
@@ -81,14 +81,7 @@ class App extends Component {
                   />
               </Navigation>
             </Header>
-            <Drawer title="Title">
-                <Navigation>
-                  <Link to="/about">About</Link>
-                  <Link to="/contact">Contact</Link>
-                  <Link to="/login">Log in</Link>
-                  <Link to="/register">Sign up</Link>
-                </Navigation>
-            </Drawer>
+            <Drawer />
             {this.props.children}
             <Feedback />
             <Footer />
