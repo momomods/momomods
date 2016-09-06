@@ -11,6 +11,8 @@ function Html({ title, description, style, script, children, state }) {
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+        <link rel="stylesheet" href="material.css" />
         <style id="css" dangerouslySetInnerHTML={{ __html: style }} />
       </head>
       <body>
@@ -22,6 +24,7 @@ function Html({ title, description, style, script, children, state }) {
             data-initial-state={JSON.stringify(state)}
           />
         )}
+        <script src="material.js" />
         {analytics.google.trackingId &&
           <script
             dangerouslySetInnerHTML={{ __html:
