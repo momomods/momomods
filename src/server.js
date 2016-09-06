@@ -73,6 +73,19 @@ app.get('/login/facebook/return',
   }
 );
 
+app.get('/login/google',
+  passport.authenticate('google', { scope: ['email', 'profile'], session: false })
+);
+app.get('/login/google/return',
+  passport.authenticate('google', { failureRedirect: '/login', session: false }),
+  (req, res) => {
+    const expiresIn = 60 * 60 * 24 * 180; // 180 days
+    const token = jwt.sign(req.user, auth.jwt.secret, { expiresIn });
+    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
+    res.redirect('/');
+  }
+);
+
 //
 // Register API middleware
 // -----------------------------------------------------------------------------

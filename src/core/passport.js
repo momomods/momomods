@@ -15,6 +15,7 @@
 
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth';
 import { User, UserLogin, UserClaim, UserProfile } from '../data/models';
 import { auth as config } from '../config';
 
@@ -122,5 +123,17 @@ passport.use(new FacebookStrategy({
 
   fooBar().catch(done);
 }));
+
+passport.use(new GoogleStrategy({
+  consumerKey: config.google.id,
+  consumerSecret: config.google.secret,
+  callbackURL: '/login/google/return',
+},
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
 
 export default passport;
