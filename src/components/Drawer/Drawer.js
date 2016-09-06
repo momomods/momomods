@@ -16,8 +16,9 @@ class AppDrawer extends Component {
     return (
       <Drawer title={title}>
           <Navigation>
-            <Link to="/about">About</Link>
-            <Link to="/contact">Contact</Link>
+            <Link to="/timetable">Timetable</Link>
+            <Link to="/module">Modules</Link>
+            <Link to="/group">Groups</Link>
             {loggedIn ?
               null
               :

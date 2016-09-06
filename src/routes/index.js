@@ -17,6 +17,9 @@ import login from './login';
 import register from './register';
 import content from './content';
 import error from './error';
+import timetable from './timetable';
+import module from './module';
+import group from './group';
 
 export default {
 
@@ -28,6 +31,9 @@ export default {
     contact,
     login,
     register,
+    timetable,
+    module,
+    group,
 
     // place new routes before...
     content,
