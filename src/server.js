@@ -36,7 +36,8 @@ import { port, auth } from './config';
 import {
   User as UserModel,
   Timetable as TimetableModel,
-  TimetableModule as TimetableModuleModel
+  TimetableModule as TimetableModuleModel,
+  Module as ModuleModel
 } from './data/models/index';
 
 const app = express();
@@ -96,19 +97,81 @@ app.get('/login/google/return',
 // APIs
 
 app.get('/api/:year/:semester/timetable', function(req,res) {
-  var userId = 1;
+  var userId = 1; // TO CHANGE
   var year = req.params.year;
   var semester = req.params.semester;
   console.log(models);
   TimetableModel.find({
     where: {
+      user_id: userId,
       year: year,
       semester: semester,
     },
     include:[{model: TimetableModuleModel, as:'timetableModules'}]
-  }).then(function(result) {
+  }).then(function (result) {
     res.json(result);
   });
+});
+
+function updateTimetable(timetableId, year, semester, allNewMods) {
+  for (var i = 0; i < allNewMods.length; ++i) {
+    var newModCode = allNewMods[i].module_code;
+    var newModLessonType = allNewMods[i].lesson_type;
+    var newModClassNumber = allNewMods[i].class_number;
+    // Find Module Id
+    ModuleModel.find({
+      year: year,
+      semester: semester,
+      code: newModCode
+    }).then(function (mod) {
+      if (mod) {
+        TimetableModuleModel.find({
+          timetable_id: timetableId,
+          module_id: mod.dataValues.id,
+        }).then(function (oldMod) {
+          if (oldMod) { // TimetableModule already exists. Update.
+            oldMod.update({
+              lessonType: newModLessonType,
+              classNumber: newModClassNumber
+            })
+          } else { // TimetableModule does not exist. Create.
+            TimetableModuleModel.create({ 
+              timetable_id: timetableId,
+              module_id: newModCode,
+              lessonType: newModLessonType,
+              classNumber: newModClassNumber
+            })
+          }
+        })
+      }
+    })
+  }
+}
+
+app.post('/api/:year/:semester/timetable', function(req,res) {
+  var userId = 1; // TO CHANGE
+  var year = req.params.year;
+  var semester = req.params.semester;
+  var allNewMods = req.body;
+  TimetableModel.find({
+    where: {
+      user_id: userId,
+      year: year,
+      semester: semester,
+    }
+  }).then(function (myTimetable) {
+    if (!myTimetable) { // if my timetable does not exist, create one.
+      TimetableModel.create({ 
+        user_id: userId, 
+        year: year, 
+        semester: semester, 
+      }).then(function(newTimetable) {
+        updateTimetable(newTimetable.dataValues.id, year, semester, allNewMods);
+      })
+    } else {
+      updateTimetable(myTimetable.dataValues.id, year, semester, allNewMods);
+    }
+  })
 });
 
 //
