@@ -13,26 +13,24 @@ import Model from '../sequelize';
 const User = Model.define('User', {
 
   id: {
-    type: DataType.UUID,
-    defaultValue: DataType.UUIDV1,
+    type: DataType.INTEGER,
+    defaultValue: 0,
     primaryKey: true,
+  },
+
+  name: {
+    type: DataType.STRING(255),
+    defaultValue: "User",
   },
 
   email: {
     type: DataType.STRING(255),
-    validate: { isEmail: true },
   },
 
   emailConfirmed: {
     type: DataType.BOOLEAN,
     defaultValue: false,
   },
-
-}, {
-
-  indexes: [
-    { fields: ['email'] },
-  ],
 
 });
 

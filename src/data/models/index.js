@@ -9,29 +9,74 @@
 
 import sequelize from '../sequelize';
 import User from './User';
-import UserLogin from './UserLogin';
-import UserClaim from './UserClaim';
-import UserProfile from './UserProfile';
+import Timetable from './Timetable';
+import TimetableModule from './TimetableModule';
+import Module from './Module';
 
-User.hasMany(UserLogin, {
-  foreignKey: 'userId',
-  as: 'logins',
-  onUpdate: 'cascade',
-  onDelete: 'cascade',
+// User.hasMany(UserLogin, {
+//   foreignKey: 'userId',
+//   as: 'logins',
+//   onUpdate: 'cascade',
+//   onDelete: 'cascade',
+// });
+
+// User.hasMany(UserClaim, {
+//   foreignKey: 'userId',
+//   as: 'claims',
+//   onUpdate: 'cascade',
+//   onDelete: 'cascade',
+// });
+
+// User.hasOne(UserProfile, {
+//   foreignKey: 'userId',
+//   as: 'profile',
+//   onUpdate: 'cascade',
+//   onDelete: 'cascade',
+// });
+
+User.hasMany(Timetable, {
+  foreignKey: 'user_id',
+  as: 'timetables',
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE',
 });
 
-User.hasMany(UserClaim, {
-  foreignKey: 'userId',
-  as: 'claims',
-  onUpdate: 'cascade',
-  onDelete: 'cascade',
+Timetable.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'user',
+  targetKey: 'id',
+  onUpdate: 'NO ACTION',
+  onDelete: 'NO ACTION',
 });
 
-User.hasOne(UserProfile, {
-  foreignKey: 'userId',
-  as: 'profile',
-  onUpdate: 'cascade',
-  onDelete: 'cascade',
+Timetable.hasMany(TimetableModule, {
+  foreignKey: 'timetable_id',
+  as: 'timetableModules',
+  onUpdate: 'CASCADE',
+  onDelete: 'CASCADE',
+});
+
+TimetableModule.belongsTo(Timetable, {
+  foreignKey: 'timetable_id',
+  as: 'timetable',
+  targetKey: 'id',
+  onUpdate: 'NO ACTION',
+  onDelete: 'NO ACTION',
+});
+
+TimetableModule.belongsTo(Module, {
+  foreignKey: 'module_id',
+  as: 'module',
+  targetKey: 'id',
+  onUpdate: 'NO ACTION',
+  onDelete: 'NO ACTION',
+});
+
+Module.hasMany(TimetableModule, {
+  foreignKey: 'module_id',
+  as: 'timetableModules',
+  onUpdate: 'NO ACTION',
+  onDelete: 'NO ACTION',
 });
 
 function sync(...args) {
@@ -39,4 +84,4 @@ function sync(...args) {
 }
 
 export default { sync };
-export { User, UserLogin, UserClaim, UserProfile };
+export { User, Timetable, TimetableModule, Module };

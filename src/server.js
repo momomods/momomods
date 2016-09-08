@@ -33,6 +33,12 @@ import { setRuntimeVariable } from './actions/runtime';
 import { logUserIn } from './actions/user';
 import { port, auth } from './config';
 
+import {
+  User as UserModel,
+  Timetable as TimetableModel,
+  TimetableModule as TimetableModuleModel
+} from './data/models/index';
+
 const app = express();
 
 //
@@ -76,6 +82,7 @@ app.get('/login/facebook/return',
 app.get('/login/google',
   passport.authenticate('google', { scope: ['email', 'profile'], session: false })
 );
+
 app.get('/login/google/return',
   passport.authenticate('google', { failureRedirect: '/login', session: false }),
   (req, res) => {
@@ -85,6 +92,24 @@ app.get('/login/google/return',
     res.redirect('/');
   }
 );
+
+// APIs
+
+app.get('/api/:year/:semester/timetable', function(req,res) {
+  var userId = 1;
+  var year = req.params.year;
+  var semester = req.params.semester;
+  console.log(models);
+  TimetableModel.find({
+    where: {
+      year: year,
+      semester: semester,
+    },
+    include:[{model: TimetableModuleModel, as:'timetableModules'}]
+  }).then(function(result) {
+    res.json(result);
+  });
+});
 
 //
 // Register API middleware

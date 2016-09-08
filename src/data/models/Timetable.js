@@ -10,16 +10,25 @@
 import DataType from 'sequelize';
 import Model from '../sequelize';
 
-const UserClaim = Model.define('UserClaim', {
+const Timetable = Model.define('Timetable', {
 
-  type: {
-    type: DataType.STRING,
+  id: {
+    type: DataType.INTEGER,
+    primaryKey: true,
   },
 
-  value: {
-    type: DataType.STRING,
+  user_id: {
+    type: DataType.INTEGER,
+  },
+
+  year: {
+    type: DataType.INTEGER,
+  },
+
+  semester: {
+    type: DataType.INTEGER,
   },
 
 });
 
-export default UserClaim;
+export default Timetable;

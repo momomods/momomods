@@ -10,18 +10,30 @@
 import DataType from 'sequelize';
 import Model from '../sequelize';
 
-const UserLogin = Model.define('UserLogin', {
+const TimetableModule = Model.define('TimetableModule', {
 
-  name: {
-    type: DataType.STRING(50),
+  id: {
+    type: DataType.INTEGER,
     primaryKey: true,
   },
 
-  key: {
-    type: DataType.STRING(100),
-    primaryKey: true,
+  timetable_id: {
+    type: DataType.INTEGER,
+  },
+
+  module_id: {
+    type: DataType.INTEGER,
+  },
+
+  lessonType: {
+    type: DataType.STRING(255),
+  },
+
+  classNumber: {
+    type: DataType.INTEGER,
+    defaultValue: 1,
   },
 
 });
 
-export default UserLogin;
+export default TimetableModule;
