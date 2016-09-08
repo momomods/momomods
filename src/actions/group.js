@@ -6,5 +6,5 @@ export function fetchGroups({ year }) {
     payload: {
       promise: Promise.resolve([]),
     },
-  }
+  };
 }

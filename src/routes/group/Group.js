@@ -17,6 +17,15 @@ import { fetchGroups } from '../../actions/group';
 const title = 'Groups';
 
 class Group extends Component {
+  static propTypes = {
+    isInitialized: PropTypes.bool.isRequired,
+    fetchGroups: PropTypes.func.isRequired,
+  }
+
+  static contextTypes = {
+    setTitle: PropTypes.func.isRequired,
+  }
+
   componentDidMount() {
     if (!this.props.isInitialized) this.props.fetchGroups();
   }
@@ -34,18 +43,16 @@ class Group extends Component {
   }
 }
 
-Group.contextTypes = { setTitle: PropTypes.func.isRequired };
-
 const mapState = (state) => {
   return {
     ...state.group,
-  }
-}
+  };
+};
 
 const mapDispatch = (dispatch) => {
   return {
     fetchGroups: () => dispatch(fetchGroups({}))
-  }
-}
+  };
+};
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Group));

@@ -5,7 +5,7 @@ const defaultState = {
   isFetching: false,
   isInitialized: false,
   lastFetched: null,
-}
+};
 
 export default function module(state = defaultState, action) {
   switch (action.type) {
@@ -14,7 +14,7 @@ export default function module(state = defaultState, action) {
         ...state,
         isFetching: true,
         lastFetched: null,
-      }
+      };
     case `${FETCH_MODULES}_FULFILLED`:
       return {
         ...state,
@@ -22,7 +22,7 @@ export default function module(state = defaultState, action) {
         isFetching: false,
         isInitialized: true,
         lastFetched: Date.now(),
-      }
+      };
     case `${FETCH_MODULES}_REJECTED`:
       return {
         ...state,
@@ -30,7 +30,7 @@ export default function module(state = defaultState, action) {
         isFetching: false,
         isInitialized: false,
         lastFetched: null,
-      }
+      };
     default:
       return state;
   }

@@ -6,7 +6,7 @@ export function logUserIn({ user }) {
     payload: {
       user,
     },
-  }
+  };
 }
 
 export function logUserOut() {
@@ -15,5 +15,5 @@ export function logUserOut() {
     payload: {
       user: {},
     },
-  }
+  };
 }

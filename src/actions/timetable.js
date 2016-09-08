@@ -7,5 +7,5 @@ export function fetchTimetable({ year, sem }) {
     payload: {
       promise: Promise.resolve([]),
     },
-  }
+  };
 }

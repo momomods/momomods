@@ -131,7 +131,7 @@ app.get('*', async (req, res, next) => {
     if (req.user) {
       store.dispatch(logUserIn({
         user: req.user,
-      }))
+      }));
     }
 
     let css = new Set();

@@ -6,5 +6,5 @@ export function fetchModules({ year }) {
     payload: {
       promise: Promise.resolve([]),
     },
-  }
+  };
 }

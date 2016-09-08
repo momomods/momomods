@@ -1,12 +1,14 @@
 import Drawer from 'react-mdl/lib/Layout/Drawer';
 import Navigation from 'react-mdl/lib/Layout/Navigation';
 import React, { Component, PropTypes } from 'react';
-import Link from '../Link';
 import { connect } from 'react-redux';
+
+import Link from '../Link';
 
 class AppDrawer extends Component {
   static propTypes = {
     loggedIn: PropTypes.bool.isRequired,
+    email: PropTypes.string,
   }
 
   render() {
@@ -31,7 +33,7 @@ class AppDrawer extends Component {
             }
           </Navigation>
       </Drawer>
-    )
+    );
   }
 }
 

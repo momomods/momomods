@@ -17,6 +17,15 @@ import { fetchTimetable } from '../../actions/timetable';
 const title = 'Timetable';
 
 class Timetable extends Component {
+  static propTypes = {
+    isInitialized: PropTypes.bool.isRequired,
+    fetchTimetable: PropTypes.func.isRequired,
+  }
+
+  static contextTypes = {
+    setTitle: PropTypes.func.isRequired,
+  }
+
   componentDidMount() {
     if (!this.props.isInitialized) this.props.fetchTimetable();
   }
@@ -34,18 +43,16 @@ class Timetable extends Component {
   }
 }
 
-Timetable.contextTypes = { setTitle: PropTypes.func.isRequired };
-
 const mapState = (state) => {
   return {
     ...state.timetable,
-  }
-}
+  };
+};
 
 const mapDispatch = (dispatch) => {
   return {
     fetchTimetable: () => dispatch(fetchTimetable({}))
-  }
-}
+  };
+};
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Timetable));

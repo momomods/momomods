@@ -16,6 +16,15 @@ import { fetchModules } from '../../actions/module';
 const title = 'Modules';
 
 class Module extends Component {
+  static propTypes = {
+    isInitialized: PropTypes.bool.isRequired,
+    fetchModules: PropTypes.func.isRequired,
+  }
+
+  static contextTypes = {
+    setTitle: PropTypes.func.isRequired,
+  }
+
   componentDidMount() {
     if (!this.props.isInitialized) this.props.fetchModules();
   }
@@ -33,18 +42,16 @@ class Module extends Component {
   }
 }
 
-Module.contextTypes = { setTitle: PropTypes.func.isRequired };
-
 const mapState = (state) => {
   return {
     ...state.module,
-  }
-}
+  };
+};
 
 const mapDispatch = (dispatch) => {
   return {
     fetchModules: () => dispatch(fetchModules({}))
-  }
-}
+  };
+};
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Module));
