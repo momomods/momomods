@@ -12,13 +12,24 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
 
 import s from './Timetable.css';
-import { showTimetable } from '../../actions/timetable';
+import { fetchTimetable } from '../../actions/timetable';
+import { Timetable as TimetableComponent } from '../../components/Timetable/Timetable';
 
 const title = 'Timetable';
 
 class Timetable extends Component {
+  static propTypes = {
+    data: PropTypes.object,
+    isInitialized: PropTypes.bool.isRequired,
+    fetchTimetable: PropTypes.func.isRequired,
+  }
+
+  static contextTypes = {
+    setTitle: PropTypes.func.isRequired,
+  }
+
   componentDidMount() {
-    if (!this.props.isInitialized) this.props.showTimetable();
+    if (!this.props.isInitialized) this.props.fetchTimetable();
   }
 
   render() {
@@ -27,6 +38,9 @@ class Timetable extends Component {
       <div className={s.root}>
         <div className={s.container}>
           <h1>{title}</h1>
+          <TimetableComponent
+            timetable={this.props.data}
+          />
           <p>...</p>
         </div>
       </div>
@@ -34,18 +48,12 @@ class Timetable extends Component {
   }
 }
 
-Timetable.contextTypes = { setTitle: PropTypes.func.isRequired };
+const mapState = (state) => ({
+  ...state.timetable,
+});
 
-const mapState = (state) => {
-  return {
-    ...state.timetable,
-  }
-}
-
-const mapDispatch = (dispatch) => {
-  return {
-    showTimetable: () => dispatch(showTimetable({}))
-  }
-}
+const mapDispatch = (dispatch) => ({
+  fetchTimetable: () => dispatch(fetchTimetable({})),
+});
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Timetable));

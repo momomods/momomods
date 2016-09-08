@@ -9,9 +9,9 @@
 
 import Header from 'react-mdl/lib/Layout/Header';
 import Layout from 'react-mdl/lib/Layout/Layout';
+import Navigation from 'react-mdl/lib/Layout/Navigation';
 import React, { Component, PropTypes } from 'react';
-import Textfield from 'react-mdl/lib/TextField'
-import { connect } from 'react-redux'
+import Textfield from 'react-mdl/lib/Textfield';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import { Provider } from 'react-redux';
 
@@ -19,7 +19,6 @@ import s from './App.css';
 import Drawer from '../Drawer';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
-import Navigation from 'react-mdl/lib/Layout/Navigation';
 
 class App extends Component {
 
@@ -73,12 +72,12 @@ class App extends Component {
           <Layout fixedHeader>
             <Header title="MoMoMods">
               <Navigation>
-                  <Textfield
-                    onChange={() => {}}
-                    label=""
-                    expandable
-                    expandableIcon="search"
-                  />
+                <Textfield
+                  onChange={() => {}}
+                  label=""
+                  expandable
+                  expandableIcon="search"
+                />
               </Navigation>
             </Header>
             <Drawer />

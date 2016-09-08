@@ -1,31 +1,35 @@
-import { FETCH_TIMETABLE } from '../constants';
+import { FETCH_GROUPS } from '../constants';
 
 const defaultState = {
+  data: [],
   isFetching: false,
   isInitialized: false,
-  data: [],
+  lastFetched: null,
 };
 
-export default function timetable(state = defaultState, action) {
+export default function group(state = defaultState, action) {
   switch (action.type) {
-    case `${FETCH_TIMETABLE}_PENDING`:
+    case `${FETCH_GROUPS}_PENDING`:
       return {
         ...state,
         isFetching: true,
+        lastFetched: null,
       };
-    case `${FETCH_TIMETABLE}_FULFILLED`:
+    case `${FETCH_GROUPS}_FULFILLED`:
       return {
         ...state,
+        data: action.payload,
         isFetching: false,
         isInitialized: true,
-        data: action.payload,
+        lastFetched: Date.now(),
       };
-    case `${FETCH_TIMETABLE}_REJECTED`:
+    case `${FETCH_GROUPS}_REJECTED`:
       return {
         ...state,
+        error: action.payload,
         isFetching: false,
         isInitialized: false,
-        error: action.payload,
+        lastFetched: null,
       };
     default:
       return state;

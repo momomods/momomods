@@ -5,4 +5,8 @@ export const SET_RUNTIME_VARIABLE = 'SET_RUNTIME_VARIABLE';
 export const LOG_USER_IN = 'LOG_USER_IN';
 export const LOG_USER_OUT = 'LOG_USER_OUT';
 
-export const SHOW_TIMETABLE = 'SHOW_TIMETABLE';
+export const FETCH_TIMETABLE = 'FETCH_TIMETABLE';
+
+export const FETCH_MODULES = 'FETCH_MODULES';
+
+export const FETCH_GROUPS = 'FETCH_GROUPS';
