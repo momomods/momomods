@@ -8,3 +8,5 @@ export const LOG_USER_OUT = 'LOG_USER_OUT';
 export const FETCH_TIMETABLE = 'FETCH_TIMETABLE';
 
 export const FETCH_MODULES = 'FETCH_MODULES';
+
+export const FETCH_GROUPS = 'FETCH_GROUPS';
