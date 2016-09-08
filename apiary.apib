@@ -10,18 +10,21 @@ MoMoMods helps you plan your timetable with friends!
 ### Get Timetable for year and sem [GET]
 
 + Response 200 (application/json)
+        
+        {
+            "last_synced": "2016-09-08T00:09:35+00:00",
+            "data": [
+                {
+                    "module_code": "CS1010",
+                    "lesson_type": "sectional",
+                    "class_number": "1"
+                }
+            ]
+        }
 
-        [
-            {
-                "module_code": "CS1010",
-                "lesson_type": "sectional",
-                "class_number": "1"
-            }
-        ]
+### Update modules in Timetable [POST]
 
-### Add module to Timetable [POST]
-
-You can add a module to a timetable.
+Timetable will be updated with all module data given in post request.
 The response is the complete timetable for year and sem with the module added.
 
 + Request (application/json)
@@ -31,6 +34,16 @@ The response is the complete timetable for year and sem with the module added.
                 "module_code": "CS1010",
                 "lesson_type": "tutorial",
                 "class_number": "2",
+            },
+            {
+                "module_code": "CS1010",
+                "lesson_type": "sectional",
+                "class_number": "1",
+            },
+            {
+                "module_code": "CS1231",
+                "lesson_type": "sectional",
+                "class_number": "1",
             }
         ]
 
@@ -46,6 +59,11 @@ The response is the complete timetable for year and sem with the module added.
                 "module_code": "CS1010",
                 "lesson_type": "tutorial",
                 "class_number": "2",
+            },
+            {
+                "module_code": "CS1231",
+                "lesson_type": "sectional",
+                "class_number": "1",
             }
         ]
         
