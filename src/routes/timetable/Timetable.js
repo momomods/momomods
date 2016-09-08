@@ -43,16 +43,12 @@ class Timetable extends Component {
   }
 }
 
-const mapState = (state) => {
-  return {
-    ...state.timetable,
-  };
-};
+const mapState = (state) => ({
+  ...state.timetable,
+});
 
-const mapDispatch = (dispatch) => {
-  return {
-    fetchTimetable: () => dispatch(fetchTimetable({}))
-  };
-};
+const mapDispatch = (dispatch) => ({
+  fetchTimetable: () => dispatch(fetchTimetable({})),
+});
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Timetable));

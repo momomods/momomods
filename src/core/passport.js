@@ -128,12 +128,10 @@ passport.use(new GoogleStrategy({
   consumerKey: config.google.id,
   consumerSecret: config.google.secret,
   callbackURL: '/login/google/return',
-},
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-));
+}, (accessToken, refreshToken, profile, cb) => {
+  User.findOrCreate({ googleId: profile.id }, (err, user) => {
+    return cb(err, user);
+  });
+}));
 
 export default passport;

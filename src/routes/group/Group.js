@@ -43,16 +43,12 @@ class Group extends Component {
   }
 }
 
-const mapState = (state) => {
-  return {
-    ...state.group,
-  };
-};
+const mapState = (state) => ({
+  ...state.group,
+});
 
-const mapDispatch = (dispatch) => {
-  return {
-    fetchGroups: () => dispatch(fetchGroups({}))
-  };
-};
+const mapDispatch = (dispatch) => ({
+  fetchGroups: () => dispatch(fetchGroups({})),
+});
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Group));

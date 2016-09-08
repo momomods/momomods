@@ -14,10 +14,8 @@ class Timetable extends Component {
   }
 }
 
-const mapState = (state) => {
-  return {
-    timetable: state.timetable,
-  }
-};
+const mapState = (state) => ({
+  timetable: state.timetable,
+});
 
 export default connect(mapState)(Timetable);

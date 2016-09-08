@@ -17,31 +17,29 @@ class AppDrawer extends Component {
 
     return (
       <Drawer title={title}>
-          <Navigation>
-            <Link to="/timetable">Timetable</Link>
-            <Link to="/module">Modules</Link>
-            <Link to="/group">Groups</Link>
-            {loggedIn ?
-              null
-              :
-              <Link to="/login">Log in</Link>
-            }
-            {loggedIn ?
-              null
-              :
-              <Link to="/register">Sign up</Link>
-            }
-          </Navigation>
+        <Navigation>
+          <Link to="/timetable">Timetable</Link>
+          <Link to="/module">Modules</Link>
+          <Link to="/group">Groups</Link>
+          {loggedIn ?
+            null
+            :
+            <Link to="/login">Log in</Link>
+          }
+          {loggedIn ?
+            null
+            :
+            <Link to="/register">Sign up</Link>
+          }
+        </Navigation>
       </Drawer>
     );
   }
 }
 
-const mapState = (state) => {
-  return {
-    loggedIn: !!state.user.id,
-    email: state.user.email,
-  }
-};
+const mapState = (state) => ({
+  loggedIn: !!state.user.id,
+  email: state.user.email,
+});
 
 export default connect(mapState)(AppDrawer);

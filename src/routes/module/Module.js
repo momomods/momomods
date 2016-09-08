@@ -42,16 +42,12 @@ class Module extends Component {
   }
 }
 
-const mapState = (state) => {
-  return {
-    ...state.module,
-  };
-};
+const mapState = (state) => ({
+  ...state.module,
+});
 
-const mapDispatch = (dispatch) => {
-  return {
-    fetchModules: () => dispatch(fetchModules({}))
-  };
-};
+const mapDispatch = (dispatch) => ({
+  fetchModules: () => dispatch(fetchModules({})),
+});
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Module));
