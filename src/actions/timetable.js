@@ -5,7 +5,9 @@ export function fetchTimetable({ year, sem }) {
   return {
     type: FETCH_TIMETABLE,
     payload: {
-      promise: Promise.resolve([]),
+      promise: Promise.resolve({ year, sem, data: [] }),
     },
   };
 }
+
+export function dummy() {}

@@ -1,18 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-class Timetable extends Component {
-  static propTypes = {
-    timetable: PropTypes.object,
-  }
+const Timetable = ({ timetable }) => (
+  <div>
+    {timetable}
+  </div>
+);
 
-  render() {
-    const timetable = this.props.timetable;
-    return (
-      <div />
-    );
-  }
-}
+Timetable.propTypes = {
+  timetable: PropTypes.object,
+};
 
 const mapState = (state) => ({
   timetable: state.timetable,
