@@ -1,80 +1,135 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: http://momomods.apiblueprint.org/
 
 # MoMoMods
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+MoMoMods helps you plan your timetable with friends!
 
-## Questions Collection [/questions]
+## Timetable [/{year}/{sem}/timetable]
 
-### List All Questions [GET]
+### Get Timetable for year and sem [GET]
 
 + Response 200 (application/json)
 
         [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
+                "module_code": "CS1010",
+                "lesson_type": "sectional",
+                "class_number": "1"
             }
         ]
 
-### Create a New Question [POST]
+### Add module to Timetable [POST]
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+You can add a module to a timetable.
+The response is the complete timetable for year and sem with the module added.
+
++ Request (application/json)
+
+        [
+            {
+                "module_code": "CS1010",
+                "lesson_type": "tutorial",
+                "class_number": "2",
+            }
+        ]
+
++ Response 201 (application/json)
+
+        [
+            {
+                "module_code": "CS1010",
+                "lesson_type": "sectional",
+                "class_number": "1"
+            },
+            {
+                "module_code": "CS1010",
+                "lesson_type": "tutorial",
+                "class_number": "2",
+            }
+        ]
+        
+## Group Collection [/{year}/{sem}/group]
+
+### List groups I belong to [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "group_id": "1",
+                "group_name": "3216 assignment 3",
+                "members": ["1", "2"]
+            }
+        ]
+
+### Create a new group [POST]
+
++ Request (application/json)
+
+        [
+            {
+                "group_name": "3216 final project"
+            }
+        ]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "group_id": "3",
+                "group_name": "3216 final project",
+                "members": ["1"]
+            }
+        ]
+        
+## Group [/{year}/{sem}/group/{id}]
+
+### Get group info [GET]
+
++ Response 200 (application/json)
+
+        {
+            "group_id": "{id}",
+            "group_name": "3216 final project",
+            "members": ["1", "2"]
+        }
+
+### Add members to group [POST]
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "members": ["2", "3"]
         }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
-    + Headers
-
-            Location: /questions/2
-
-    + Body
-
+        [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "group_id": "3",
+                "group_name": "3216 final project",
+                "members": ["1", "2", "3"]
             }
+        ]
+        
+## Friends [/friends]
+
+### Get connected friends [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "friend_name": "Niko",
+                "user_id": "2"
+            },
+            {
+                "friend_name": "Mich",
+                "user_id": "3"
+            },
+            {
+                "friend_name": "Pat",
+                "user_id": "3"
+            }
+        ]
