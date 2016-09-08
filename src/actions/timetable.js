@@ -1,8 +1,9 @@
-import { SHOW_TIMETABLE } from '../constants';
+import { FETCH_TIMETABLE } from '../constants';
 
-export function showTimetable({ year, sem }) {
+/* Fetch timetable for current user for year and sem */
+export function fetchTimetable({ year, sem }) {
   return {
-    type: 'SHOW_TIMETABLE',
+    type: FETCH_TIMETABLE,
     payload: {
       promise: Promise.resolve([]),
     },

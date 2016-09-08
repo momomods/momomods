@@ -1,4 +1,4 @@
-import { SHOW_TIMETABLE } from '../constants';
+import { FETCH_TIMETABLE } from '../constants';
 
 const defaultState = {
   isFetching: false,
@@ -8,19 +8,19 @@ const defaultState = {
 
 export default function timetable(state = defaultState, action) {
   switch (action.type) {
-    case `${SHOW_TIMETABLE}_PENDING`:
+    case `${FETCH_TIMETABLE}_PENDING`:
       return {
         ...state,
         isFetching: true,
       }
-    case `${SHOW_TIMETABLE}_FULFILLED`:
+    case `${FETCH_TIMETABLE}_FULFILLED`:
       return {
         ...state,
         isFetching: false,
         isInitialized: true,
         data: action.payload,
       }
-    case `${SHOW_TIMETABLE}_REJECTED`:
+    case `${FETCH_TIMETABLE}_REJECTED`:
       return {
         ...state,
         isFetching: false,

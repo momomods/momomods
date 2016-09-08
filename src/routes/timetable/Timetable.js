@@ -12,13 +12,13 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
 
 import s from './Timetable.css';
-import { showTimetable } from '../../actions/timetable';
+import { fetchTimetable } from '../../actions/timetable';
 
 const title = 'Timetable';
 
 class Timetable extends Component {
   componentDidMount() {
-    if (!this.props.isInitialized) this.props.showTimetable();
+    if (!this.props.isInitialized) this.props.fetchTimetable();
   }
 
   render() {
@@ -44,7 +44,7 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    showTimetable: () => dispatch(showTimetable({}))
+    fetchTimetable: () => dispatch(fetchTimetable({}))
   }
 }
 
