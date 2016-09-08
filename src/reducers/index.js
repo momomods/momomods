@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
+import module from './module';
 import runtime from './runtime';
-import user from './user';
 import timetable from './timetable';
+import user from './user';
 
 export default combineReducers({
+  module,
   runtime,
-  user,
   timetable,
+  user,
 });

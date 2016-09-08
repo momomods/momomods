@@ -7,24 +7,44 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import React, { PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import { connect } from 'react-redux';
 import s from './Module.css';
+import { fetchModules } from '../../actions/module';
 
 const title = 'Modules';
 
-function Module(props, context) {
-  context.setTitle(title);
-  return (
-    <div className={s.root}>
-      <div className={s.container}>
-        <h1>{title}</h1>
-        <p>...</p>
+class Module extends Component {
+  componentDidMount() {
+    if (!this.props.isInitialized) this.props.fetchModules();
+  }
+
+  render() {
+    this.context.setTitle(title);
+    return (
+      <div className={s.root}>
+        <div className={s.container}>
+          <h1>{title}</h1>
+          <p>...</p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 Module.contextTypes = { setTitle: PropTypes.func.isRequired };
 
-export default withStyles(s)(Module);
+const mapState = (state) => {
+  return {
+    ...state.module,
+  }
+}
+
+const mapDispatch = (dispatch) => {
+  return {
+    fetchModules: () => dispatch(fetchModules({}))
+  }
+}
+
+export default connect(mapState, mapDispatch)(withStyles(s)(Module));
