@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 const Timetable = ({ timetable }) => (
   <div>
-    {timetable}
+    { timetable.isFetching }
   </div>
 );
 
@@ -15,4 +15,5 @@ const mapState = (state) => ({
   timetable: state.timetable,
 });
 
-export default connect(mapState)(Timetable);
+const ExportTimetable = connect(mapState)(Timetable);
+export { ExportTimetable };

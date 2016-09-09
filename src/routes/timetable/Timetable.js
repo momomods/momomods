@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 
 import s from './Timetable.css';
 import { fetchTimetable } from '../../actions/timetable';
-import { Timetable as TimetableComponent } from '../../components/Timetable/Timetable';
+import { ExportTimetable as TimetableComponent } from '../../components/Timetable/Timetable';
 
 const title = 'Timetable';
 
