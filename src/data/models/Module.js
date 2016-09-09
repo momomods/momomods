@@ -19,14 +19,17 @@ const Module = Model.define('Module', {
 
   year: {
     type: DataType.INTEGER,
+    unique: 'oneModule',
   },
 
   semester: {
     type: DataType.INTEGER,
+    unique: 'oneModule',
   },
 
   code: {
     type: DataType.STRING(45),
+    unique: 'oneModule',
   },
 
   title: {

@@ -35,14 +35,14 @@ import Module from './Module';
 // });
 
 User.hasMany(Timetable, {
-  foreignKey: 'user_id',
+  foreignKey: 'userId',
   as: 'timetables',
   onUpdate: 'CASCADE',
   onDelete: 'CASCADE',
 });
 
 Timetable.belongsTo(User, {
-  foreignKey: 'user_id',
+  foreignKey: 'userId',
   as: 'user',
   targetKey: 'id',
   onUpdate: 'NO ACTION',
@@ -50,14 +50,14 @@ Timetable.belongsTo(User, {
 });
 
 Timetable.hasMany(TimetableModule, {
-  foreignKey: 'timetable_id',
+  foreignKey: 'timetableId',
   as: 'timetableModules',
   onUpdate: 'CASCADE',
   onDelete: 'CASCADE',
 });
 
 TimetableModule.belongsTo(Timetable, {
-  foreignKey: 'timetable_id',
+  foreignKey: 'timetableId',
   as: 'timetable',
   targetKey: 'id',
   onUpdate: 'NO ACTION',
@@ -65,7 +65,7 @@ TimetableModule.belongsTo(Timetable, {
 });
 
 TimetableModule.belongsTo(Module, {
-  foreignKey: 'module_id',
+  foreignKey: 'moduleId',
   as: 'module',
   targetKey: 'id',
   onUpdate: 'NO ACTION',
@@ -73,7 +73,7 @@ TimetableModule.belongsTo(Module, {
 });
 
 Module.hasMany(TimetableModule, {
-  foreignKey: 'module_id',
+  foreignKey: 'moduleId',
   as: 'timetableModules',
   onUpdate: 'NO ACTION',
   onDelete: 'NO ACTION',

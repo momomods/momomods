@@ -16,11 +16,13 @@ const User = Model.define('User', {
     type: DataType.INTEGER,
     defaultValue: 0,
     primaryKey: true,
+    autoIncrement: true,
+    unique: true,
   },
 
   name: {
     type: DataType.STRING(255),
-    defaultValue: "User",
+    defaultValue: 'User',
   },
 
   email: {

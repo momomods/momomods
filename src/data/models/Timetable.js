@@ -17,16 +17,19 @@ const Timetable = Model.define('Timetable', {
     primaryKey: true,
   },
 
-  user_id: {
+  userId: {
     type: DataType.INTEGER,
+    unique: 'oneTimetable',
   },
 
   year: {
     type: DataType.INTEGER,
+    unique: 'oneTimetable',
   },
 
   semester: {
     type: DataType.INTEGER,
+    unique: 'oneTimetable',
   },
 
 });

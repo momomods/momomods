@@ -9,16 +9,18 @@
 
 import {
   GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
+  // GraphQLID as ID,
+  GraphQLInt as IntType,
   GraphQLString as StringType,
-  GraphQLNonNull as NonNull,
+  // GraphQLNonNull as NonNull,
 } from 'graphql';
 
 const UserType = new ObjectType({
   name: 'User',
   fields: {
-    id: { type: new NonNull(ID) },
+    id: { type: IntType },
     email: { type: StringType },
+    name: { type: StringType },
   },
 });
 

@@ -17,16 +17,19 @@ const TimetableModule = Model.define('TimetableModule', {
     primaryKey: true,
   },
 
-  timetable_id: {
+  timetableId: {
     type: DataType.INTEGER,
+    unique: 'oneTimetableModule',
   },
 
-  module_id: {
+  moduleId: {
     type: DataType.INTEGER,
+    unique: 'oneTimetableModule',
   },
 
   lessonType: {
     type: DataType.STRING(255),
+    unique: 'oneTimetableModule',
   },
 
   classNumber: {
