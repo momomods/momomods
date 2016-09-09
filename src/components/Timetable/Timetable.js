@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-const Timetable = ({ timetable }) => (
+const TimetableComponent = ({ timetable }) => (
   <div>
     { timetable.isFetching }
   </div>
 );
 
-Timetable.propTypes = {
+TimetableComponent.propTypes = {
   timetable: PropTypes.object,
 };
 
@@ -15,5 +15,4 @@ const mapState = (state) => ({
   timetable: state.timetable,
 });
 
-const ExportTimetable = connect(mapState)(Timetable);
-export { ExportTimetable };
+export default connect(mapState)(TimetableComponent);
