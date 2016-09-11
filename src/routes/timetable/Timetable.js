@@ -13,7 +13,9 @@ import { connect } from 'react-redux';
 
 import s from './Timetable.css';
 import { fetchTimetable } from '../../actions/timetable';
-import { Timetable as TimetableComponent } from '../../components/Timetable/Timetable';
+/*eslint-disable */
+import { TimetableExport as TimetableComponent } from '../../components/Timetable/TimetableContainer';
+/*eslint-enable */
 
 const title = 'Timetable';
 
@@ -29,7 +31,9 @@ class Timetable extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.isInitialized) this.props.fetchTimetable();
+    if (!this.props.isInitialized) {
+      this.props.fetchTimetable();
+    }
   }
 
   render() {
@@ -38,9 +42,7 @@ class Timetable extends Component {
       <div className={s.root}>
         <div className={s.container}>
           <h1>{title}</h1>
-          <TimetableComponent
-            timetable={this.props.data}
-          />
+          <TimetableComponent />
           <p>...</p>
         </div>
       </div>
@@ -49,11 +51,12 @@ class Timetable extends Component {
 }
 
 const mapState = (state) => ({
-  ...state.timetable,
+  ...state,
 });
 
 const mapDispatch = (dispatch) => ({
   fetchTimetable: () => dispatch(fetchTimetable({})),
+  isInitialized: true,
 });
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Timetable));

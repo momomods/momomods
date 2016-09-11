@@ -3,7 +3,7 @@ import { FETCH_TIMETABLE } from '../constants';
 const defaultState = {
   isFetching: false,
   isInitialized: false,
-  data: [],
+  data: {},
 };
 
 export default function timetable(state = defaultState, action) {
