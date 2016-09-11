@@ -6,15 +6,20 @@ import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import config from '../../constants/modsConfig';
 import { addModule, removeModule } from '../../actions/timetables';
+import { fetchTimetable } from '../../actions/timetable';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
 import s from './timetable.scss';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
-/*eslint-disable */
-export class TimetableContainer extends Component {
-/*eslint-enable */
+class TimetableContainer extends Component {
+  componentDidMount() {
+    if (!this.props.isInitialized) {
+      this.props.fetchTimetable();
+    }
+  }
+
   render() {
     const moduleSelectOptions = this.props.semesterModuleList
       .filter((module) => (
@@ -80,6 +85,8 @@ TimetableContainer.propTypes = {
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   timetable: PropTypes.object,
+  isInitialized: PropTypes.bool,
+  fetchTimetable: PropTypes.func.isRequired,
 };
 
 TimetableContainer.contextTypes = {
@@ -88,6 +95,7 @@ TimetableContainer.contextTypes = {
 
 function mapStateToProps(state) {
   const semester = config.semester;
+  let { timetable } = state;
 
   return {
     semester,
@@ -101,12 +109,11 @@ function mapStateToProps(state) {
   };
 }
 
-const TimetableExport = connect(
+export default connect(
   mapStateToProps,
   {
     addModule,
     removeModule,
+    fetchTimetable,
   }
 )(withStyles(s)(TimetableContainer));
-
-export { TimetableExport };

@@ -8,14 +8,14 @@
  */
 
 import React from 'react';
-import Timetable from './Timetable';
+import TimetablePage from './TimetablePage';
 
 export default {
 
   path: '/timetable',
 
   action() {
-    return <Timetable />;
+    return <TimetablePage />;
   },
 
 };
