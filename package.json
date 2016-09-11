@@ -157,7 +157,8 @@
       "no-confusing-arrow": 0,
       "react/jsx-filename-extension": 0,
       "react/jsx-quotes": 0,
-      "react/require-extension": 0
+      "react/require-extension": 0,
+      "react/prefer-stateless-function": 0
     }
   },
   "stylelint": {
