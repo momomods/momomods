@@ -1,7 +1,7 @@
 import { FETCH_GROUPS } from '../constants';
 
 const defaultState = {
-  data: [],
+  data: {},
   isFetching: false,
   isInitialized: false,
   lastFetched: null,
