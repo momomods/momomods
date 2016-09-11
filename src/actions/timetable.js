@@ -1,11 +1,17 @@
 import { FETCH_TIMETABLE } from '../constants';
 
-/* Fetch timetable for current user for year and sem */
-export function fetchTimetable({ year, sem }) {
+/**
+ * Fetch a user's timetable for specified year and semester
+ * Requires auth.
+ *
+ * @param {string} year, in the format of "YYYY-YYYY"
+ * @param {string} semester, "1", "2", etc.
+ */
+export function fetchTimetable({ year, semester }) {
   return {
     type: FETCH_TIMETABLE,
     payload: {
-      promise: Promise.resolve({ year, sem, data: [] }),
+      promise: Promise.resolve({ year, semester, data: [] }),
     },
   };
 }
