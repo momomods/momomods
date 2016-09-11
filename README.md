@@ -1,4 +1,4 @@
-# MoMoMods
+# mods+
 
 ### Getting Started
 

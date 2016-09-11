@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Link from '../Link';
 
 const AppDrawer = ({ loggedIn, email }) => {
-  const title = loggedIn ? email : 'MoMoMods';
+  const title = loggedIn ? email : 'mods+';
 
   return (
     <Drawer title={title}>

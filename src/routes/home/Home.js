@@ -11,7 +11,7 @@ import React, { PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './Home.css';
 
-const title = 'MoMoMods';
+const title = 'mods+';
 
 function Home({ news }, context) {
   context.setTitle(title);

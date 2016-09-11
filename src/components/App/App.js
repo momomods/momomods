@@ -70,7 +70,7 @@ class App extends Component {
       <Provider store={store}>
         <div>
           <Layout fixedHeader>
-            <Header title="MoMoMods">
+            <Header title="mods+">
               <Navigation>
                 <Textfield
                   onChange={() => {}}
