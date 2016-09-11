@@ -9,16 +9,26 @@
 
 import sequelize from '../sequelize';
 import User from './User';
+import UserLogin from './UserLogin';
+import UserProfile from './UserProfile';
 import Timetable from './Timetable';
 import TimetableModule from './TimetableModule';
 import Module from './Module';
 
-// User.hasMany(UserLogin, {
-//   foreignKey: 'userId',
-//   as: 'logins',
-//   onUpdate: 'cascade',
-//   onDelete: 'cascade',
-// });
+User.hasMany(UserLogin, {
+  foreignKey: 'userId',
+  as: 'logins',
+  onUpdate: 'cascade',
+  onDelete: 'cascade',
+});
+
+UserLogin.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user',
+  targetKey: 'id',
+  onUpdate: 'NO ACTION',
+  onDelete: 'NO ACTION',
+});
 
 // User.hasMany(UserClaim, {
 //   foreignKey: 'userId',
@@ -27,12 +37,12 @@ import Module from './Module';
 //   onDelete: 'cascade',
 // });
 
-// User.hasOne(UserProfile, {
-//   foreignKey: 'userId',
-//   as: 'profile',
-//   onUpdate: 'cascade',
-//   onDelete: 'cascade',
-// });
+User.hasOne(UserProfile, {
+  foreignKey: 'userId',
+  as: 'profile',
+  onUpdate: 'cascade',
+  onDelete: 'cascade',
+});
 
 User.hasMany(Timetable, {
   foreignKey: 'userId',
@@ -84,4 +94,4 @@ function sync(...args) {
 }
 
 export default { sync };
-export { User, Timetable, TimetableModule, Module };
+export { User, UserLogin, UserProfile, Timetable, TimetableModule, Module };

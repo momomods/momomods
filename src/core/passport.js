@@ -16,7 +16,7 @@
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth';
-import { User, UserLogin, UserClaim, UserProfile } from '../data/models';
+import { User, UserLogin, UserProfile } from '../data/models';
 import { auth as config } from '../config';
 
 /**
@@ -26,13 +26,14 @@ passport.use(new FacebookStrategy({
   clientID: config.facebook.id,
   clientSecret: config.facebook.secret,
   callbackURL: '/login/facebook/return',
-  profileFields: ['name', 'email', 'link', 'locale', 'timezone'],
+  profileFields: ['name', 'email'],
   passReqToCallback: true,
 }, (req, accessToken, refreshToken, profile, done) => {
   /* eslint-disable no-underscore-dangle */
   const loginName = 'facebook';
   const claimType = 'urn:facebook:access_token';
   const fooBar = async () => {
+    console.log(profile);
     if (req.user) {
       const userLogin = await UserLogin.findOne({
         attributes: ['name', 'key'],
@@ -45,12 +46,11 @@ passport.use(new FacebookStrategy({
       } else {
         const user = await User.create({
           id: req.user.id,
+          name: profile.displayName,
           email: profile._json.email,
+          emailConfirmed: true,
           logins: [
             { name: loginName, key: profile.id },
-          ],
-          claims: [
-            { type: claimType, value: profile.id },
           ],
           profile: {
             displayName: profile.displayName,
@@ -60,7 +60,6 @@ passport.use(new FacebookStrategy({
         }, {
           include: [
             { model: UserLogin, as: 'logins' },
-            { model: UserClaim, as: 'claims' },
             { model: UserProfile, as: 'profile' },
           ],
         });
@@ -92,13 +91,11 @@ passport.use(new FacebookStrategy({
           done(null);
         } else {
           user = await User.create({
+            name: profile.displayName,
             email: profile._json.email,
-            emailVerified: true,
+            emailConfirmed: true,
             logins: [
               { name: loginName, key: profile.id },
-            ],
-            claims: [
-              { type: claimType, value: accessToken },
             ],
             profile: {
               displayName: profile.displayName,
@@ -108,7 +105,6 @@ passport.use(new FacebookStrategy({
           }, {
             include: [
               { model: UserLogin, as: 'logins' },
-              { model: UserClaim, as: 'claims' },
               { model: UserProfile, as: 'profile' },
             ],
           });
@@ -128,7 +124,8 @@ passport.use(new GoogleStrategy({
   consumerKey: config.google.id,
   consumerSecret: config.google.secret,
   callbackURL: '/login/google/return',
-}, (accessToken, refreshToken, profile, cb) => (
+  passReqToCallback: true,
+}, (req, accessToken, refreshToken, profile, cb) => (
   User.findOrCreate({ googleId: profile.id }, (err, user) => cb(err, user))
 )));
 

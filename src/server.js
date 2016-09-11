@@ -80,7 +80,8 @@ app.get('/login/facebook/return',
 );
 
 app.get('/login/google',
-  passport.authenticate('google', { scope: ['email', 'profile'], session: false })
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login',
+    'https://www.googleapis.com/auth/plus.profile.emails.read'], session: false })
 );
 
 app.get('/login/google/return',
@@ -92,6 +93,11 @@ app.get('/login/google/return',
     res.redirect('/');
   }
 );
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/login');
+})
 
 // APIs
 
