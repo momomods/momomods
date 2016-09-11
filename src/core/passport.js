@@ -31,9 +31,9 @@ passport.use(new FacebookStrategy({
 }, (req, accessToken, refreshToken, profile, done) => {
   /* eslint-disable no-underscore-dangle */
   const loginName = 'facebook';
-  const claimType = 'urn:facebook:access_token';
+  // const claimType = 'urn:facebook:access_token';
   const fooBar = async () => {
-    console.log(profile);
+    // console.log(profile);
     if (req.user) {
       const userLogin = await UserLogin.findOne({
         attributes: ['name', 'key'],

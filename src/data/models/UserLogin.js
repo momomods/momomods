@@ -13,8 +13,8 @@ import Model from '../sequelize';
 const UserLogin = Model.define('UserLogin', {
 
   userId: {
-  	type: DataType.INTEGER,
-  	primaryKey: true,
+    type: DataType.INTEGER,
+    primaryKey: true,
   },
 
   name: {
