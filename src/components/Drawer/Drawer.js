@@ -35,8 +35,8 @@ AppDrawer.propTypes = {
 };
 
 const mapState = (state) => ({
-  loggedIn: !!state.user.id,
-  email: state.user.email,
+  loggedIn: !!state.user.data.id,
+  email: state.user.data.email,
 });
 
 export default connect(mapState)(AppDrawer);

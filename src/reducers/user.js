@@ -1,13 +1,22 @@
 import { LOG_USER_IN, LOG_USER_OUT } from '../constants';
 
-export default function user(state = {}, action) {
+const defaultState = {
+  isFetching: false,
+  data: {},
+}
+
+export default function user(state = defaultState, action) {
   switch (action.type) {
     case LOG_USER_IN:
       return {
-        ...action.payload.user,
+        isFetching: false,
+        data: action.payload.user,
       };
     case LOG_USER_OUT:
-      return {};
+      return {
+        isFetching: false,
+        data: {},
+      };
     default:
       return state;
   }

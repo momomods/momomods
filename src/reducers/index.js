@@ -26,7 +26,7 @@ export default function (state = {}, action) {
     module: module(state.module, action),
     runtime: runtime(state.runtime, action),
     timetable: timetable(state.timetable, action),
-    user: user(state.timetable, action),
+    user: user(state.user, action),
     entities: entities(state.entities, action),
     requests: requests(state.requests, action),
     timetables: timetables(state.timetables, action, state.entities),
