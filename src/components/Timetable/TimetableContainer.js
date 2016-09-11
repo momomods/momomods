@@ -4,7 +4,6 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import config from '../../constants/modsConfig';
 import { addModule, removeModule } from '../../actions/timetables';
 import { fetchTimetable } from '../../actions/timetable';
 import { timetableLessonsArray } from '../../utils/modules';
@@ -15,8 +14,14 @@ import s from './timetable.scss';
 
 class TimetableContainer extends Component {
   componentDidMount() {
-    if (!this.props.isInitialized) {
-      this.props.fetchTimetable();
+    const {
+      isInitialized,
+      year,
+      semester,
+    } = this.props;
+
+    if (!isInitialized) {
+      this.props.fetchTimetable({ year, semester });
     }
   }
 
@@ -78,7 +83,8 @@ class TimetableContainer extends Component {
 }
 
 TimetableContainer.propTypes = {
-  semester: PropTypes.number,
+  semester: PropTypes.string.isRequired,
+  year: PropTypes.string.isRequired,
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
   modules: PropTypes.object,
@@ -94,26 +100,44 @@ TimetableContainer.contextTypes = {
 };
 
 function mapStateToProps(state) {
-  const semester = config.semester;
-  let { timetable } = state;
+  const { timetable, selection } = state;
+  const { year, semester } = selection;
+  const timetableForYearAndSem = timetable.data.filter(
+    t => t.year === year && t.semester === semester
+  )[0] || { data: [] };
+
+  // convert to v3 compatible format first for display
+  const tt = {};
+
+  timetableForYearAndSem.data.map(module => {
+    if (!tt[module.ModuleCode]) {
+      tt[module.ModuleCode] = {};
+    }
+    if (!tt[module.ModuleCode][module.LessonType]) {
+      tt[module.ModuleCode][module.LessonType] = [];
+    }
+    tt[module.ModuleCode][module.LessonType].push(module);
+    return module;
+  });
 
   return {
+    year,
     semester,
     semesterModuleList: state.entities.moduleBank.moduleList.filter((module) => (
       _.includes(module.Semesters, semester)
     )),
-    semesterTimetable: state.timetables[semester] || {},
-    timetable: state.timetable,
+    semesterTimetable: tt,
+    timetable,
     modules: state.entities.moduleBank.modules,
-    isInitialized: true,
+    isInitialized: timetable.isInitialized,
   };
 }
 
+const mapDispatch = {
+  fetchTimetable,
+  addModule,
+  removeModule,
+};
+
 export default connect(
-  mapStateToProps,
-  {
-    addModule,
-    removeModule,
-    fetchTimetable,
-  }
-)(withStyles(s)(TimetableContainer));
+  mapStateToProps, mapDispatch)(withStyles(s)(TimetableContainer));
