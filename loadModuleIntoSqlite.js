@@ -23,7 +23,7 @@ const Module = sequelize.define('Module', {
   },
 
   year: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING(45),
     unique: 'oneModule',
   },
 
