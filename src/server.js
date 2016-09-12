@@ -113,18 +113,22 @@ function updateTimetable(timetableId, year, semester, allNewMods) {
     const classNumber = allNewMods[i].class_number;
     // Find Module Id
     ModuleModel.find({
-      year,
-      semester,
-      code,
+      where: {
+        year,
+        semester,
+        code,
+      },
     }).then((mod) => {
       if (mod) {
         TimetableModuleModel.find({
-          timetableId,
-          moduleId: mod.dataValues.id,
+          where: {
+            timetableId,
+            moduleId: mod.dataValues.id,
+            lessonType,
+          },
         }).then((oldMod) => {
           if (oldMod) { // TimetableModule already exists. Update.
             oldMod.update({
-              lessonType,
               classNumber,
             });
           } else { // TimetableModule does not exist. Create.
@@ -176,11 +180,12 @@ app.route('/api/:year/:semester/timetable')
         semester,
       }).then((newTimetable) => {
         updateTimetable(newTimetable.dataValues.id, year, semester, allNewMods);
-        res.sendStatus(200);
+        res.sendStatus(201);
       });
     } else {
+      console.log(myTimetable.dataValues.id);
       updateTimetable(myTimetable.dataValues.id, year, semester, allNewMods);
-      res.sendStatus(200);
+      res.sendStatus(201);
     }
   });
 });
