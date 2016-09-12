@@ -5,6 +5,10 @@ var process = require( 'process' );
 var Sequelize = require( 'sequelize' );
 var databaseUrl = 'sqlite:database.sqlite';
 
+var args = process.argv.slice(2);
+const YEAR = args[0];
+const SEM = args[1];
+
 const sequelize = new Sequelize(databaseUrl, {
     define: {
         freezeTableName: true,
@@ -71,7 +75,7 @@ const Module = sequelize.define('Module', {
 
 });
 
-var folder = "./api.nusmods.com/2016-2017/1/modules";
+var folder = "./api.nusmods.com/" + YEAR + "/" + SEM + "/modules";
 
 // Loop through all the files in the temp directory
 fs.readdir( folder, function( err, files ) {
@@ -87,8 +91,8 @@ fs.readdir( folder, function( err, files ) {
             // console.log(wholePath);
             const obj = require(wholePath);
             const insertObj = {
-                year: 2016,
-                semester: 1,
+                year: YEAR,
+                semester: parseInt(SEM),
                 code: obj.ModuleCode,
                 title: obj.ModuleTitle,
                 description: obj.ModuleDescription,

@@ -7,4 +7,4 @@ wget -r -l1 --no-parent --reject "index.html*" -A "*.json" http://api.nusmods.co
 cd api.nusmods.com/$YEAR/$SEM/modules # IMPORTANT. If not it'll delete all your files.
 rm -r -- */ # This removes all folders, since only need json files.
 cd ../../../../
-node loadModuleIntoSqlite.js
+node loadModuleIntoSqlite.js $YEAR $SEM
