@@ -62,11 +62,11 @@ class TimetableContainer extends Component {
             <table className="table table-bordered">
               <tbody>
                 {_.map(Object.keys(this.props.semesterTimetable), (moduleCode) => {
-                  const module = this.props.modules.data[moduleCode] || {};
+                  const module = this.props.modules[moduleCode] || {};
                   return (
                     <tr key={moduleCode}>
-                      <td>{module.ModuleCode}</td>
-                      <td>{module.ModuleTitle}</td>
+                      <td>{module.code}</td>
+                      <td>{module.title}</td>
                       <td>
                         <button
                           className="btn btn-sm btn-danger"
@@ -135,13 +135,19 @@ function mapStateToProps(state) {
     && state.module.data[year][semester];
   semesterModuleList = semesterModuleList || [];
 
+  let moduledetail = {}
+  timetableForYearAndSem.data.map(mod =>
+      moduledetail[mod.ModuleCode] = semesterModuleList.find(
+        m => m.code == mod.ModuleCode
+      ));
+
   return {
     year,
     semester,
     semesterModuleList,
     semesterTimetable: tt,
     timetable,
-    modules: state.moduledetail,
+    modules: moduledetail,
     allModules: state.module,
   };
 }
