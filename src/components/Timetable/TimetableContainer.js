@@ -6,7 +6,7 @@ import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { addModule, removeModule } from '../../actions/timetables';
 import { fetchTimetable } from '../../actions/timetable';
-import { fetchModules, fetchNusModsModuleDetail } from '../../actions/module';
+import { fetchModules } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
 import s from './timetable.scss';
@@ -102,7 +102,6 @@ TimetableContainer.propTypes = {
   isInitialized: PropTypes.bool,
   fetchTimetable: PropTypes.func.isRequired,
   fetchModules: PropTypes.func.isRequired,
-  fetchNusModsModuleDetail: PropTypes.func.isRequired,
 };
 
 TimetableContainer.contextTypes = {
@@ -155,7 +154,6 @@ function mapStateToProps(state) {
 const mapDispatch = {
   fetchTimetable,
   fetchModules,
-  fetchNusModsModuleDetail,
   addModule,
   removeModule,
 };

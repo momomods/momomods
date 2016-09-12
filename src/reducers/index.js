@@ -1,7 +1,6 @@
 // import { combineReducers } from 'redux';
 import group from './group';
 import module from './module';
-import moduledetail from './moduledetail';
 import runtime from './runtime';
 import timetable from './timetable';
 import user from './user';
@@ -26,7 +25,6 @@ export default function (state = {}, action) {
   return {
     group: group(state.group, action),
     module: module(state.module, action),
-    moduledetail: moduledetail(state.moduledetail, action),
     runtime: runtime(state.runtime, action),
     timetable: timetable(state.timetable, action),
     user: user(state.user, action),
