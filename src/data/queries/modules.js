@@ -1,9 +1,9 @@
-import ModuleType from '../types/ModuleType';
-import { GraphQLList as List } from 'graphql';
 import {
-  GraphQLString as StringType,
+  GraphQLList as List,
   GraphQLNonNull as NonNull,
+  GraphQLString as StringType,
 } from 'graphql';
+import ModuleType from '../types/ModuleType';
 import { Module as ModuleModel } from '../models';
 
 const modules = {

@@ -130,9 +130,10 @@ function mapStateToProps(state) {
     return module;
   });
 
-  const semesterModuleList = state.module.data
+  let semesterModuleList = state.module.data
     && state.module.data[year]
-    && state.module.data[year][semester] || []
+    && state.module.data[year][semester];
+  semesterModuleList = semesterModuleList || [];
 
   return {
     year,

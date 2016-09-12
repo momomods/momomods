@@ -162,7 +162,7 @@ app.route('/api/:year/:semester/timetable')
       include: [{
         model: ModuleModel,
         as: 'module',
-      }]
+      }],
     }],
   }).then((result) => {
     res.json(result);
@@ -190,7 +190,7 @@ app.route('/api/:year/:semester/timetable')
         res.sendStatus(201);
       });
     } else {
-      console.log(myTimetable.dataValues.id);
+      console.log(myTimetable.dataValues.id); // eslint-disable-line no-console
       updateTimetable(myTimetable.dataValues.id, year, semester, allNewMods);
       res.sendStatus(201);
     }
