@@ -18,7 +18,12 @@ export default function module(state = defaultState, action) {
     case `${FETCH_MODULES}_FULFILLED`:
       return {
         ...state,
-        data: action.payload,
+        data: {
+          ...state.data,
+          [action.meta.year]: {
+            [action.meta.semester]: action.payload.data.modules,
+          },
+        },
         isFetching: false,
         isInitialized: true,
         lastFetched: Date.now(),

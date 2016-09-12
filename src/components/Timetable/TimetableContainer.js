@@ -6,7 +6,7 @@ import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { addModule, removeModule } from '../../actions/timetables';
 import { fetchTimetable } from '../../actions/timetable';
-import { fetchNusModsModules, fetchNusModsModuleDetail,fetchNusModsModuleList } from '../../actions/module';
+import { fetchModules, fetchNusModsModuleDetail } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
 import s from './timetable.scss';
@@ -23,25 +23,23 @@ class TimetableContainer extends Component {
       isInitialized,
     } = this.props.timetable;
 
+
     if (!isInitialized) {
       this.props.fetchTimetable({ year, semester });
     }
     if (!this.props.allModules.isInitialized) {
-      this.props.fetchNusModsModules({ year });
-    }
-    if (!this.props.moduleList.isInitialized) {
-      this.props.fetchNusModsModuleList({ year });
+      this.props.fetchModules({ year, semester });
     }
   }
 
   render() {
     const moduleSelectOptions = this.props.semesterModuleList
       .filter((module) => (
-        !this.props.semesterTimetable[module.ModuleCode]
+        !this.props.semesterTimetable[module.code]
       ))
       .map((module) => ({
-        value: module.ModuleCode,
-        label: `${module.ModuleCode} ${module.ModuleTitle}`,
+        value: module.code,
+        label: `${module.code} ${module.title}`,
       }));
     const filterOptions = createFilterOptions({ options: moduleSelectOptions });
 
@@ -97,16 +95,14 @@ TimetableContainer.propTypes = {
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
   modules: PropTypes.object,
-  moduleList: PropTypes.object,
   allModules: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   timetable: PropTypes.object,
   isInitialized: PropTypes.bool,
   fetchTimetable: PropTypes.func.isRequired,
-  fetchNusModsModules: PropTypes.func.isRequired,
+  fetchModules: PropTypes.func.isRequired,
   fetchNusModsModuleDetail: PropTypes.func.isRequired,
-  fetchNusModsModuleList: PropTypes.func.isRequired,
 };
 
 TimetableContainer.contextTypes = {
@@ -134,10 +130,9 @@ function mapStateToProps(state) {
     return module;
   });
 
-  // module list has an array of module code and semesters they are offered
-  const semesterInt = parseInt(semester, 10)
-  let semesterModuleList = state.modulelist.data.filter(
-    m => m.Semesters.indexOf(semesterInt) > -1)
+  const semesterModuleList = state.module.data
+    && state.module.data[year]
+    && state.module.data[year][semester] || []
 
   return {
     year,
@@ -147,15 +142,13 @@ function mapStateToProps(state) {
     timetable,
     modules: state.moduledetail,
     allModules: state.module,
-    moduleList: state.modulelist,
   };
 }
 
 const mapDispatch = {
   fetchTimetable,
-  fetchNusModsModules,
+  fetchModules,
   fetchNusModsModuleDetail,
-  fetchNusModsModuleList,
   addModule,
   removeModule,
 };

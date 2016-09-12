@@ -6,6 +6,15 @@ import {
 } from '../constants';
 import fetch from '../core/fetch';
 
+export function request(url, options = {}) {
+  return new Promise((resolve, reject) => {
+    fetch(url, options)
+      .then(response => response.json())
+      .then(response => resolve(response))
+      .catch(reject);
+  });
+}
+
 /**
  * Fetch all modules for specified year and semester
  * Does not require auth.
@@ -14,21 +23,20 @@ import fetch from '../core/fetch';
  * @param {string} semester, "1", "2", etc.
  */
 export function fetchModules({ year, semester }) {
+  const fields = `
+    id,year,semester,code,title,description,department,credit,workload,
+    prerequisite,preclusion,examDate,timetable`;
+  const url = `/graphql?query={modules(year:"${year}",semester:"${semester}"){${fields}}}`
   return {
     type: FETCH_MODULES,
+    meta: {
+      year,
+      semester,
+    },
     payload: {
-      promise: Promise.resolve({ year, semester, data: [] }),
+      promise: request(url),
     },
   };
-}
-
-export function request(url, options = {}) {
-  return new Promise((resolve, reject) => {
-    fetch(url, options)
-      .then(response => response.json())
-      .then(response => resolve(response))
-      .catch(reject);
-  });
 }
 
 export function fetchNusModsModuleList({ year }) {
