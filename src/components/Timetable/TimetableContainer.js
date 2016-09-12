@@ -26,7 +26,9 @@ class TimetableContainer extends Component {
     if (!isInitialized) {
       this.props.fetchTimetable({ year, semester });
     }
-    this.props.fetchNusModsModules({ year });
+    if (!this.props.moduleList.isInitialized) {
+      this.props.fetchNusModsModules({ year });
+    }
   }
 
   render() {
@@ -135,6 +137,7 @@ function mapStateToProps(state) {
     semesterTimetable: tt,
     timetable,
     modules: state.moduledetail.data,
+    moduleList: state.module,
   };
 }
 
