@@ -2,9 +2,13 @@
 var cacheName = 'modsplus-1';
 var filesToCache = [
   '/',
+  '/timetable',
+  '/module',
+  '/group',
   '/material.js',
   '/material.css',
   '/assets/main.js',
+  '/graphql',
 ];
 
 self.addEventListener('install', function(e) {
@@ -34,10 +38,16 @@ self.addEventListener('activate', function(e) {
 
 self.addEventListener('fetch', function(e) {
   console.log('[ServiceWorker] Fetch', e.request.url);
-  e.respondWith(
-    caches.match(e.request).then(function(response) {
+  if (e.request.url.indexOf('main.js') > -1 ) {
+    e.respondWith(caches.match('/assets/main.js').then(function(response) {
       return response || fetch(e.request);
-    })
-  );
+    }))
+  } else {
+    e.respondWith(
+      caches.match(e.request).then(function(response) {
+        return response || fetch(e.request);
+      })
+    );
+  }
 });
 /* eslint-enable */
