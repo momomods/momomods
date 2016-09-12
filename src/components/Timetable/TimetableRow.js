@@ -16,7 +16,8 @@ const generateCells = (lessons) => {
   )).value();
   const cells = [];
   const startingIndex = FIRST_HOUR * 2;
-  const endingIndex = (LAST_HOUR + 1) * 2;
+  const endingIndex = LAST_HOUR * 2;
+
   for (let i = startingIndex; i < endingIndex; i++) {
     const timeForIndex = convertIndexToTime(i);
     const lesson = lessonsGroupedByStartTime[timeForIndex];
