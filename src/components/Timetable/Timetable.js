@@ -8,7 +8,8 @@ import TimetableDayRow from './TimetableDayRow';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
-const WEEKDAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+// Ignore Sundays since there is no school
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const Timetable = (props) => {
   const arrangedLessons = arrangeLessonsForWeek(props.lessons);
@@ -19,11 +20,11 @@ const Timetable = (props) => {
         { props.timetable.isFetching }
       </div>
       <div className="timetable">
-        {WEEKDAYS.map((weekday) =>
+        {DAYS.map((day) =>
           (<TimetableDayRow
-            key={weekday}
-            day={weekday.substring(0, 3)}
-            dayLessonRows={arrangedLessons[weekday]}
+            key={day}
+            day={day.substring(0, 3)}
+            dayLessonRows={arrangedLessons[day]}
           />)
         )}
       </div>
