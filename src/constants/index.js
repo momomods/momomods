@@ -9,6 +9,10 @@ export const FETCH_TIMETABLE = 'FETCH_TIMETABLE';
 
 export const FETCH_MODULES = 'FETCH_MODULES';
 
+// for testing purposes only
+export const FETCH_NUS_MODS_MODULES = 'FETCH_NUS_MODS_MODULES';
+export const FETCH_NUS_MODS_DETAIL = 'FETCH_NUS_MODS_DETAIL';
+
 export const FETCH_GROUPS = 'FETCH_GROUPS';
 
 export const CHANGE_SEMESTER = 'CHANGE_SEMESTER';
