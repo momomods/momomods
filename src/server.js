@@ -156,7 +156,14 @@ app.route('/api/:year/:semester/timetable')
       year,
       semester,
     },
-    include: [{ model: TimetableModuleModel, as: 'timetableModules' }],
+    include: [{
+      model: TimetableModuleModel,
+      as: 'timetableModules',
+      include: [{
+        model: ModuleModel,
+        as: 'module',
+      }]
+    }],
   }).then((result) => {
     res.json(result);
   });
