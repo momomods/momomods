@@ -94,6 +94,7 @@ TimetableContainer.propTypes = {
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
   modules: PropTypes.object,
+  moduleList: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   timetable: PropTypes.object,

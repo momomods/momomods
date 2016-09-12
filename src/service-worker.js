@@ -1,3 +1,4 @@
+/* eslint-disable */
 var cacheName = 'modsplus-1';
 var filesToCache = [
   '/',
@@ -39,3 +40,4 @@ self.addEventListener('fetch', function(e) {
     })
   );
 });
+/* eslint-enable */

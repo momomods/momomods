@@ -1,6 +1,7 @@
+import localforage from 'localforage';
+
 import { FETCH_TIMETABLE, LOAD_TIMETABLE, SAVE_TIMETABLE } from '../constants';
 import { fetchNusModsModuleDetail } from './module';
-import localforage from 'localforage';
 
 const dummyData = {
   ClassNo: 'J3',
@@ -42,11 +43,9 @@ export function loadTimetable({ year, semester }) {
   return {
     type: LOAD_TIMETABLE,
     payload: {
-      promise: localforage.getItem(`timetable/${year}/${semester}`)
-                 .then(JSON.parse),
+      promise: localforage.getItem(`timetable/${year}/${semester}`).then(JSON.parse),
     },
-  }
-
+  };
 }
 
 export function saveTimetable({ year, semester, data }) {
@@ -55,9 +54,9 @@ export function saveTimetable({ year, semester, data }) {
     payload: {
       promise: localforage.setItem(
         `timetable/${year}/${semester}`,
-        JSON.stringify({year, semester, data})),
+        JSON.stringify({ year, semester, data })),
     },
-  }
+  };
 }
 
 export function dummy() {}
