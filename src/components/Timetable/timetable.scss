@@ -62,26 +62,7 @@ $timetable-cell-padding: 3px;
     }
   }
 
-  @media (min-width: ($breakpoint + 1px)) {
-    border-top: $timetable-border;
-    flex-direction: column;
-
-    .timetable-day {
-      border-bottom: $timetable-border;
-      flex-direction: column;
-    }
-
-    .timetable-day-row {
-      flex-direction: row;
-      height: $timetable-row-height;
-    }
-
-    .timetable-cell {
-      width: 0;
-    }
-  }
-
-  @media (max-width: $breakpoint) {
+  @media (min-width: $breakpoint) {
     border-left: $timetable-border;
     flex-direction: row;
     height: 1000px;
