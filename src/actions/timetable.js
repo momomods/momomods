@@ -1,4 +1,7 @@
-import { FETCH_TIMETABLE } from '../constants';
+import localforage from 'localforage';
+
+import { FETCH_TIMETABLE, LOAD_TIMETABLE, SAVE_TIMETABLE } from '../constants';
+import { fetchNusModsModuleDetail } from './module';
 
 const dummyData = {
   ClassNo: 'J3',
@@ -20,10 +23,38 @@ const dummyData = {
  * @param {string} semester, "1", "2", etc.
  */
 export function fetchTimetable({ year, semester }) {
+  return dispatch => (
+    dispatch({
+      type: FETCH_TIMETABLE,
+      payload: {
+        promise: Promise.resolve({ year, semester, data: [dummyData] }),
+      },
+    }).then(({ value }) => ({
+      type: 'FETCH_TT_MODULES',
+      payload: Promise.all(
+        value.data.map(
+          m => dispatch(
+            fetchNusModsModuleDetail({ year, code: m.ModuleCode })))),
+    }))
+  );
+}
+
+export function loadTimetable({ year, semester }) {
   return {
-    type: FETCH_TIMETABLE,
+    type: LOAD_TIMETABLE,
     payload: {
-      promise: Promise.resolve({ year, semester, data: [dummyData] }),
+      promise: localforage.getItem(`timetable/${year}/${semester}`).then(JSON.parse),
+    },
+  };
+}
+
+export function saveTimetable({ year, semester, data }) {
+  return {
+    type: SAVE_TIMETABLE,
+    payload: {
+      promise: localforage.setItem(
+        `timetable/${year}/${semester}`,
+        JSON.stringify({ year, semester, data })),
     },
   };
 }

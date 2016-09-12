@@ -24,6 +24,7 @@ async function copy({ watch } = {}) {
     ncp('src/content', 'build/content'),
     ncp('node_modules/react-mdl/extra/material.css', 'build/public/material.css'),
     ncp('node_modules/react-mdl/extra/material.js', 'build/public/material.js'),
+    ncp('src/service-worker.js', 'build/public/service-worker.js'),
   ]);
 
   await fs.writeFile('./build/package.json', JSON.stringify({

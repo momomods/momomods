@@ -1,4 +1,4 @@
-import { FETCH_MODULES } from '../constants';
+import { FETCH_MODULES, FETCH_NUS_MODS_MODULES } from '../constants';
 
 const defaultState = {
   data: {},
@@ -30,6 +30,14 @@ export default function module(state = defaultState, action) {
         isFetching: false,
         isInitialized: false,
         lastFetched: null,
+      };
+    case `${FETCH_NUS_MODS_MODULES}_FULFILLED`:
+      return {
+        ...state,
+        data: action.payload,
+        isFetching: false,
+        isInitialized: true,
+        lastFetched: Date.now(),
       };
     default:
       return state;

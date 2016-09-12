@@ -6,6 +6,7 @@ import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { addModule, removeModule } from '../../actions/timetables';
 import { fetchTimetable } from '../../actions/timetable';
+import { fetchNusModsModules, fetchNusModsModuleDetail } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
 import s from './timetable.scss';
@@ -15,13 +16,18 @@ import s from './timetable.scss';
 class TimetableContainer extends Component {
   componentDidMount() {
     const {
-      isInitialized,
       year,
       semester,
     } = this.props;
+    const {
+      isInitialized,
+    } = this.props.timetable;
 
     if (!isInitialized) {
       this.props.fetchTimetable({ year, semester });
+    }
+    if (!this.props.moduleList.isInitialized) {
+      this.props.fetchNusModsModules({ year });
     }
   }
 
@@ -88,11 +94,14 @@ TimetableContainer.propTypes = {
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
   modules: PropTypes.object,
+  moduleList: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   timetable: PropTypes.object,
   isInitialized: PropTypes.bool,
   fetchTimetable: PropTypes.func.isRequired,
+  fetchNusModsModules: PropTypes.func.isRequired,
+  fetchNusModsModuleDetail: PropTypes.func.isRequired,
 };
 
 TimetableContainer.contextTypes = {
@@ -128,13 +137,15 @@ function mapStateToProps(state) {
     )),
     semesterTimetable: tt,
     timetable,
-    modules: state.entities.moduleBank.modules,
-    isInitialized: timetable.isInitialized,
+    modules: state.moduledetail.data,
+    moduleList: state.module,
   };
 }
 
 const mapDispatch = {
   fetchTimetable,
+  fetchNusModsModules,
+  fetchNusModsModuleDetail,
   addModule,
   removeModule,
 };
