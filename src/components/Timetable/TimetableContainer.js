@@ -134,10 +134,10 @@ function mapStateToProps(state) {
     && state.module.data[year][semester];
   semesterModuleList = semesterModuleList || [];
 
-  let moduledetail = {}
-  timetableForYearAndSem.data.map(mod =>
+  const moduledetail = {};
+  timetableForYearAndSem.data.forEach(mod =>
       moduledetail[mod.ModuleCode] = semesterModuleList.find(
-        m => m.code == mod.ModuleCode
+        m => m.code === mod.ModuleCode
       ));
 
   return {
