@@ -7,6 +7,9 @@ node_modules
 ncp-debug.log
 npm-debug.log
 
+# For Scraping of NUSMODS
+api.nusmods.com/*
+
 # Logs
 logs
 *.log
