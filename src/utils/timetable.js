@@ -1,7 +1,7 @@
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
 export const FIRST_HOUR = 8;
-export const LAST_HOUR = 22;
+export const LAST_HOUR = 24;
 export const CELLS_COUNT = ((LAST_HOUR - FIRST_HOUR) + 1) * 2;
 export const LESSON_TYPE_ABBREV = {
   'Design Lecture': 'DLEC',
