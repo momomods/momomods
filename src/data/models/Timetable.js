@@ -15,6 +15,8 @@ const Timetable = Model.define('Timetable', {
   id: {
     type: DataType.INTEGER,
     primaryKey: true,
+    unique: true,
+    autoIncrement: true,
   },
 
   userId: {
@@ -23,7 +25,7 @@ const Timetable = Model.define('Timetable', {
   },
 
   year: {
-    type: DataType.INTEGER,
+    type: DataType.STRING(45),
     unique: 'oneTimetable',
   },
 

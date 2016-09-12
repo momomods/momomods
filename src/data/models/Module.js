@@ -15,10 +15,12 @@ const Module = Model.define('Module', {
   id: {
     type: DataType.INTEGER,
     primaryKey: true,
+    unique: true,
+    autoIncrement: true,
   },
 
   year: {
-    type: DataType.INTEGER,
+    type: DataType.STRING(45),
     unique: 'oneModule',
   },
 

@@ -15,6 +15,8 @@ const TimetableModule = Model.define('TimetableModule', {
   id: {
     type: DataType.INTEGER,
     primaryKey: true,
+    unique: true,
+    autoIncrement: true,
   },
 
   timetableId: {

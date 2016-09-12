@@ -14,10 +14,9 @@ const User = Model.define('User', {
 
   id: {
     type: DataType.INTEGER,
-    defaultValue: 0,
     primaryKey: true,
-    autoIncrement: true,
     unique: true,
+    autoIncrement: true,
   },
 
   name: {
