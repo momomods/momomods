@@ -1,4 +1,9 @@
-import { FETCH_MODULES, FETCH_NUS_MODS_MODULES, FETCH_NUS_MODS_DETAIL } from '../constants';
+import {
+  FETCH_MODULES,
+  FETCH_NUS_MODS_MODULES,
+  FETCH_NUS_MODS_DETAIL,
+  FETCH_NUS_MODS_MODULES_LIST,
+} from '../constants';
 import fetch from '../core/fetch';
 
 /**
@@ -24,6 +29,16 @@ export function request(url, options = {}) {
       .then(response => resolve(response))
       .catch(reject);
   });
+}
+
+export function fetchNusModsModuleList({ year }) {
+  const url = `https://nusmods.com/api/${year}/moduleList.json`;
+  return {
+    type: FETCH_NUS_MODS_MODULES_LIST,
+    payload: {
+      promise: request(url),
+    },
+  };
 }
 
 export function fetchNusModsModules({ year }) {

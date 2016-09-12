@@ -2,6 +2,7 @@
 import group from './group';
 import module from './module';
 import moduledetail from './moduledetail';
+import modulelist from './modulelist';
 import runtime from './runtime';
 import timetable from './timetable';
 import user from './user';
@@ -27,6 +28,7 @@ export default function (state = {}, action) {
     group: group(state.group, action),
     module: module(state.module, action),
     moduledetail: moduledetail(state.moduledetail, action),
+    modulelist: modulelist(state.modulelist, action),
     runtime: runtime(state.runtime, action),
     timetable: timetable(state.timetable, action),
     user: user(state.user, action),

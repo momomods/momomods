@@ -6,7 +6,7 @@ import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { addModule, removeModule } from '../../actions/timetables';
 import { fetchTimetable } from '../../actions/timetable';
-import { fetchNusModsModules, fetchNusModsModuleDetail } from '../../actions/module';
+import { fetchNusModsModules, fetchNusModsModuleDetail,fetchNusModsModuleList } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
 import s from './timetable.scss';
@@ -26,8 +26,11 @@ class TimetableContainer extends Component {
     if (!isInitialized) {
       this.props.fetchTimetable({ year, semester });
     }
-    if (!this.props.moduleList.isInitialized) {
+    if (!this.props.allModules.isInitialized) {
       this.props.fetchNusModsModules({ year });
+    }
+    if (!this.props.moduleList.isInitialized) {
+      this.props.fetchNusModsModuleList({ year });
     }
   }
 
@@ -61,7 +64,7 @@ class TimetableContainer extends Component {
             <table className="table table-bordered">
               <tbody>
                 {_.map(Object.keys(this.props.semesterTimetable), (moduleCode) => {
-                  const module = this.props.modules[moduleCode] || {};
+                  const module = this.props.modules.data[moduleCode] || {};
                   return (
                     <tr key={moduleCode}>
                       <td>{module.ModuleCode}</td>
@@ -95,6 +98,7 @@ TimetableContainer.propTypes = {
   semesterTimetable: PropTypes.object,
   modules: PropTypes.object,
   moduleList: PropTypes.object,
+  allModules: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   timetable: PropTypes.object,
@@ -102,6 +106,7 @@ TimetableContainer.propTypes = {
   fetchTimetable: PropTypes.func.isRequired,
   fetchNusModsModules: PropTypes.func.isRequired,
   fetchNusModsModuleDetail: PropTypes.func.isRequired,
+  fetchNusModsModuleList: PropTypes.func.isRequired,
 };
 
 TimetableContainer.contextTypes = {
@@ -129,16 +134,20 @@ function mapStateToProps(state) {
     return module;
   });
 
+  // module list has an array of module code and semesters they are offered
+  const semesterInt = parseInt(semester, 10)
+  let semesterModuleList = state.modulelist.data.filter(
+    m => m.Semesters.indexOf(semesterInt) > -1)
+
   return {
     year,
     semester,
-    semesterModuleList: state.entities.moduleBank.moduleList.filter((module) => (
-      _.includes(module.Semesters, semester)
-    )),
+    semesterModuleList,
     semesterTimetable: tt,
     timetable,
-    modules: state.moduledetail.data,
-    moduleList: state.module,
+    modules: state.moduledetail,
+    allModules: state.module,
+    moduleList: state.modulelist,
   };
 }
 
@@ -146,6 +155,7 @@ const mapDispatch = {
   fetchTimetable,
   fetchNusModsModules,
   fetchNusModsModuleDetail,
+  fetchNusModsModuleList,
   addModule,
   removeModule,
 };
