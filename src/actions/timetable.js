@@ -1,6 +1,11 @@
 import localforage from 'localforage';
 
-import { FETCH_TIMETABLE, LOAD_TIMETABLE, SAVE_TIMETABLE } from '../constants';
+import {
+  ADD_MODULE,
+  FETCH_TIMETABLE,
+  LOAD_TIMETABLE,
+  SAVE_TIMETABLE,
+} from '../constants';
 
 const dummyData = {
   ClassNo: 'J3',
@@ -26,6 +31,25 @@ export function fetchTimetable({ year, semester }) {
     type: FETCH_TIMETABLE,
     payload: {
       promise: Promise.resolve({ year, semester, data: [dummyData] }),
+    },
+  };
+}
+
+/**
+ * Add a module to a particular year & semester's timetable
+ *
+ * @param {string} year, in the format of "YYYY-YYYY"
+ * @param {string} semester, "1", "2", etc.
+ * @param {Object} module, module model
+ */
+export function addModule({ year, semester, module }) {
+  console.log(`add module ${module}`);
+  return {
+    type: ADD_MODULE,
+    payload: {
+      year,
+      semester,
+      module,
     },
   };
 }

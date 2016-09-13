@@ -1,4 +1,7 @@
-import { FETCH_TIMETABLE } from '../constants';
+import {
+  ADD_MODULE,
+  FETCH_TIMETABLE,
+} from '../constants';
 
 // data is a list of objects with timetable data, looks like:
 // {
@@ -35,6 +38,27 @@ export default function timetable(state = defaultState, action) {
         isInitialized: false,
         error: action.payload,
       };
+    case `${ADD_MODULE}`:
+      const tt = JSON.parse(action.payload.module.timetable || null);
+      // if selected module has no timetable, just pretend it's not added
+      if (!tt) return state;
+
+      const lessonTypeToX = {}
+      // each lesson type can have potentially many class no,
+      // for simplicity we just get the first lesson of each lesson type first
+      tt.forEach(l => (
+        lessonTypeToX[l.LessonType] = lessonTypeToX[l.LessonType] || l))
+
+      // for each lesson type, push a class onto timetable
+      Object.keys(lessonTypeToX).forEach(k => (
+        state.data[0].data.push(lessonTypeToX[k])
+      ))
+      return {
+        ...state,
+        data: state.data,
+      }
+
+      return state;
     default:
       return state;
   }

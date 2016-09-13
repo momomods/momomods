@@ -4,8 +4,8 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { addModule, removeModule } from '../../actions/timetables';
-import { fetchTimetable } from '../../actions/timetable';
+import { removeModule } from '../../actions/timetables';
+import { addModule, fetchTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
@@ -45,24 +45,34 @@ class TimetableContainer extends Component {
 
     const lessons = timetableLessonsArray(this.props.semesterTimetable);
 
+    const {
+      addModule,
+      year,
+      semester,
+      timetable,
+      semesterTimetable,
+      modules,
+      allModules,
+    } = this.props;
+
+    const getModuleData = (code, allModules) => allModules.data[year][semester].find(m => m.code == code);
+
     return (
       <div >
         <br />
-        <Timetable lessons={lessons} timetable={this.props.timetable} />
+        <Timetable lessons={lessons} timetable={timetable} />
         <br />
         <div className="row">
           <div className="col-md-6 offset-md-3">
             <VirtualizedSelect
               options={moduleSelectOptions}
               filterOptions={filterOptions}
-              onChange={(module) => {
-                this.props.addModule(this.props.semester, module.value);
-              }}
+              onChange={module => addModule({year, semester, module: getModuleData(module.value, allModules)})}
             />
             <table className="table table-bordered">
               <tbody>
-                {_.map(Object.keys(this.props.semesterTimetable), (moduleCode) => {
-                  const module = this.props.modules[moduleCode] || {};
+                {_.map(Object.keys(semesterTimetable), (moduleCode) => {
+                  const module = modules[moduleCode] || {};
                   return (
                     <tr key={moduleCode}>
                       <td>{module.code}</td>
@@ -71,7 +81,7 @@ class TimetableContainer extends Component {
                         <button
                           className="btn btn-sm btn-danger"
                           onClick={() => {
-                            this.props.removeModule(this.props.semester, moduleCode);
+                            this.props.removeModule(semester, moduleCode);
                           }}
                         >
                           Remove
