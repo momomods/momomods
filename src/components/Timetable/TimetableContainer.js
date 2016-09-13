@@ -136,9 +136,9 @@ function mapStateToProps(state) {
 
   const moduledetail = {};
   timetableForYearAndSem.data.forEach(mod =>
-      moduledetail[mod.ModuleCode] = semesterModuleList.find(
+      (moduledetail[mod.ModuleCode] = semesterModuleList.find(
         m => m.code === mod.ModuleCode
-      ));
+      )));
 
   return {
     year,

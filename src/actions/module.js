@@ -40,7 +40,7 @@ export function fetchModules({ year, semester }) {
         examDate,
         timetable
       }
-    }`
+    }`;
   const url = `/graphql?query=${query}`;
   return {
     type: FETCH_MODULES,
