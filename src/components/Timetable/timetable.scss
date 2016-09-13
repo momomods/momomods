@@ -1,4 +1,7 @@
 @import '../../bootstrap/bootstrap';
+@import '../../../node_modules/react-virtualized/styles.css';
+@import '../../../node_modules/react-select/dist/react-select.css';
+@import '../../../node_modules/react-virtualized-select/styles.css';
 
 $breakpoint: map-get($grid-breakpoints, 'md');
 
