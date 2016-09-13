@@ -11,7 +11,7 @@ const AppDrawer = ({ loggedIn, email }) => {
   return (
     <Drawer title={title}>
       <Navigation>
-        <Link to="/timetable">Timetable</Link>
+        <Link to="/">Timetable</Link>
         <Link to="/module">Modules</Link>
         <Link to="/group">Groups</Link>
         {loggedIn ?
