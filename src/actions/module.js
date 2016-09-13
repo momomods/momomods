@@ -23,10 +23,25 @@ export function request(url, options = {}) {
  * @param {string} semester, "1", "2", etc.
  */
 export function fetchModules({ year, semester }) {
-  const fields = `
-    id,year,semester,code,title,description,department,credit,workload,
-    prerequisite,preclusion,examDate,timetable`;
-  const url = `/graphql?query={modules(year:"${year}",semester:"${semester}"){${fields}}}`;
+  const query = `
+    {
+      modules(year:"${year}", semester:"${semester}") {
+        id,
+        year,
+        semester,
+        code,
+        title,
+        description,
+        department,
+        credit,
+        workload,
+        prerequisite,
+        preclusion,
+        examDate,
+        timetable
+      }
+    }`
+  const url = `/graphql?query=${query}`;
   return {
     type: FETCH_MODULES,
     meta: {
