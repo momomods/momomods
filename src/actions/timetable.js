@@ -8,18 +8,7 @@ import {
   LOAD_TIMETABLE,
   SAVE_TIMETABLE,
 } from '../constants';
-
-const dummyData = {
-  ClassNo: 'J3',
-  LessonType: 'Sectional Teaching',
-  WeekText: 'Every Week',
-  DayText: 'Tuesday',
-  StartTime: '0900',
-  EndTime: '1200',
-  Venue: 'BIZ2-0413A',
-  ModuleCode: 'ACC1006',
-  ModuleTitle: 'Accounting Information Systems',
-};
+import { request } from './helpers';
 
 /**
  * Fetch a user's timetable for specified year and semester
@@ -29,6 +18,7 @@ const dummyData = {
  * @param {string} semester, "1", "2", etc.
  */
 export function fetchTimetable({ year, semester }) {
+  const url = `/api/${year}/${semester}/timetable`
   return {
     type: FETCH_TIMETABLE,
     meta: {
@@ -36,7 +26,7 @@ export function fetchTimetable({ year, semester }) {
       semester,
     },
     payload: {
-      promise: Promise.resolve({ year, semester, data: [dummyData] }),
+      promise: request(url),
     },
   };
 }

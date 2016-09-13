@@ -26,19 +26,35 @@ export default function timetable(state = defaultState, action) {
         ...state,
         isFetching: true,
       };
-    case `${FETCH_TIMETABLE}_FULFILLED`:
+    case `${FETCH_TIMETABLE}_FULFILLED`: {
+      const { timetableModules } = action.payload;
+      const ttForDisplay = timetableModules.map(tm => {
+        const { classNumber, lessonType, module } = tm;
+        const tt = JSON.parse(module.timetable);
+        const l = tt.find(t => (
+          t.ClassNo === String(classNumber)
+          && t.LessonType === lessonType))
+        return {
+          ...l,
+          ModuleCode: module.code,
+          ModuleTitle: module.title,
+          moduleDetail: module,
+        }
+      })
+      console.log(ttForDisplay);
       return {
         ...state,
         data: {
           ...state.data,
           [action.meta.year]: {
-            [action.meta.semester]: action.payload.data,
+            [action.meta.semester]: ttForDisplay,
           },
         },
         isFetching: false,
         isInitialized: true,
         lastFetched: Date.now(),
       };
+    }
     case `${FETCH_TIMETABLE}_REJECTED`:
       return {
         ...state,
@@ -65,6 +81,7 @@ export default function timetable(state = defaultState, action) {
           ...l,
           ModuleCode: module.code,
           ModuleTitle: module.title,
+          moduleDetail: module,
         }));
 
       // for each lesson type, push a class onto timetable
