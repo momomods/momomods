@@ -39,7 +39,7 @@ class TimetableContainer extends Component {
         this.props.loadTimetable({ year, semester });
       }
     }
-    if (!this.props.allModules.isInitialized) {
+    if (this.props.semesterModuleList && this.props.semesterModuleList.length === 0) {
       this.props.fetchModules({ year, semester });
     }
   }
@@ -53,9 +53,18 @@ class TimetableContainer extends Component {
   }
 
   render() {
-    const moduleSelectOptions = this.props.semesterModuleList
+    const {
+      year,
+      semester,
+      timetable,
+      timetableForYearAndSem,
+      semesterTimetable,
+      semesterModuleList,
+    } = this.props;
+
+    const moduleSelectOptions = semesterModuleList
       .filter((module) => (
-        !this.props.semesterTimetable[module.code]
+        !semesterTimetable[module.code]
       ))
       .map((module) => ({
         value: module.code,
@@ -63,19 +72,11 @@ class TimetableContainer extends Component {
       }));
     const filterOptions = createFilterOptions({ options: moduleSelectOptions });
 
-    const lessons = timetableLessonsArray(this.props.semesterTimetable);
+    const lessons = timetableLessonsArray(semesterTimetable);
 
-    const {
-      year,
-      semester,
-      timetable,
-      timetableForYearAndSem,
-      semesterTimetable,
-      allModules,
-    } = this.props;
 
     const getModuleData = (code, allMods) => (
-      allMods.data[year][semester].find(m => m.code === code));
+      allMods.find(m => m.code === code));
 
     return (
       <div >
@@ -93,7 +94,7 @@ class TimetableContainer extends Component {
               options={moduleSelectOptions}
               filterOptions={filterOptions}
               onChange={module => this.props.addModule(
-                { year, semester, module: getModuleData(module.value, allModules) })}
+                { year, semester, module: getModuleData(module.value, semesterModuleList) })}
             />
             <table className="table table-bordered">
               <tbody>
@@ -133,7 +134,6 @@ TimetableContainer.propTypes = {
   timetableForYearAndSem: PropTypes.array.isRequired,
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
-  allModules: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   timetable: PropTypes.object,
@@ -150,7 +150,7 @@ TimetableContainer.contextTypes = {
 };
 
 function mapStateToProps(state) {
-  const { timetable, selection } = state;
+  const { timetable, selection, module } = state;
   const { year, semester } = selection;
   const timetableForYearAndSem =
     (timetable.data
@@ -158,33 +158,31 @@ function mapStateToProps(state) {
     && timetable.data[year][semester]) || [];
 
   // convert to v3 compatible format first for display
-  const tt = {};
+  const semesterTimetable = {};
 
   timetableForYearAndSem.map(module => {
-    if (!tt[module.ModuleCode]) {
-      tt[module.ModuleCode] = {};
+    if (!semesterTimetable[module.ModuleCode]) {
+      semesterTimetable[module.ModuleCode] = {};
     }
-    if (!tt[module.ModuleCode][module.LessonType]) {
-      tt[module.ModuleCode][module.LessonType] = [];
+    if (!semesterTimetable[module.ModuleCode][module.LessonType]) {
+      semesterTimetable[module.ModuleCode][module.LessonType] = [];
     }
-    tt[module.ModuleCode][module.LessonType].push(module);
+    semesterTimetable[module.ModuleCode][module.LessonType].push(module);
     return module;
   });
 
-  let semesterModuleList = state.module.data
-    && state.module.data[year]
-    && state.module.data[year][semester];
-  semesterModuleList = semesterModuleList || [];
+  const semesterModuleList = (module.data
+    && module.data[year]
+    && module.data[year][semester]) || [];
 
   return {
     loggedIn: !!state.user.data.id,
-    timetableForYearAndSem,
     year,
     semester,
     semesterModuleList,
-    semesterTimetable: tt,
+    semesterTimetable,
+    timetableForYearAndSem,
     timetable,
-    allModules: state.module,
   };
 }
 
