@@ -14,9 +14,9 @@ const generateCells = () => {
   const endingIndex = (LAST_HOUR + 1) * 2; // add in two cells for day label buffer
 
   for (let i = 0; i < endingIndex - startingIndex; i++) {
-     const timeIndex = i; // translate time one cell up
-    if (timeIndex != 0 && timeIndex % 2 === 0) {
-      cells.push(<TimetableCell key={i} time={TIME[timeIndex / 2 - 1]} />);
+    const timeIndex = i; // translate time one cell up
+    if (timeIndex !== 1 && timeIndex % 2 === 0) {
+      cells.push(<TimetableCell key={i} time={TIME[(timeIndex / 2) - 1]} />);
     } else {
       cells.push(<TimetableCell key={i} />);
     }

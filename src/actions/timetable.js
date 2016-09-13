@@ -19,7 +19,7 @@ import { request } from './helpers';
  * @param {string} semester, "1", "2", etc.
  */
 export function fetchTimetable({ year, semester }) {
-  const url = `/api/${year}/${semester}/timetable`
+  const url = `/api/${year}/${semester}/timetable`;
   return {
     type: FETCH_TIMETABLE,
     meta: {
@@ -41,7 +41,7 @@ export function fetchTimetable({ year, semester }) {
  * @param {Object} timetable, timetable model, an array of lessons
  */
 export function submitTimetable({ year, semester, timetable }) {
-  const url = `/api/${year}/${semester}/timetable`
+  const url = `/api/${year}/${semester}/timetable`;
   return {
     type: SUBMIT_TIMETABLE,
     meta: {

@@ -4,7 +4,16 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { addModule, removeModule, fetchTimetable, saveTimetable, submitTimetable, loadTimetable } from '../../actions/timetable';
+import {
+  addModule,
+  removeModule,
+
+  fetchTimetable,
+  submitTimetable,
+
+  loadTimetable,
+  saveTimetable,
+} from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
@@ -39,7 +48,7 @@ class TimetableContainer extends Component {
     this.props.saveTimetable({ year, semester, timetable });
 
     if (this.props.loggedIn) {
-      this.props.submitTimetable({ year, semester, timetable })
+      this.props.submitTimetable({ year, semester, timetable });
     }
   }
 
@@ -72,7 +81,8 @@ class TimetableContainer extends Component {
     return (
       <div >
         <button
-          onClick={this.sync({ year, semester, timetable: timetableForYearAndSem })}>
+          onClick={this.sync({ year, semester, timetable: timetableForYearAndSem })}
+        >
           Sync
         </button>
         <br />

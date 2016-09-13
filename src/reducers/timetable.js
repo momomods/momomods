@@ -30,15 +30,16 @@ export default function timetable(state = defaultState, action) {
       };
     case `${LOAD_TIMETABLE}_FULFILLED`: {
       const { year, semester } = action.meta;
-      const tt = (action.payload && action.payload.timetable) || []
+      const tt = (action.payload && action.payload.timetable) || [];
       return {
         ...state,
         data: {
+          ...state.data,
           [year]: {
             [semester]: tt,
           },
         },
-      }
+      };
     }
     case `${FETCH_TIMETABLE}_FULFILLED`: {
       const { timetableModules } = action.payload;
@@ -47,14 +48,14 @@ export default function timetable(state = defaultState, action) {
         const tt = JSON.parse(module.timetable);
         const l = tt.find(t => (
           t.ClassNo === String(classNumber)
-          && t.LessonType === lessonType))
+          && t.LessonType === lessonType));
         return {
           ...l,
           ModuleCode: module.code,
           ModuleTitle: module.title,
           moduleDetail: module,
-        }
-      })
+        };
+      });
       return {
         ...state,
         data: {
@@ -113,15 +114,15 @@ export default function timetable(state = defaultState, action) {
         code,
       } = action.payload;
 
-      const newData = state.data[year][semester].filter(m => m.ModuleCode != code);
+      const newData = state.data[year][semester].filter(m => m.ModuleCode !== code);
 
       return {
         ...state,
         data: {
           [year]: {
             [semester]: newData,
-          }
-        }
+          },
+        },
       };
     }
     default:

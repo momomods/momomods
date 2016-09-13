@@ -28,7 +28,7 @@ export function resetAllState() {
 
 const defaultOptions = {
   credentials: 'include',
-}
+};
 
 export function request(url, options = {}) {
   return new Promise((resolve, reject) => {
