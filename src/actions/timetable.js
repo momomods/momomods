@@ -5,6 +5,7 @@ import {
   REMOVE_MODULE,
 
   FETCH_TIMETABLE,
+  SUBMIT_TIMETABLE,
   LOAD_TIMETABLE,
   SAVE_TIMETABLE,
 } from '../constants';
@@ -27,6 +28,34 @@ export function fetchTimetable({ year, semester }) {
     },
     payload: {
       promise: request(url),
+    },
+  };
+}
+
+/**
+ * Persists a user's timetable for specified year and semester to database.
+ * Requires auth.
+ *
+ * @param {string} year, in the format of "YYYY-YYYY"
+ * @param {string} semester, "1", "2", etc.
+ * @param {Object} timetable, timetable model, an array of lessons
+ */
+export function submitTimetable({ year, semester, timetable }) {
+  const url = `/api/${year}/${semester}/timetable`
+  return {
+    type: SUBMIT_TIMETABLE,
+    meta: {
+      year,
+      semester,
+    },
+    payload: {
+      promise: request(url, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(timetable),
+      }),
     },
   };
 }

@@ -41,7 +41,6 @@ export default function timetable(state = defaultState, action) {
           moduleDetail: module,
         }
       })
-      console.log(ttForDisplay);
       return {
         ...state,
         data: {

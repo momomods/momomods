@@ -8,6 +8,7 @@ export const LOG_USER_OUT = 'LOG_USER_OUT';
 export const ADD_MODULE = 'ADD_MODULE';
 export const REMOVE_MODULE = 'REMOVE_MODULE';
 export const FETCH_TIMETABLE = 'FETCH_TIMETABLE';
+export const SUBMIT_TIMETABLE = 'SUBMIT_TIMETABLE';
 export const LOAD_TIMETABLE = 'LOAD_TIMETABLE';
 export const SAVE_TIMETABLE = 'SAVE_TIMETABLE';
 

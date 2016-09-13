@@ -4,7 +4,7 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { addModule, removeModule, fetchTimetable } from '../../actions/timetable';
+import { addModule, removeModule, fetchTimetable, submitTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
@@ -48,6 +48,7 @@ class TimetableContainer extends Component {
       year,
       semester,
       timetable,
+      timetableForYearAndSem,
       semesterTimetable,
       modules,
       allModules,
@@ -58,6 +59,8 @@ class TimetableContainer extends Component {
 
     return (
       <div >
+        <button onClick={() => this.props.submitTimetable(
+          { year, semester, timetable: timetableForYearAndSem })}>Sync</button>
         <br />
         <Timetable lessons={lessons} timetable={timetable} />
         <br />
@@ -102,6 +105,7 @@ class TimetableContainer extends Component {
 TimetableContainer.propTypes = {
   semester: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
+  timetableForYearAndSem: PropTypes.array.isRequired,
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
   modules: PropTypes.object,
@@ -112,6 +116,7 @@ TimetableContainer.propTypes = {
   isInitialized: PropTypes.bool,
   fetchTimetable: PropTypes.func.isRequired,
   fetchModules: PropTypes.func.isRequired,
+  submitTimetable: PropTypes.func.isRequired,
 };
 
 TimetableContainer.contextTypes = {
@@ -152,6 +157,7 @@ function mapStateToProps(state) {
       )));
 
   return {
+    timetableForYearAndSem,
     year,
     semester,
     semesterModuleList,
@@ -167,6 +173,7 @@ const mapDispatch = {
   fetchModules,
   addModule,
   removeModule,
+  submitTimetable,
 };
 
 export default connect(
