@@ -13,6 +13,7 @@ $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 3px;
 
 .timetable-container {
+  overflow-x: scroll;
   position: relative;
 }
 
