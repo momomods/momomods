@@ -5,6 +5,7 @@ import s from './timetable.scss';
 import { arrangeLessonsForWeek } from '../../utils/modules';
 import TimetableBackground from './TimetableBackground';
 import TimetableDayRow from './TimetableDayRow';
+import TimeRow from './TimeRow';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
@@ -20,6 +21,7 @@ const Timetable = (props) => {
         { props.timetable.isFetching }
       </div>
       <div className="timetable">
+        <TimeRow />
         {DAYS.map((day) =>
           (<TimetableDayRow
             key={day}

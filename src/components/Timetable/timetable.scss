@@ -48,6 +48,10 @@ $timetable-cell-padding: 3px;
     width: 100%;
   }
 
+  .time-row {
+    display: flex;
+  }
+
   .timetable-day-row {
     display: flex;
   }
@@ -71,6 +75,11 @@ $timetable-cell-padding: 3px;
       border-right: $timetable-border;
       flex-direction: row;
       height: auto;
+    }
+
+    .time-row {
+      flex-direction: column;
+      width: 10em;
     }
 
     .timetable-day-row {
