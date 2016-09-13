@@ -12,8 +12,6 @@ function semesterTimetable(state = defaultSemesterTimetableState, action, entiti
   const moduleCode = action.payload.moduleCode;
   const semester = action.payload.semester;
   switch (action.type) {
-    case REMOVE_MODULE:
-      return _.omit(state, moduleCode);
     default:
       return state;
   }
@@ -22,12 +20,6 @@ function semesterTimetable(state = defaultSemesterTimetableState, action, entiti
 function timetables(state = defaultTimetableState, action, entities) {
   switch (action.type) {
     case ADD_MODULE:
-    case REMOVE_MODULE:
-      return {
-        ...state,
-        [action.payload.semester]: semesterTimetable(state[action.payload.semester], action,
-                                                      entities),
-      };
     default:
       return state;
   }

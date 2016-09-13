@@ -2,6 +2,8 @@ import localforage from 'localforage';
 
 import {
   ADD_MODULE,
+  REMOVE_MODULE,
+
   FETCH_TIMETABLE,
   LOAD_TIMETABLE,
   SAVE_TIMETABLE,
@@ -53,6 +55,24 @@ export function addModule({ year, semester, module }) {
       year,
       semester,
       module,
+    },
+  };
+}
+
+/**
+ * Remove a module from a particular year & semester's timetable
+ *
+ * @param {string} year, in the format of "YYYY-YYYY"
+ * @param {string} semester, "1", "2", etc.
+ * @param {Object} module, module model
+ */
+export function removeModule({ year, semester, code }) {
+  return {
+    type: REMOVE_MODULE,
+    payload: {
+      year,
+      semester,
+      code,
     },
   };
 }

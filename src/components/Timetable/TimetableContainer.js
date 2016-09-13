@@ -4,8 +4,7 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { removeModule } from '../../actions/timetables';
-import { addModule, fetchTimetable } from '../../actions/timetable';
+import { addModule, removeModule, fetchTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
@@ -82,7 +81,7 @@ class TimetableContainer extends Component {
                         <button
                           className="btn btn-sm btn-danger"
                           onClick={() => {
-                            this.props.removeModule(semester, moduleCode);
+                            this.props.removeModule({ year, semester, code: moduleCode });
                           }}
                         >
                           Remove

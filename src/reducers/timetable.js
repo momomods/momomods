@@ -1,14 +1,17 @@
 import {
   ADD_MODULE,
+  REMOVE_MODULE,
+
   FETCH_TIMETABLE,
 } from '../constants';
 
-// data is a list of objects with timetable data, looks like:
-// {
-//   year: '2016-2017',
-//   semester: '1',
-//   data: [{timetable_data_1}, {timetable_data_2}],
-// }
+/* data is a object mapping year, sem to timetable data
+ * {
+ *   '2016-2017': {
+ *     '1': [{timetable_data_1}, {timetable_data_2}],
+ *   },
+ * }
+ */
 const defaultState = {
   data: {},
   isFetching: false,
@@ -71,6 +74,24 @@ export default function timetable(state = defaultState, action) {
       return {
         ...state,
         data: state.data,
+      };
+    }
+    case `${REMOVE_MODULE}`: {
+      const {
+        year,
+        semester,
+        code,
+      } = action.payload;
+
+      const newData = state.data[year][semester].filter(m => m.ModuleCode != code);
+
+      return {
+        ...state,
+        data: {
+          [year]: {
+            [semester]: newData,
+          }
+        }
       };
     }
     default:
