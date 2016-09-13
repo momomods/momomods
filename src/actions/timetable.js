@@ -29,6 +29,10 @@ const dummyData = {
 export function fetchTimetable({ year, semester }) {
   return {
     type: FETCH_TIMETABLE,
+    meta: {
+      year,
+      semester,
+    },
     payload: {
       promise: Promise.resolve({ year, semester, data: [dummyData] }),
     },
@@ -43,7 +47,6 @@ export function fetchTimetable({ year, semester }) {
  * @param {Object} module, module model
  */
 export function addModule({ year, semester, module }) {
-  console.log(`add module ${module}`);
   return {
     type: ADD_MODULE,
     payload: {

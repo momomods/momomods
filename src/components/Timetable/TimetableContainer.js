@@ -121,14 +121,15 @@ TimetableContainer.contextTypes = {
 function mapStateToProps(state) {
   const { timetable, selection } = state;
   const { year, semester } = selection;
-  const timetableForYearAndSem = timetable.data.filter(
-    t => t.year === year && t.semester === semester
-  )[0] || { data: [] };
+  const timetableForYearAndSem =
+    (timetable.data
+    && timetable.data[year]
+    && timetable.data[year][semester]) || []
 
   // convert to v3 compatible format first for display
   const tt = {};
 
-  timetableForYearAndSem.data.map(module => {
+  timetableForYearAndSem.map(module => {
     if (!tt[module.ModuleCode]) {
       tt[module.ModuleCode] = {};
     }
@@ -145,7 +146,7 @@ function mapStateToProps(state) {
   semesterModuleList = semesterModuleList || [];
 
   const moduledetail = {};
-  timetableForYearAndSem.data.forEach(mod =>
+  timetableForYearAndSem.forEach(mod =>
       (moduledetail[mod.ModuleCode] = semesterModuleList.find(
         m => m.code === mod.ModuleCode
       )));

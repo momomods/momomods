@@ -10,7 +10,7 @@ import {
 //   data: [{timetable_data_1}, {timetable_data_2}],
 // }
 const defaultState = {
-  data: [],
+  data: {},
   isFetching: false,
   isInitialized: false,
   lastFetched: null,
@@ -24,9 +24,15 @@ export default function timetable(state = defaultState, action) {
         isFetching: true,
       };
     case `${FETCH_TIMETABLE}_FULFILLED`:
+      const newData = {
+        ...state.data,
+        [action.meta.year]: {
+          [action.meta.semester]: action.payload.data,
+        },
+      }
       return {
         ...state,
-        data: [action.payload, ...state.data],
+        data: newData,
         isFetching: false,
         isInitialized: true,
         lastFetched: Date.now(),
@@ -39,7 +45,13 @@ export default function timetable(state = defaultState, action) {
         error: action.payload,
       };
     case `${ADD_MODULE}`:
-      const tt = JSON.parse(action.payload.module.timetable || null);
+      let {
+        year,
+        semester,
+        module,
+      } = action.payload;
+
+      const tt = JSON.parse(module.timetable || null);
       // if selected module has no timetable, just pretend it's not added
       if (!tt) return state;
 
@@ -51,7 +63,7 @@ export default function timetable(state = defaultState, action) {
 
       // for each lesson type, push a class onto timetable
       Object.keys(lessonTypeToX).forEach(k => (
-        state.data[0].data.push(lessonTypeToX[k])
+        state.data[year][semester].push(lessonTypeToX[k])
       ))
       return {
         ...state,
