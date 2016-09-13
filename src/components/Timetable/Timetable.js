@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-// import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './timetable.scss';
 import { arrangeLessonsForWeek } from '../../utils/modules';
