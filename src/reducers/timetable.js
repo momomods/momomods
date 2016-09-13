@@ -59,7 +59,11 @@ export default function timetable(state = defaultState, action) {
       // each lesson type can have potentially many class no,
       // for simplicity we just get the first lesson of each lesson type first
       tt.forEach(l => (
-        lessonTypeToX[l.LessonType] = lessonTypeToX[l.LessonType] || l))
+        lessonTypeToX[l.LessonType] = lessonTypeToX[l.LessonType] || {
+          ...l,
+          ModuleCode: module.code,
+          ModuleTitle: module.title,
+        }))
 
       // for each lesson type, push a class onto timetable
       Object.keys(lessonTypeToX).forEach(k => (
