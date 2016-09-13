@@ -27,7 +27,6 @@ class TimetablePage extends Component {
         <div className={s.container}>
           <h1>{title}</h1>
           <TimetableContainer />
-          <p>...</p>
         </div>
       </div>
     );
