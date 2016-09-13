@@ -18,6 +18,7 @@ import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
 import s from './timetable.scss';
 import ModuleTable from './ModuleTable';
+import ModuleSearch from '../ModuleSearch/ModuleSearch'
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
@@ -62,21 +63,10 @@ class TimetableContainer extends Component {
       semesterModuleList,
     } = this.props;
 
-    const moduleSelectOptions = semesterModuleList
-      .filter((module) => (
-        !semesterTimetable[module.code]
-      ))
-      .map((module) => ({
-        value: module.code,
-        label: `${module.code} ${module.title}`,
-      }));
-    const filterOptions = createFilterOptions({ options: moduleSelectOptions });
-
     const lessons = timetableLessonsArray(semesterTimetable);
 
-
-    const getModuleData = (code, allMods) => (
-      allMods.find(m => m.code === code));
+    const moduleList = semesterModuleList.filter(
+      module => !semesterTimetable[module.code])
 
     const moduleTableModules = Object.values(
       timetableForYearAndSem.reduce(
@@ -88,11 +78,9 @@ class TimetableContainer extends Component {
 
         <div className="row">
           <div className="col-md-6 offset-md-3">
-            <VirtualizedSelect
-              options={moduleSelectOptions}
-              filterOptions={filterOptions}
-              onChange={module => this.props.addModule(
-                { year, semester, module: getModuleData(module.value, semesterModuleList) })}
+            <ModuleSearch
+              semesterModuleList={moduleList}
+              addModule={module => this.props.addModule({ year, semester, module })}
             />
 
             <ModuleTable
