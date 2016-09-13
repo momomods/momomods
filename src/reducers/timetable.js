@@ -3,6 +3,7 @@ import {
   REMOVE_MODULE,
 
   FETCH_TIMETABLE,
+  LOAD_TIMETABLE,
 } from '../constants';
 
 /* data is a object mapping year, sem to timetable data
@@ -21,11 +22,24 @@ const defaultState = {
 
 export default function timetable(state = defaultState, action) {
   switch (action.type) {
+    case `${LOAD_TIMETABLE}_PENDING`:
     case `${FETCH_TIMETABLE}_PENDING`:
       return {
         ...state,
         isFetching: true,
       };
+    case `${LOAD_TIMETABLE}_FULFILLED`: {
+      const { year, semester } = action.meta;
+      const tt = (action.payload && action.payload.timetable) || []
+      return {
+        ...state,
+        data: {
+          [year]: {
+            [semester]: tt,
+          },
+        },
+      }
+    }
     case `${FETCH_TIMETABLE}_FULFILLED`: {
       const { timetableModules } = action.payload;
       const ttForDisplay = timetableModules.map(tm => {

@@ -99,8 +99,13 @@ export function removeModule({ year, semester, code }) {
 export function loadTimetable({ year, semester }) {
   return {
     type: LOAD_TIMETABLE,
+    meta: {
+      year,
+      semester,
+    },
     payload: {
-      promise: localforage.getItem(`timetable/${year}/${semester}`).then(JSON.parse),
+      promise: localforage.getItem(`timetable/${year}/${semester}`)
+                          .then(JSON.parse),
     },
   };
 }

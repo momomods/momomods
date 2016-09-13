@@ -4,7 +4,7 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { addModule, removeModule, fetchTimetable, saveTimetable, submitTimetable } from '../../actions/timetable';
+import { addModule, removeModule, fetchTimetable, saveTimetable, submitTimetable, loadTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
@@ -24,7 +24,11 @@ class TimetableContainer extends Component {
 
 
     if (!isInitialized) {
-      this.props.fetchTimetable({ year, semester });
+      if (this.props.loggedIn) {
+        this.props.fetchTimetable({ year, semester });
+      } else {
+        this.props.loadTimetable({ year, semester });
+      }
     }
     if (!this.props.allModules.isInitialized) {
       this.props.fetchModules({ year, semester });
@@ -129,6 +133,7 @@ TimetableContainer.propTypes = {
   fetchModules: PropTypes.func.isRequired,
   submitTimetable: PropTypes.func.isRequired,
   saveTimetable: PropTypes.func.isRequired,
+  loadTimetable: PropTypes.func.isRequired,
 };
 
 TimetableContainer.contextTypes = {
@@ -188,6 +193,7 @@ const mapDispatch = {
   removeModule,
   saveTimetable,
   submitTimetable,
+  loadTimetable,
 };
 
 export default connect(
