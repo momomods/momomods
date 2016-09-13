@@ -4,7 +4,7 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { addModule, removeModule, fetchTimetable, submitTimetable } from '../../actions/timetable';
+import { addModule, removeModule, fetchTimetable, saveTimetable, submitTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
@@ -28,6 +28,14 @@ class TimetableContainer extends Component {
     }
     if (!this.props.allModules.isInitialized) {
       this.props.fetchModules({ year, semester });
+    }
+  }
+
+  sync = ({ year, semester, timetable }) => () => {
+    this.props.saveTimetable({ year, semester, timetable });
+
+    if (this.props.loggedIn) {
+      this.props.submitTimetable({ year, semester, timetable })
     }
   }
 
@@ -59,8 +67,10 @@ class TimetableContainer extends Component {
 
     return (
       <div >
-        <button onClick={() => this.props.submitTimetable(
-          { year, semester, timetable: timetableForYearAndSem })}>Sync</button>
+        <button
+          onClick={this.sync({ year, semester, timetable: timetableForYearAndSem })}>
+          Sync
+        </button>
         <br />
         <Timetable lessons={lessons} timetable={timetable} />
         <br />
@@ -103,6 +113,7 @@ class TimetableContainer extends Component {
 }
 
 TimetableContainer.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
   semester: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
   timetableForYearAndSem: PropTypes.array.isRequired,
@@ -117,6 +128,7 @@ TimetableContainer.propTypes = {
   fetchTimetable: PropTypes.func.isRequired,
   fetchModules: PropTypes.func.isRequired,
   submitTimetable: PropTypes.func.isRequired,
+  saveTimetable: PropTypes.func.isRequired,
 };
 
 TimetableContainer.contextTypes = {
@@ -157,6 +169,7 @@ function mapStateToProps(state) {
       )));
 
   return {
+    loggedIn: !!state.user.data.id,
     timetableForYearAndSem,
     year,
     semester,
@@ -173,6 +186,7 @@ const mapDispatch = {
   fetchModules,
   addModule,
   removeModule,
+  saveTimetable,
   submitTimetable,
 };
 

@@ -105,13 +105,16 @@ export function loadTimetable({ year, semester }) {
   };
 }
 
-export function saveTimetable({ year, semester, data }) {
+export function saveTimetable({ year, semester, timetable }) {
   return {
     type: SAVE_TIMETABLE,
     payload: {
       promise: localforage.setItem(
         `timetable/${year}/${semester}`,
-        JSON.stringify({ year, semester, data })),
+        JSON.stringify({
+          savedAt: Date.now(),
+          timetable,
+        })),
     },
   };
 }
