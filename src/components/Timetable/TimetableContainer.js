@@ -71,7 +71,6 @@ class TimetableContainer extends Component {
       timetable,
       timetableForYearAndSem,
       semesterTimetable,
-      modules,
       allModules,
     } = this.props;
 
@@ -99,11 +98,12 @@ class TimetableContainer extends Component {
             <table className="table table-bordered">
               <tbody>
                 {_.map(Object.keys(semesterTimetable), (moduleCode) => {
-                  const module = modules[moduleCode] || {};
+                  const module = timetableForYearAndSem.find(l => l.ModuleCode === moduleCode) || {};
+
                   return (
                     <tr key={moduleCode}>
-                      <td>{module.code}</td>
-                      <td>{module.title}</td>
+                      <td>{module.ModuleCode}</td>
+                      <td>{module.ModuleTitle}</td>
                       <td>
                         <button
                           className="btn btn-sm btn-danger"
@@ -133,7 +133,6 @@ TimetableContainer.propTypes = {
   timetableForYearAndSem: PropTypes.array.isRequired,
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
-  modules: PropTypes.object,
   allModules: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
@@ -177,12 +176,6 @@ function mapStateToProps(state) {
     && state.module.data[year][semester];
   semesterModuleList = semesterModuleList || [];
 
-  const moduledetail = {};
-  timetableForYearAndSem.forEach(mod =>
-      (moduledetail[mod.ModuleCode] = semesterModuleList.find(
-        m => m.code === mod.ModuleCode
-      )));
-
   return {
     loggedIn: !!state.user.data.id,
     timetableForYearAndSem,
@@ -191,7 +184,6 @@ function mapStateToProps(state) {
     semesterModuleList,
     semesterTimetable: tt,
     timetable,
-    modules: moduledetail,
     allModules: state.module,
   };
 }
