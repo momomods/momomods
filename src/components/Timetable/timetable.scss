@@ -69,7 +69,7 @@ $timetable-cell-padding: 3px;
     }
   }
 
-  @media (min-width: $breakpoint) {
+  @media (min-width: 0px) {
     border-left: $timetable-border;
     flex-direction: row;
     height: 1000px;
