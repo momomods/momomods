@@ -24,15 +24,14 @@ export default function timetable(state = defaultState, action) {
         isFetching: true,
       };
     case `${FETCH_TIMETABLE}_FULFILLED`:
-      const newData = {
-        ...state.data,
-        [action.meta.year]: {
-          [action.meta.semester]: action.payload.data,
-        },
-      }
       return {
         ...state,
-        data: newData,
+        data: {
+          ...state.data,
+          [action.meta.year]: {
+            [action.meta.semester]: action.payload.data,
+          },
+        },
         isFetching: false,
         isInitialized: true,
         lastFetched: Date.now(),
@@ -44,8 +43,8 @@ export default function timetable(state = defaultState, action) {
         isInitialized: false,
         error: action.payload,
       };
-    case `${ADD_MODULE}`:
-      let {
+    case `${ADD_MODULE}`: {
+      const {
         year,
         semester,
         module,
@@ -55,7 +54,7 @@ export default function timetable(state = defaultState, action) {
       // if selected module has no timetable, just pretend it's not added
       if (!tt) return state;
 
-      const lessonTypeToX = {}
+      const lessonTypeToX = {};
       // each lesson type can have potentially many class no,
       // for simplicity we just get the first lesson of each lesson type first
       tt.forEach(l => (
@@ -63,18 +62,17 @@ export default function timetable(state = defaultState, action) {
           ...l,
           ModuleCode: module.code,
           ModuleTitle: module.title,
-        }))
+        }));
 
       // for each lesson type, push a class onto timetable
       Object.keys(lessonTypeToX).forEach(k => (
         state.data[year][semester].push(lessonTypeToX[k])
-      ))
+      ));
       return {
         ...state,
         data: state.data,
-      }
-
-      return state;
+      };
+    }
     default:
       return state;
   }

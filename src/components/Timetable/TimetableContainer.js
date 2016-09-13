@@ -46,7 +46,6 @@ class TimetableContainer extends Component {
     const lessons = timetableLessonsArray(this.props.semesterTimetable);
 
     const {
-      addModule,
       year,
       semester,
       timetable,
@@ -55,7 +54,8 @@ class TimetableContainer extends Component {
       allModules,
     } = this.props;
 
-    const getModuleData = (code, allModules) => allModules.data[year][semester].find(m => m.code == code);
+    const getModuleData = (code, allMods) => (
+      allMods.data[year][semester].find(m => m.code === code));
 
     return (
       <div >
@@ -67,7 +67,8 @@ class TimetableContainer extends Component {
             <VirtualizedSelect
               options={moduleSelectOptions}
               filterOptions={filterOptions}
-              onChange={module => addModule({year, semester, module: getModuleData(module.value, allModules)})}
+              onChange={module => this.props.addModule(
+                { year, semester, module: getModuleData(module.value, allModules) })}
             />
             <table className="table table-bordered">
               <tbody>
@@ -124,7 +125,7 @@ function mapStateToProps(state) {
   const timetableForYearAndSem =
     (timetable.data
     && timetable.data[year]
-    && timetable.data[year][semester]) || []
+    && timetable.data[year][semester]) || [];
 
   // convert to v3 compatible format first for display
   const tt = {};

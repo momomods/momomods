@@ -12,20 +12,6 @@ function semesterTimetable(state = defaultSemesterTimetableState, action, entiti
   const moduleCode = action.payload.moduleCode;
   const semester = action.payload.semester;
   switch (action.type) {
-    // case ADD_MODULE:
-    //   return (() => {
-    //     const module = entities.moduleBank.modules[moduleCode];
-    //     const lessons = _.find(module.History, (semData) => (
-    //       semData.Semester === semester
-    //     )).Timetable;
-    //     const lessonsInjectModuleCode = lessons.map((lesson) => (
-    //       { ModuleCode: moduleCode, ...lesson }
-    //     ));
-    //     return {
-    //       ...state,
-    //       [moduleCode]: randomLessonConfiguration(lessonsInjectModuleCode),
-    //     };
-    //   })();
     case REMOVE_MODULE:
       return _.omit(state, moduleCode);
     default:
