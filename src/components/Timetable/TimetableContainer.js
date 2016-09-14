@@ -1,9 +1,9 @@
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import FABButton from 'react-mdl/lib/FABButton';
-import Icon from 'react-mdl/lib/Icon';
-import Button from 'react-mdl/lib/Button';
+import { connect } from 'react-redux';
 import {
   addModule,
   removeModule,
@@ -93,17 +93,14 @@ class TimetableContainer extends Component {
               modules={moduleTableModules}
               removeModule={(code) => this.props.removeModule({ year, semester, code })}
             />
-            <Button
-              raised
-              ripple
+            <RaisedButton
+              label="Sync"
               onClick={this.sync({ year, semester, timetable: timetableForYearAndSem })}
-            >
-              Sync
-            </Button>
+            />
 
-            <FABButton colored ripple className="fab" onClick={this.showSearch}>
-              <Icon name="add" />
-            </FABButton>
+            <FloatingActionButton onTouchTap={this.showSearch} className="fab">
+              <ContentAdd />
+            </FloatingActionButton>
 
             <SearchOverlay
               shown={this.state.showSearch}
