@@ -68,7 +68,6 @@ class App extends Component {
     const store = this.props.context.store;
     return (
       <Provider store={store}>
-        <div>
           <Layout fixedHeader>
             <Header title="mods+">
               <Navigation>
@@ -85,7 +84,6 @@ class App extends Component {
             <Feedback />
             <Footer />
           </Layout>
-        </div>
       </Provider>
     );
   }

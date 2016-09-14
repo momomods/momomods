@@ -23,9 +23,8 @@ class TimetablePage extends Component {
   render() {
     this.context.setTitle(title);
     return (
-      <div className={s.root}>
+      <div>
         <div className={s.container}>
-          <h1>{title}</h1>
           <TimetableContainer />
         </div>
       </div>
