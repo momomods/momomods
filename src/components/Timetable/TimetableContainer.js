@@ -1,7 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import VirtualizedSelect from 'react-virtualized-select';
-import createFilterOptions from 'react-select-fast-filter-options';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import FABButton from 'react-mdl/lib/FABButton';
 import Icon from 'react-mdl/lib/Icon';
@@ -21,12 +19,15 @@ import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
 import s from './timetable.scss';
 import ModuleTable from './ModuleTable';
-import ModuleSearch from '../ModuleSearch/ModuleSearch'
 import SearchOverlay from '../../components/SearchOverlay/';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
 class TimetableContainer extends Component {
+  state = {
+    showSearch: false,
+  }
+
   componentDidMount() {
     const {
       year,
@@ -49,10 +50,6 @@ class TimetableContainer extends Component {
     }
   }
 
-  state = {
-    showSearch: false,
-  }
-
   showSearch= () => this.setState({ showSearch: true })
   hideSearch= () => this.setState({ showSearch: false })
 
@@ -65,7 +62,7 @@ class TimetableContainer extends Component {
   }
 
   addModuleAndHideSearch = (module) => {
-    let { year, semester } = this.props;
+    const { year, semester } = this.props;
     this.props.addModule({ year, semester, module });
     this.hideSearch();
   }
@@ -105,7 +102,7 @@ class TimetableContainer extends Component {
             </Button>
 
             <FABButton colored ripple className="fab" onClick={this.showSearch}>
-                <Icon name="add" />
+              <Icon name="add" />
             </FABButton>
 
             <SearchOverlay

@@ -8,7 +8,6 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import Textfield from 'react-mdl/lib/Textfield';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import { Provider } from 'react-redux';
 
@@ -66,16 +65,16 @@ class App extends Component {
 
     const store = this.props.context.store;
     return (
-        <Provider store={store}>
-            <MuiThemeProvider>
-            <div>
-                <Header title="mods+" />
-                { this.props.children }
-                <Feedback />
-                <Footer />
-            </div>
-            </MuiThemeProvider>
-        </Provider>
+      <Provider store={store}>
+        <MuiThemeProvider>
+          <div>
+            <Header title="mods+" />
+            { this.props.children }
+            <Feedback />
+            <Footer />
+          </div>
+        </MuiThemeProvider>
+      </Provider>
     );
   }
 
