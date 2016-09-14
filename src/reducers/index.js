@@ -8,7 +8,6 @@ import user from './user';
 import requests from './requests';
 import entities from './entities/index';
 import selection from './selection';
-import timetables from './timetables';
 
 // export default combineReducers({
 //   group,
@@ -18,7 +17,6 @@ import timetables from './timetables';
 //   user,
 //   entities,
 //   requests,
-//   timetables
 // });
 
 export default function (state = {}, action) {
@@ -31,7 +29,6 @@ export default function (state = {}, action) {
     entities: entities(state.entities, action),
     requests: requests(state.requests, action),
     selection: selection(state.selection, action),
-    timetables: timetables(state.timetables, action, state.entities),
     // routing: routerReducer(state.routing, action),
   };
 }

@@ -13,6 +13,7 @@ $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 3px;
 
 .timetable-container {
+  overflow-x: scroll;
   position: relative;
 }
 
@@ -40,7 +41,10 @@ $timetable-cell-padding: 3px;
     }
 
     .timetable-cell-alt {
-      background-color: #f1f1f1;
+      background-color: #E4F1FE;
+    }
+
+    .time-label-cell {
     }
   }
 
@@ -69,8 +73,8 @@ $timetable-cell-padding: 3px;
     }
   }
 
-  @media (min-width: $breakpoint) {
-    border-left: $timetable-border;
+  @media (min-width: 0px) {
+    border-right: $timetable-border;
     flex-direction: row;
     height: 1000px;
 
@@ -81,8 +85,10 @@ $timetable-cell-padding: 3px;
     }
 
     .time-row {
+      border-right: $timetable-border;
       flex-direction: column;
       width: 10em;
+      padding-right: 5px;
     }
 
     .timetable-day-row {

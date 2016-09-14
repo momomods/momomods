@@ -4,16 +4,7 @@ import {
   FETCH_NUS_MODS_DETAIL,
   FETCH_NUS_MODS_MODULES_LIST,
 } from '../constants';
-import fetch from '../core/fetch';
-
-export function request(url, options = {}) {
-  return new Promise((resolve, reject) => {
-    fetch(url, options)
-      .then(response => response.json())
-      .then(response => resolve(response))
-      .catch(reject);
-  });
-}
+import { request } from './helpers';
 
 /**
  * Fetch all modules for specified year and semester

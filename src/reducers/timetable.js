@@ -1,13 +1,20 @@
-import { FETCH_TIMETABLE } from '../constants';
+import {
+  ADD_MODULE,
+  REMOVE_MODULE,
 
-// data is a list of objects with timetable data, looks like:
-// {
-//   year: '2016-2017',
-//   semester: '1',
-//   data: [{timetable_data_1}, {timetable_data_2}],
-// }
+  FETCH_TIMETABLE,
+  LOAD_TIMETABLE,
+} from '../constants';
+
+/* data is a object mapping year, sem to timetable data
+ * {
+ *   '2016-2017': {
+ *     '1': [{timetable_data_1}, {timetable_data_2}],
+ *   },
+ * }
+ */
 const defaultState = {
-  data: [],
+  data: {},
   isFetching: false,
   isInitialized: false,
   lastFetched: null,
@@ -15,19 +22,53 @@ const defaultState = {
 
 export default function timetable(state = defaultState, action) {
   switch (action.type) {
+    case `${LOAD_TIMETABLE}_PENDING`:
     case `${FETCH_TIMETABLE}_PENDING`:
       return {
         ...state,
         isFetching: true,
       };
-    case `${FETCH_TIMETABLE}_FULFILLED`:
+    case `${LOAD_TIMETABLE}_FULFILLED`: {
+      const { year, semester } = action.meta;
+      const tt = (action.payload && action.payload.timetable) || [];
       return {
         ...state,
-        data: [action.payload, ...state.data],
+        data: {
+          ...state.data,
+          [year]: {
+            [semester]: tt,
+          },
+        },
+      };
+    }
+    case `${FETCH_TIMETABLE}_FULFILLED`: {
+      const { timetableModules } = action.payload;
+      const ttForDisplay = timetableModules.map(tm => {
+        const { classNumber, lessonType, module } = tm;
+        const tt = JSON.parse(module.timetable);
+        const l = tt.find(t => (
+          t.ClassNo === String(classNumber)
+          && t.LessonType === lessonType));
+        return {
+          ...l,
+          ModuleCode: module.code,
+          ModuleTitle: module.title,
+          moduleDetail: module,
+        };
+      });
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.meta.year]: {
+            [action.meta.semester]: ttForDisplay,
+          },
+        },
         isFetching: false,
         isInitialized: true,
         lastFetched: Date.now(),
       };
+    }
     case `${FETCH_TIMETABLE}_REJECTED`:
       return {
         ...state,
@@ -35,6 +76,55 @@ export default function timetable(state = defaultState, action) {
         isInitialized: false,
         error: action.payload,
       };
+    case `${ADD_MODULE}`: {
+      const {
+        year,
+        semester,
+        module,
+      } = action.payload;
+
+      const tt = JSON.parse(module.timetable || null);
+      // if selected module has no timetable, just pretend it's not added
+      if (!tt) return state;
+
+      const lessonTypeToX = {};
+      // each lesson type can have potentially many class no,
+      // for simplicity we just get the first lesson of each lesson type first
+      tt.forEach(l => (
+        lessonTypeToX[l.LessonType] = lessonTypeToX[l.LessonType] || {
+          ...l,
+          ModuleCode: module.code,
+          ModuleTitle: module.title,
+          moduleDetail: module,
+        }));
+
+      // for each lesson type, push a class onto timetable
+      Object.keys(lessonTypeToX).forEach(k => (
+        state.data[year][semester].push(lessonTypeToX[k])
+      ));
+      return {
+        ...state,
+        data: state.data,
+      };
+    }
+    case `${REMOVE_MODULE}`: {
+      const {
+        year,
+        semester,
+        code,
+      } = action.payload;
+
+      const newData = state.data[year][semester].filter(m => m.ModuleCode !== code);
+
+      return {
+        ...state,
+        data: {
+          [year]: {
+            [semester]: newData,
+          },
+        },
+      };
+    }
     default:
       return state;
   }

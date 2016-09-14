@@ -2,14 +2,24 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
-import _ from 'lodash';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-import { addModule, removeModule } from '../../actions/timetables';
-import { fetchTimetable } from '../../actions/timetable';
+import Button from 'react-mdl/lib/Button';
+import {
+  addModule,
+  removeModule,
+
+  fetchTimetable,
+  submitTimetable,
+
+  loadTimetable,
+  saveTimetable,
+} from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
 import s from './timetable.scss';
+import ModuleTable from './ModuleTable';
+import ModuleSearch from '../ModuleSearch/ModuleSearch'
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
@@ -25,63 +35,67 @@ class TimetableContainer extends Component {
 
 
     if (!isInitialized) {
-      this.props.fetchTimetable({ year, semester });
+      if (this.props.loggedIn) {
+        this.props.fetchTimetable({ year, semester });
+      } else {
+        this.props.loadTimetable({ year, semester });
+      }
     }
-    if (!this.props.allModules.isInitialized) {
+    if (this.props.semesterModuleList && this.props.semesterModuleList.length === 0) {
       this.props.fetchModules({ year, semester });
     }
   }
 
-  render() {
-    const moduleSelectOptions = this.props.semesterModuleList
-      .filter((module) => (
-        !this.props.semesterTimetable[module.code]
-      ))
-      .map((module) => ({
-        value: module.code,
-        label: `${module.code} ${module.title}`,
-      }));
-    const filterOptions = createFilterOptions({ options: moduleSelectOptions });
+  sync = ({ year, semester, timetable }) => () => {
+    this.props.saveTimetable({ year, semester, timetable });
 
-    const lessons = timetableLessonsArray(this.props.semesterTimetable);
+    if (this.props.loggedIn) {
+      this.props.submitTimetable({ year, semester, timetable });
+    }
+  }
+
+  render() {
+    const {
+      year,
+      semester,
+      timetable,
+      timetableForYearAndSem,
+      semesterTimetable,
+      semesterModuleList,
+    } = this.props;
+
+    const lessons = timetableLessonsArray(semesterTimetable);
+
+    const moduleList = semesterModuleList.filter(
+      module => !semesterTimetable[module.code])
+
+    const moduleTableModules = Object.values(
+      timetableForYearAndSem.reduce(
+        (p, c) => ({ ...p, [c.ModuleCode]: c }), {}));
 
     return (
       <div >
-        <br />
-        <Timetable lessons={lessons} timetable={this.props.timetable} />
-        <br />
+        <Timetable lessons={lessons} timetable={timetable} />
+
         <div className="row">
           <div className="col-md-6 offset-md-3">
-            <VirtualizedSelect
-              options={moduleSelectOptions}
-              filterOptions={filterOptions}
-              onChange={(module) => {
-                this.props.addModule(this.props.semester, module.value);
-              }}
+            <ModuleSearch
+              semesterModuleList={moduleList}
+              addModule={module => this.props.addModule({ year, semester, module })}
             />
-            <table className="table table-bordered">
-              <tbody>
-                {_.map(Object.keys(this.props.semesterTimetable), (moduleCode) => {
-                  const module = this.props.modules[moduleCode] || {};
-                  return (
-                    <tr key={moduleCode}>
-                      <td>{module.code}</td>
-                      <td>{module.title}</td>
-                      <td>
-                        <button
-                          className="btn btn-sm btn-danger"
-                          onClick={() => {
-                            this.props.removeModule(this.props.semester, moduleCode);
-                          }}
-                        >
-                          Remove
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+
+            <ModuleTable
+              modules={moduleTableModules}
+              removeModule={(code) => this.props.removeModule({ year, semester, code })}
+            />
+
+            <Button
+              raised
+              ripple
+              onClick={this.sync({ year, semester, timetable: timetableForYearAndSem })}
+            >
+              Sync
+            </Button>
           </div>
         </div>
       </div>
@@ -90,18 +104,21 @@ class TimetableContainer extends Component {
 }
 
 TimetableContainer.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
   semester: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
+  timetableForYearAndSem: PropTypes.array.isRequired,
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
-  modules: PropTypes.object,
-  allModules: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   timetable: PropTypes.object,
   isInitialized: PropTypes.bool,
   fetchTimetable: PropTypes.func.isRequired,
   fetchModules: PropTypes.func.isRequired,
+  submitTimetable: PropTypes.func.isRequired,
+  saveTimetable: PropTypes.func.isRequired,
+  loadTimetable: PropTypes.func.isRequired,
 };
 
 TimetableContainer.contextTypes = {
@@ -109,45 +126,39 @@ TimetableContainer.contextTypes = {
 };
 
 function mapStateToProps(state) {
-  const { timetable, selection } = state;
+  const { timetable, selection, module } = state;
   const { year, semester } = selection;
-  const timetableForYearAndSem = timetable.data.filter(
-    t => t.year === year && t.semester === semester
-  )[0] || { data: [] };
+  const timetableForYearAndSem =
+    (timetable.data
+    && timetable.data[year]
+    && timetable.data[year][semester]) || [];
 
   // convert to v3 compatible format first for display
-  const tt = {};
+  const semesterTimetable = {};
 
-  timetableForYearAndSem.data.map(module => {
-    if (!tt[module.ModuleCode]) {
-      tt[module.ModuleCode] = {};
+  timetableForYearAndSem.map(mod => {
+    if (!semesterTimetable[mod.ModuleCode]) {
+      semesterTimetable[mod.ModuleCode] = {};
     }
-    if (!tt[module.ModuleCode][module.LessonType]) {
-      tt[module.ModuleCode][module.LessonType] = [];
+    if (!semesterTimetable[mod.ModuleCode][mod.LessonType]) {
+      semesterTimetable[mod.ModuleCode][mod.LessonType] = [];
     }
-    tt[module.ModuleCode][module.LessonType].push(module);
-    return module;
+    semesterTimetable[mod.ModuleCode][mod.LessonType].push(mod);
+    return mod;
   });
 
-  let semesterModuleList = state.module.data
-    && state.module.data[year]
-    && state.module.data[year][semester];
-  semesterModuleList = semesterModuleList || [];
-
-  const moduledetail = {};
-  timetableForYearAndSem.data.forEach(mod =>
-      (moduledetail[mod.ModuleCode] = semesterModuleList.find(
-        m => m.code === mod.ModuleCode
-      )));
+  const semesterModuleList = (module.data
+    && module.data[year]
+    && module.data[year][semester]) || [];
 
   return {
+    loggedIn: !!state.user.data.id,
     year,
     semester,
     semesterModuleList,
-    semesterTimetable: tt,
+    semesterTimetable,
+    timetableForYearAndSem,
     timetable,
-    modules: moduledetail,
-    allModules: state.module,
   };
 }
 
@@ -156,6 +167,9 @@ const mapDispatch = {
   fetchModules,
   addModule,
   removeModule,
+  saveTimetable,
+  submitTimetable,
+  loadTimetable,
 };
 
 export default connect(

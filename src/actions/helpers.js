@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import fetch from '../core/fetch';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
@@ -23,4 +24,20 @@ export function resetAllState() {
   return {
     type: RESET_ALL_STATE,
   };
+}
+
+const defaultOptions = {
+  credentials: 'include',
+};
+
+export function request(url, options = {}) {
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      ...defaultOptions,
+      ...options,
+    })
+      .then(response => response.json())
+      .then(response => resolve(response))
+      .catch(reject);
+  });
 }

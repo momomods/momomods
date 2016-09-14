@@ -108,9 +108,11 @@ app.get('/logout', (req, res) => {
 
 function updateTimetable(timetableId, year, semester, allNewMods) {
   for (let i = 0; i < allNewMods.length; ++i) {
-    const code = allNewMods[i].module_code;
-    const lessonType = allNewMods[i].lesson_type;
-    const classNumber = allNewMods[i].class_number;
+    // the frontend uses nusmods naming convention for displaying
+    // we reuse it here for simplicity, this might change in the future
+    const code = allNewMods[i].ModuleCode;
+    const lessonType = allNewMods[i].LessonType;
+    const classNumber = allNewMods[i].ClassNo;
     // Find Module Id
     ModuleModel.find({
       where: {
@@ -187,12 +189,12 @@ app.route('/api/:year/:semester/timetable')
         semester,
       }).then((newTimetable) => {
         updateTimetable(newTimetable.dataValues.id, year, semester, allNewMods);
-        res.sendStatus(201);
+        res.json({});
       });
     } else {
       console.log(myTimetable.dataValues.id); // eslint-disable-line no-console
       updateTimetable(myTimetable.dataValues.id, year, semester, allNewMods);
-      res.sendStatus(201);
+      res.json({});
     }
   });
 });
