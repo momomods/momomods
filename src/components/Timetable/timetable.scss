@@ -56,7 +56,12 @@ $timetable-cell-padding: 3px;
   }
 
   .time-row {
+    background-color: #fff;
     display: flex;
+
+    .time-label {
+      margin-top: -0.75em;
+    }
   }
 
   .timetable-day-row {
@@ -74,7 +79,6 @@ $timetable-cell-padding: 3px;
   }
 
   @media (min-width: 0px) {
-    border-right: $timetable-border;
     flex-direction: row;
     height: 1000px;
 
