@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import FABButton from 'react-mdl/lib/FABButton';
+import Icon from 'react-mdl/lib/Icon';
 import Button from 'react-mdl/lib/Button';
 import {
   addModule,
@@ -20,6 +22,7 @@ import Timetable from './Timetable';
 import s from './timetable.scss';
 import ModuleTable from './ModuleTable';
 import ModuleSearch from '../ModuleSearch/ModuleSearch'
+import SearchOverlay from '../../components/SearchOverlay/';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
@@ -45,6 +48,13 @@ class TimetableContainer extends Component {
       this.props.fetchModules({ year, semester });
     }
   }
+
+  state = {
+    showSearch: false,
+  }
+
+  showSearch= () => this.setState({ showSearch: true })
+  hideSearch= () => this.setState({ showSearch: false })
 
   sync = ({ year, semester, timetable }) => () => {
     this.props.saveTimetable({ year, semester, timetable });
@@ -76,12 +86,6 @@ class TimetableContainer extends Component {
 
         <div className="row">
           <div className="col-md-6 offset-md-3">
-            <ModuleSearch
-              semesterModuleList={semesterModuleList}
-              semesterTimetable={semesterTimetable}
-              addModule={module => this.props.addModule({ year, semester, module })}
-            />
-
             <Button
               raised
               ripple
@@ -89,6 +93,18 @@ class TimetableContainer extends Component {
             >
               Sync
             </Button>
+
+            <FABButton colored ripple className="fab" onClick={this.showSearch}>
+                <Icon name="add" />
+            </FABButton>
+
+            <SearchOverlay
+              shown={this.state.showSearch}
+              hideSearch={this.hideSearch}
+              semesterModuleList={semesterModuleList}
+              semesterTimetable={semesterTimetable}
+              addModule={module => this.props.addModule({ year, semester, module })}
+            />
           </div>
         </div>
       </div>
