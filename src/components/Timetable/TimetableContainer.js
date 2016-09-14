@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import VirtualizedSelect from 'react-virtualized-select';
-import createFilterOptions from 'react-select-fast-filter-options';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import FABButton from 'react-mdl/lib/FABButton';
+import Icon from 'react-mdl/lib/Icon';
 import Button from 'react-mdl/lib/Button';
 import {
   addModule,
@@ -19,11 +19,15 @@ import { timetableLessonsArray } from '../../utils/modules';
 import Timetable from './Timetable';
 import s from './timetable.scss';
 import ModuleTable from './ModuleTable';
-import ModuleSearch from '../ModuleSearch/ModuleSearch'
+import SearchOverlay from '../../components/SearchOverlay/';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
 class TimetableContainer extends Component {
+  state = {
+    showSearch: false,
+  }
+
   componentDidMount() {
     const {
       year,
@@ -46,12 +50,21 @@ class TimetableContainer extends Component {
     }
   }
 
+  showSearch= () => this.setState({ showSearch: true })
+  hideSearch= () => this.setState({ showSearch: false })
+
   sync = ({ year, semester, timetable }) => () => {
     this.props.saveTimetable({ year, semester, timetable });
 
     if (this.props.loggedIn) {
       this.props.submitTimetable({ year, semester, timetable });
     }
+  }
+
+  addModuleAndHideSearch = (module) => {
+    const { year, semester } = this.props;
+    this.props.addModule({ year, semester, module });
+    this.hideSearch();
   }
 
   render() {
@@ -66,9 +79,6 @@ class TimetableContainer extends Component {
 
     const lessons = timetableLessonsArray(semesterTimetable);
 
-    const moduleList = semesterModuleList.filter(
-      module => !semesterTimetable[module.code])
-
     const moduleTableModules = Object.values(
       timetableForYearAndSem.reduce(
         (p, c) => ({ ...p, [c.ModuleCode]: c }), {}));
@@ -79,16 +89,10 @@ class TimetableContainer extends Component {
 
         <div className="row">
           <div className="col-md-6 offset-md-3">
-            <ModuleSearch
-              semesterModuleList={moduleList}
-              addModule={module => this.props.addModule({ year, semester, module })}
-            />
-
             <ModuleTable
               modules={moduleTableModules}
               removeModule={(code) => this.props.removeModule({ year, semester, code })}
             />
-
             <Button
               raised
               ripple
@@ -96,6 +100,18 @@ class TimetableContainer extends Component {
             >
               Sync
             </Button>
+
+            <FABButton colored ripple className="fab" onClick={this.showSearch}>
+              <Icon name="add" />
+            </FABButton>
+
+            <SearchOverlay
+              shown={this.state.showSearch}
+              hideSearch={this.hideSearch}
+              semesterModuleList={semesterModuleList}
+              semesterTimetable={semesterTimetable}
+              addModule={module => this.addModuleAndHideSearch(module)}
+            />
           </div>
         </div>
       </div>

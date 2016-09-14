@@ -39,6 +39,8 @@ export default function timetable(state = defaultState, action) {
             [semester]: tt,
           },
         },
+        isFetching: false,
+        isInitialized: true,
       };
     }
     case `${FETCH_TIMETABLE}_FULFILLED`: {

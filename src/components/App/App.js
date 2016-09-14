@@ -8,7 +8,6 @@
  */
 
 import React, { Component, PropTypes } from 'react';
-import Textfield from 'react-mdl/lib/Textfield';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import { Provider } from 'react-redux';
 

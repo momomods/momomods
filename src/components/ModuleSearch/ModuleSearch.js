@@ -3,14 +3,16 @@ import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 
 class ModuleSearch extends Component {
-  shouldComponentUpdate = (nextProps) => {
-    return nextProps.semesterModuleList !== this.props.semesterModuleList;
-  }
+  shouldComponentUpdate = (nextProps) => (
+    (nextProps.semesterModuleList !== this.props.semesterModuleList) ||
+    (nextProps.semesterTimetable !== this.props.semesterTimetable))
 
-  render = () =>  {
-    const { semesterModuleList } = this.props;
+
+  render = () => {
+    const { semesterModuleList, semesterTimetable } = this.props;
 
     const moduleSelectOptions = semesterModuleList
+      .filter(module => !semesterTimetable[module.code])
       .map((module) => ({
         value: module.code,
         label: `${module.code} ${module.title}`,
@@ -25,12 +27,13 @@ class ModuleSearch extends Component {
         filterOptions={filterOptions}
         onChange={module => this.props.addModule(getModuleData(module.value))}
       />
-    )
+    );
   }
 }
 
 ModuleSearch.propTypes = {
   semesterModuleList: PropTypes.array.isRequired,
+  semesterTimetable: PropTypes.object.isRequired,
   addModule: PropTypes.func.isRequired,
 };
 
