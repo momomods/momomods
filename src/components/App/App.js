@@ -64,16 +64,17 @@ class App extends Component {
 
     const store = this.props.context.store;
     return (
-        <Provider store={store}>
-            <MuiThemeProvider>
-            <div>
-                <Header title="mods+" />
-                <div className="page-container">
-                    <div>{ this.props.children }</div>
-                </div>
+      <Provider store={store}>
+        <MuiThemeProvider>
+          <div>
+            <Header title="mods+" />
+            <div className="page-container">
+              { this.props.children }
             </div>
-            </MuiThemeProvider>
-        </Provider>
+            <Footer />
+          </div>
+        </MuiThemeProvider>
+      </Provider>
     );
   }
 

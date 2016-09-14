@@ -6,19 +6,15 @@ import Link from '../Link';
 import s from './Navigation.css';
 
 class Navigation extends Component {
-
-    render() {
-        return (
-            <Tabs>
-                <Tab label="Main" containerElement={<Link to="/" className="tab"/>}>
-                </Tab>
-                <Tab label="Mods" containerElement={<Link to="/module" style={{'background-color': '#00bcd4'}}/>}>
-                </Tab>
-                <Tab label="Meet" containerElement={<Link to="/group" style={{'background-color': '#00bcd4'}}/>}>
-                </Tab>
-            </Tabs>
-        );
-    }
+  render() {
+    return (
+      <Tabs>
+        <Tab label="Main" containerElement={ <Link to="/" className="tab"/> } />
+        <Tab label="Mods" containerElement={ <Link to="/module" style={{'background-color': '#00bcd4' }} />} />
+        <Tab label="Meet" containerElement={ <Link to="/group" style={{'background-color': '#00bcd4' }}/>} />
+      </Tabs>
+    );
+  }
 }
 
 export default withStyles(s)(Navigation);
