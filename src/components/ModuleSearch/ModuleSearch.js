@@ -9,7 +9,7 @@ class ModuleSearch extends Component {
   }
 
   render = () =>  {
-    const { semesterModuleList } = this.props;
+    const { semesterModuleList, semesterTimetable } = this.props;
 
     const moduleSelectOptions = semesterModuleList
       .filter(module => !semesterTimetable[module.code])
