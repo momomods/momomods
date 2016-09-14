@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import VirtualizedSelect from 'react-virtualized-select';
 import createFilterOptions from 'react-select-fast-filter-options';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import Button from 'react-mdl/lib/Button';
 import {
   addModule,
   removeModule,
@@ -88,11 +89,13 @@ class TimetableContainer extends Component {
               removeModule={(code) => this.props.removeModule({ year, semester, code })}
             />
 
-            <button
+            <Button
+              raised
+              ripple
               onClick={this.sync({ year, semester, timetable: timetableForYearAndSem })}
             >
               Sync
-            </button>
+            </Button>
           </div>
         </div>
       </div>
