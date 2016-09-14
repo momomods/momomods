@@ -92,6 +92,10 @@ class TimetableContainer extends Component {
 
         <div className="row">
           <div className="col-md-6 offset-md-3">
+            <ModuleTable
+              modules={moduleTableModules}
+              removeModule={(code) => this.props.removeModule({ year, semester, code })}
+            />
             <Button
               raised
               ripple
