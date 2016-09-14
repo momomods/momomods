@@ -28,61 +28,57 @@ class Module extends Component {
     setTitle: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-      super(props);
-
-      this.state = {
-          modules: [
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              },
-              {
-                  code: 'CS101',
-                  name: 'Programming Something'
-              }
-          ]
-      };
+  state = {
+    modules: [
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      },
+      {
+        code: 'CS101',
+        name: 'Programming Something'
+      }
+    ]
   }
 
   componentDidMount() {
@@ -93,7 +89,7 @@ class Module extends Component {
     this.context.setTitle(title);
 
     return (
-        <ModuleList modules={this.state.modules}/>
+      <ModuleList modules={this.state.modules}/>
     );
   }
 }
