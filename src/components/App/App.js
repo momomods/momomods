@@ -16,7 +16,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import s from './App.css';
 import Header from '../Header';
-import Feedback from '../Feedback';
 import Footer from '../Footer';
 
 class App extends Component {
@@ -70,9 +69,9 @@ class App extends Component {
             <MuiThemeProvider>
             <div>
                 <Header title="mods+" />
-                { this.props.children }
-                <Feedback />
-                <Footer />
+                <div className="page-container">
+                    <div>{ this.props.children }</div>
+                </div>
             </div>
             </MuiThemeProvider>
         </Provider>

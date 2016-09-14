@@ -60,10 +60,6 @@ class Link extends Component { // eslint-disable-line react/prefer-stateless-fun
         });
       }
     }
-
-    // major hack to get the drawer to hide after clicking on a drawer link
-    document.getElementsByClassName('mdl-layout__drawer')[0].classList.remove('is-visible');
-    document.getElementsByClassName('mdl-layout__obfuscator')[0].classList.remove('is-visible');
   };
 
   render() {
