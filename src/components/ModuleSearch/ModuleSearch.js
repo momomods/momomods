@@ -4,13 +4,15 @@ import createFilterOptions from 'react-select-fast-filter-options';
 
 class ModuleSearch extends Component {
   shouldComponentUpdate = (nextProps) => {
-    return nextProps.semesterModuleList !== this.props.semesterModuleList;
+    return (nextProps.semesterModuleList !== this.props.semesterModuleList) ||
+           (nextProps.semesterTimetable !== this.props.semesterTimetable);
   }
 
   render = () =>  {
     const { semesterModuleList } = this.props;
 
     const moduleSelectOptions = semesterModuleList
+      .filter(module => !semesterTimetable[module.code])
       .map((module) => ({
         value: module.code,
         label: `${module.code} ${module.title}`,
@@ -31,6 +33,7 @@ class ModuleSearch extends Component {
 
 ModuleSearch.propTypes = {
   semesterModuleList: PropTypes.array.isRequired,
+  semesterTimetable: PropTypes.object.isRequired,
   addModule: PropTypes.func.isRequired,
 };
 

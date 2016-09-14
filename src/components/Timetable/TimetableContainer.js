@@ -66,9 +66,6 @@ class TimetableContainer extends Component {
 
     const lessons = timetableLessonsArray(semesterTimetable);
 
-    const moduleList = semesterModuleList.filter(
-      module => !semesterTimetable[module.code])
-
     const moduleTableModules = Object.values(
       timetableForYearAndSem.reduce(
         (p, c) => ({ ...p, [c.ModuleCode]: c }), {}));
@@ -80,13 +77,9 @@ class TimetableContainer extends Component {
         <div className="row">
           <div className="col-md-6 offset-md-3">
             <ModuleSearch
-              semesterModuleList={moduleList}
+              semesterModuleList={semesterModuleList}
+              semesterTimetable={semesterTimetable}
               addModule={module => this.props.addModule({ year, semester, module })}
-            />
-
-            <ModuleTable
-              modules={moduleTableModules}
-              removeModule={(code) => this.props.removeModule({ year, semester, code })}
             />
 
             <Button
