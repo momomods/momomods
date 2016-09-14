@@ -10,6 +10,9 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
+
+import ModuleList from '../../components/ModuleList/ModuleList';
+
 import s from './Module.css';
 import { fetchModules } from '../../actions/module';
 
@@ -31,13 +34,9 @@ class Module extends Component {
 
   render() {
     this.context.setTitle(title);
+
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <h1>{title}</h1>
-          <p>...</p>
-        </div>
-      </div>
+        <ModuleList />
     );
   }
 }
