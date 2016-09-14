@@ -7,16 +7,15 @@
  * LICENSE.txt file in the root directory of this source tree.
  */
 
-import Header from 'react-mdl/lib/Layout/Header';
-import Layout from 'react-mdl/lib/Layout/Layout';
-import Navigation from 'react-mdl/lib/Layout/Navigation';
 import React, { Component, PropTypes } from 'react';
 import Textfield from 'react-mdl/lib/Textfield';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import { Provider } from 'react-redux';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 import s from './App.css';
-import Drawer from '../Drawer';
+import Header from '../Header';
 import Feedback from '../Feedback';
 import Footer from '../Footer';
 
@@ -67,26 +66,16 @@ class App extends Component {
 
     const store = this.props.context.store;
     return (
-      <Provider store={store}>
-        <div>
-          <Layout fixedHeader>
-            <Header title="mods+">
-              <Navigation>
-                <Textfield
-                  onChange={() => {}}
-                  label=""
-                  expandable
-                  expandableIcon="search"
-                />
-              </Navigation>
-            </Header>
-            <Drawer />
-            {this.props.children}
-            <Feedback />
-            <Footer />
-          </Layout>
-        </div>
-      </Provider>
+        <Provider store={store}>
+            <MuiThemeProvider>
+            <div>
+                <Header title="mods+" />
+                { this.props.children }
+                <Feedback />
+                <Footer />
+            </div>
+            </MuiThemeProvider>
+        </Provider>
     );
   }
 
