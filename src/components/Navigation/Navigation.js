@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
-
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
-
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Link from '../Link';
 

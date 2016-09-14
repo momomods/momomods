@@ -12,6 +12,7 @@ import ReactDOM from 'react-dom';
 import FastClick from 'fastclick';
 import UniversalRouter from 'universal-router';
 import { readState, saveState } from 'history/lib/DOMStateStorage';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import routes from './routes';
 import createHistory from './core/createHistory';
 import configureStore from './store/configureStore';
@@ -111,6 +112,9 @@ function run() {
 
   // Make taps on links and buttons work fast on mobiles
   FastClick.attach(document.body);
+
+  // TODO: this might make fastclick obsolete, investigate next time
+  injectTapEventPlugin();
 
   context.store = configureStore(initialState, { history });
   context.createHref = history.createHref;
