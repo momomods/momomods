@@ -1,4 +1,5 @@
-import IconButton from 'react-mdl/lib/IconButton';
+import IconButton from 'material-ui/IconButton';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
@@ -16,7 +17,9 @@ class SearchOverlay extends Component {
       <div className={s.overlayRoot}>
         <div className={s.overlayContent}>
           <div>
-            <IconButton name="close" style={{ color: 'white' }} onClick={this.props.hideSearch} />
+            <IconButton onTouchTap={this.props.hideSearch}>
+              <NavigationClose color="white" />
+            </IconButton>
           </div>
           <ModuleSearch
             semesterModuleList={this.props.semesterModuleList}
