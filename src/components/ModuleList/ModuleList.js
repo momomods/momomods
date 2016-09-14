@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import {List, ListItem} from 'material-ui/List';
-import {lightGreen500} from 'material-ui/styles/colors';
-import IconButton from 'material-ui/IconButton';
-import ContentAddBox from 'material-ui/svg-icons/content/add-box';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar'
 import AutoComplete from 'material-ui/AutoComplete';
+import ContentAddBox from 'material-ui/svg-icons/content/add-box';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import { List, ListItem } from 'material-ui/List';
+import { lightGreen500 } from 'material-ui/styles/colors';
 
 import s from './ModuleList.css';
 
@@ -18,11 +17,11 @@ class ModuleList extends Component {
   }
 
   handleOpen = (module) => {
-    var title = module.code + ' ' + module.name;
-    this.setState({open: true, dialogTitle: title});
+    const title = `${module.code} ${module.name}`;
+    this.setState({ open: true, dialogTitle: title });
   }
 
-  handleClose = () => (this.setState({open: false}))
+  handleClose = () => (this.setState({ open: false }))
 
   handleListButtonTouch = (module, e) => {
     e.stopPropagation();
@@ -44,13 +43,13 @@ class ModuleList extends Component {
     const actions = [
       <FlatButton
         label="Add to Timetable"
-        primary={true}
+        primary
         onTouchTap={this.handleClose}
       />,
     ];
 
     // Create the list of module cells
-    var listItems = this.props.modules.map(function(module, i) {
+    const listItems = this.props.modules.slice(0, 10).map((module, i) => {
       return (
         <ListItem
           key={i}
@@ -68,16 +67,16 @@ class ModuleList extends Component {
 
     return (
       <div>
-        <div style={{ position: 'fixed', 'zIndex': 10, left: '15px', right: '15px' }}>
+        <div style={{ position: 'fixed', zIndex: 10, left: '15px', right: '15px' }}>
           <AutoComplete
             hintText="Search for modules..."
             dataSource={this.props.modules}
             onUpdateInput={this.handleUpdateInput}
             floatingLabelText="Module Search"
-            fullWidth={true}
+            fullWidth
           />
         </div>
-        <div style={{height: '70px'}}></div>
+        <div style={{ height: '70px' }} />
         <List>
           {listItems}
         </List>
@@ -87,13 +86,20 @@ class ModuleList extends Component {
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          autoScrollBodyContent={true}
+          autoScrollBodyContent
         >
-          <div>Dont panic, the module codes shown in the list are combined with their key but the dialog just gets the module code only.</div>
+          <div>
+            Dont panic, the module codes shown in the list are
+            combined with their key but the dialog just gets the module code only.
+          </div>
         </Dialog>
       </div>
     );
   }
 }
+
+ModuleList.propTypes = {
+  modules: PropTypes.array.isRequired,
+};
 
 export default withStyles(s)(ModuleList);
