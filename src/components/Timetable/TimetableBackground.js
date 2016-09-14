@@ -8,16 +8,11 @@ import s from './timetable.scss';
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
 const TimetableBackground = () => {
-  const timetableBgClassName = classnames('timetable', 'timetable-bg');
-  const timetableDayClassName = classnames('timetable-day');
-  const timetableDayRowClassName = classnames('timetable-day-row');
-  const timetableDayCellClassName = classnames('timetable-day-cell', 'timetable-d');
-
   return (
-    <div className={timetableBgClassName}>
-      <div className={timetableDayClassName}>
-        <div className={timetableDayRowClassName}>
-          <div className={timetableDayCellClassName}><span /></div>
+    <div className={classnames('timetable', 'timetable-bg')}>
+      <div className={classnames('timetable-day')}>
+        <div className={classnames('timetable-day-row')}>
+          <div className={classnames('timetable-day-cell', 'timetable-d')}><span /></div>
           {_.map(_.range(CELLS_COUNT), (i) =>
             (
             <div
