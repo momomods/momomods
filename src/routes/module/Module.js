@@ -28,6 +28,63 @@ class Module extends Component {
     setTitle: PropTypes.func.isRequired,
   }
 
+  constructor(props) {
+      super(props);
+
+      this.state = {
+          modules: [
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              },
+              {
+                  code: 'CS101',
+                  name: 'Programming Something'
+              }
+          ]
+      };
+  }
+
   componentDidMount() {
     if (!this.props.isInitialized) this.props.fetchModules();
   }
@@ -36,7 +93,7 @@ class Module extends Component {
     this.context.setTitle(title);
 
     return (
-        <ModuleList />
+        <ModuleList modules={this.state.modules}/>
     );
   }
 }
