@@ -1,33 +1,32 @@
 import React, { PropTypes } from 'react';
-import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
+
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+import IconButton from 'material-ui/IconButton';
+import { List, ListItem } from 'material-ui/List';
+import { red700 } from 'material-ui/styles/colors';
 
 const ModuleTable = ({
   modules,
   removeModule,
 }) => (
-  <Table
-    selectable={false}
-    style={{ tableLayout: 'auto' }}
-  >
-    <TableBody
-      displayRowCheckbox={false}
-    >
-      {modules.map(module =>
-        <TableRow key={module.ModuleCode}>
-          <TableRowColumn>{module.ModuleCode}</TableRowColumn>
-          <TableRowColumn>{module.ModuleTitle}</TableRowColumn>
-          <TableRowColumn>
-            <button
-              className="btn btn-sm btn-danger"
-              onClick={() => removeModule(module.ModuleCode)}
-            >
-              Remove
-            </button>
-          </TableRowColumn>
-        </TableRow>
-      )}
-    </TableBody>
-  </Table>
+  <List>
+    {modules.map(module =>
+      <ListItem
+        rightIconButton={
+          <IconButton
+            onTouchTap={() => removeModule(module.ModuleCode)}
+            touch={true}
+            tooltip="Remove module"
+            tooltipPosition="bottom-left"
+          >
+            <ActionDelete color={red700} />
+          </IconButton>
+        }
+        primaryText={module.ModuleCode}
+        secondaryText={module.ModuleTitle}
+      />
+    )}
+  </List>
 );
 
 ModuleTable.propTypes = {
