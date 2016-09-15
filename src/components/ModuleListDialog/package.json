@@ -1,0 +1,6 @@
+{
+  "name": "ModuleListDialog",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ModuleListDialog.js"
+}
