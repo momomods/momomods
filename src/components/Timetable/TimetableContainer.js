@@ -62,7 +62,7 @@ class TimetableContainer extends Component {
     }
   }
 
-  addModuleAndHideSearch = (module) => {
+  addModuleAndHideSearch = ({ module }) => {
     const { year, semester } = this.props;
     this.props.addModule({ year, semester, module });
     this.hideSearch();
@@ -107,7 +107,7 @@ class TimetableContainer extends Component {
           hideSearch={this.hideSearch}
           semesterModuleList={semesterModuleList}
           semesterTimetable={semesterTimetable}
-          addModule={module => this.addModuleAndHideSearch(module)}
+          addModule={this.addModuleAndHideSearch}
         />
       </div>
     );
