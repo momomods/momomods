@@ -15,6 +15,7 @@ class Module extends Component {
     fetchModules: PropTypes.func.isRequired,
     isInitialized: PropTypes.bool.isRequired,
     modules: PropTypes.array.isRequired,
+    searchIndex: PropTypes.object.isRequired,
     semester: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
   }
@@ -37,11 +38,11 @@ class Module extends Component {
     if (!this.props.isInitialized) this.props.fetchModules({ year, semester });
   }
 
-  getFilterItems = (modules) => {
+  getFilteredModules = () => {
     const searchTerm = this.state.searchTerm;
-    const { searchIndex } = this.props;
+    const { modules, searchIndex } = this.props;
 
-    if (!searchTerm || searchTerm === '' || searchIndex === null) return this.props.modules;
+    if (!searchTerm || searchTerm === '' || searchIndex === null) return modules;
     return searchIndex.search(searchTerm);
   };
 
@@ -49,7 +50,6 @@ class Module extends Component {
 
   render() {
     this.context.setTitle(title);
-    const modules = this.getFilterItems(this.props.modules);
 
     return (
       <div>
@@ -62,7 +62,7 @@ class Module extends Component {
           />
         </div>
         <div style={{ height: '70px' }} />
-        <ModuleList modules={modules} />
+        <ModuleList modules={this.getFilteredModules()} />
       </div>
     );
   }
