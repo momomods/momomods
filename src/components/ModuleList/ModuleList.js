@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import AutoComplete from 'material-ui/AutoComplete';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import ContentAddBox from 'material-ui/svg-icons/content/add-box';
@@ -80,16 +79,6 @@ class ModuleList extends Component {
 
     return (
       <div>
-        <div style={{ position: 'fixed', zIndex: 10, left: '15px', right: '15px' }}>
-          <AutoComplete
-            hintText="Search for modules..."
-            dataSource={modules.map(m => m.name)}
-            onUpdateInput={this.handleUpdateInput}
-            floatingLabelText="Module Search"
-            fullWidth
-          />
-        </div>
-        <div style={{ height: '70px' }} />
         <List>
           {listItems}
         </List>

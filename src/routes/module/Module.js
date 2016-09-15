@@ -1,3 +1,4 @@
+import AutoComplete from 'material-ui/AutoComplete';
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
@@ -22,6 +23,10 @@ class Module extends Component {
     setTitle: PropTypes.func.isRequired,
   }
 
+  state = {
+    searchTerm: '',
+  }
+
   componentDidMount() {
     const {
       year,
@@ -30,11 +35,34 @@ class Module extends Component {
     if (!this.props.isInitialized) this.props.fetchModules({ year, semester });
   }
 
+  handleUpdateInput = (searchTerm) => (this.setState({ searchTerm }))
+
+  getFilterItems = () => {
+    const searchTerm = this.state.searchTerm;
+    if (!searchTerm || searchTerm === '') return this.props.modules;
+    return this.props.modules.filter(m => (
+      m.code.indexOf(searchTerm) >= 0
+    ));
+  };
+
   render() {
     this.context.setTitle(title);
+    const modules = this.getFilterItems(this.props.modules);
 
     return (
-      <ModuleList modules={this.props.modules} />
+      <div>
+        <div style={{ position: 'fixed', zIndex: 10, left: '15px', right: '15px' }}>
+          <AutoComplete
+            hintText="Search for modules..."
+            dataSource={modules.map(m => m.name)}
+            onUpdateInput={this.handleUpdateInput}
+            floatingLabelText="Module Search"
+            fullWidth
+          />
+        </div>
+        <div style={{ height: '70px' }} />
+        <ModuleList modules={modules} />
+      </div>
     );
   }
 }
