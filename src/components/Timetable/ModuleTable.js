@@ -12,6 +12,7 @@ const ModuleTable = ({
   <List>
     {modules.map(module =>
       <ListItem
+        key={module.ModuleCode}
         rightIconButton={
           <IconButton
             onTouchTap={() => removeModule(module.ModuleCode)}
