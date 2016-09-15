@@ -23,7 +23,6 @@ function Html({ title, description, style, script, children, state }) {
             data-initial-state={JSON.stringify(state)}
           />
         )}
-        <script src="/material.js" />
         {analytics.google.trackingId &&
           <script
             dangerouslySetInnerHTML={{ __html:
