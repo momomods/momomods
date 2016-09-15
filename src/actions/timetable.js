@@ -3,6 +3,7 @@ import localforage from 'localforage';
 import {
   ADD_MODULE,
   REMOVE_MODULE,
+  CHANGE_LESSON,
 
   FETCH_TIMETABLE,
   SUBMIT_TIMETABLE,
@@ -83,7 +84,7 @@ export function addModule({ year, semester, module }) {
  *
  * @param {string} year, in the format of "YYYY-YYYY"
  * @param {string} semester, "1", "2", etc.
- * @param {Object} module, module model
+ * @param {string} code, module code
  */
 export function removeModule({ year, semester, code }) {
   return {
@@ -92,6 +93,30 @@ export function removeModule({ year, semester, code }) {
       year,
       semester,
       code,
+    },
+  };
+}
+
+/**
+ * Change a class in a module in a timetable
+ *
+ * @param {string} year, in the format of "YYYY-YYYY"
+ * @param {string} semester, "1", "2", etc.
+ * @param {string} code, module code
+ * @param {string} lessonType, type of lesson
+ * @param {string} classNo, class number
+ */
+export function changeLesson({ year, semester, code, lessonType, classNo }) {
+
+  console.log('clicked');
+  return {
+    type: CHANGE_LESSON,
+    payload: {
+      year,
+      semester,
+      code,
+      lessonType,
+      classNo,
     },
   };
 }

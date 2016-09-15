@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import {
   addModule,
   removeModule,
+  changeLesson,
 
   fetchTimetable,
   submitTimetable,
@@ -75,6 +76,7 @@ class TimetableContainer extends Component {
       timetableForYearAndSem,
       semesterTimetable,
       semesterModuleList,
+      onLessonChange,
     } = this.props;
 
     const lessons = timetableLessonsArray(semesterTimetable);
@@ -85,7 +87,7 @@ class TimetableContainer extends Component {
 
     return (
       <div >
-        <Timetable lessons={lessons} timetable={timetable} />
+        <Timetable lessons={lessons} timetable={timetable} onLessonChange={changeLesson} />
 
         <div className="row">
           <div className="col-md-6 offset-md-3">
@@ -125,6 +127,7 @@ TimetableContainer.propTypes = {
   semesterTimetable: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
+  changeLesson: PropTypes.func,
   timetable: PropTypes.object,
   isInitialized: PropTypes.bool,
   fetchTimetable: PropTypes.func.isRequired,
@@ -180,6 +183,7 @@ const mapDispatch = {
   fetchModules,
   addModule,
   removeModule,
+  changeLesson,
   saveTimetable,
   submitTimetable,
   loadTimetable,

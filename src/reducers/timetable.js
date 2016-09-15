@@ -1,6 +1,7 @@
 import {
   ADD_MODULE,
   REMOVE_MODULE,
+  CHANGE_LESSON,
 
   FETCH_TIMETABLE,
   LOAD_TIMETABLE,
@@ -117,6 +118,33 @@ export default function timetable(state = defaultState, action) {
       } = action.payload;
 
       const newData = state.data[year][semester].filter(m => m.ModuleCode !== code);
+
+      return {
+        ...state,
+        data: {
+          [year]: {
+            [semester]: newData,
+          },
+        },
+      };
+    }
+    case `${CHANGE_LESSON}`: {
+      const {
+        year,
+        semester,
+        code,
+        lessonType,
+        classNo,
+      } = action.payload;
+
+      //TODO: FIND NEW LESSON OBJECT
+      console.log('module code', code);
+
+      // const newData = state.data[year][semester].filter(m => 
+      //   (m.ModuleCode === code &&
+      //     m.LessonType === lessonType) ? m = newLesson : m);
+      
+      const newData = state.data[year][semester]
 
       return {
         ...state,

@@ -26,6 +26,7 @@ const Timetable = (props) => {
             key={day}
             day={day.substring(0, 3)}
             dayLessonRows={arrangedLessons[day]}
+            onLessonChange={props.onLessonChange}
           />)
         )}
       </div>
@@ -37,6 +38,7 @@ const Timetable = (props) => {
 Timetable.propTypes = {
   lessons: PropTypes.array,
   timetable: PropTypes.object,
+  onLessonChange: PropTypes.func,
 };
 
 export default withStyles(s)(Timetable);
