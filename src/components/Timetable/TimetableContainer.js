@@ -89,30 +89,26 @@ class TimetableContainer extends Component {
       <div >
         <Timetable lessons={lessons} timetable={timetable} onLessonChange={changeLesson} />
 
-        <div className="row">
-          <div className="col-md-6 offset-md-3">
-            <ModuleTable
-              modules={moduleTableModules}
-              removeModule={(code) => this.props.removeModule({ year, semester, code })}
-            />
-            <RaisedButton
-              label="Sync"
-              onClick={this.sync({ year, semester, timetable: timetableForYearAndSem })}
-            />
+        <ModuleTable
+          modules={moduleTableModules}
+          removeModule={(code) => this.props.removeModule({ year, semester, code })}
+        />
+        <RaisedButton
+          label="Sync"
+          onClick={this.sync({ year, semester, timetable: timetableForYearAndSem })}
+        />
 
-            <FloatingActionButton onTouchTap={this.showSearch} className="fab">
-              <ContentAdd />
-            </FloatingActionButton>
+        <FloatingActionButton onTouchTap={this.showSearch} className="fab">
+          <ContentAdd />
+        </FloatingActionButton>
 
-            <SearchOverlay
-              shown={this.state.showSearch}
-              hideSearch={this.hideSearch}
-              semesterModuleList={semesterModuleList}
-              semesterTimetable={semesterTimetable}
-              addModule={module => this.addModuleAndHideSearch(module)}
-            />
-          </div>
-        </div>
+        <SearchOverlay
+          shown={this.state.showSearch}
+          hideSearch={this.hideSearch}
+          semesterModuleList={semesterModuleList}
+          semesterTimetable={semesterTimetable}
+          addModule={module => this.addModuleAndHideSearch(module)}
+        />
       </div>
     );
   }
