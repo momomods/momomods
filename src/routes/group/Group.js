@@ -15,6 +15,10 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
+import IconButton from 'material-ui/IconButton';
+
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import { lightGreen500 } from 'material-ui/styles/colors';
 
 import TimetableContainer from '../../components/Timetable/TimetableContainer';
 
@@ -50,6 +54,7 @@ class Group extends Component {
           {
               title: 'CS3216 Group 4'
           }],
+          dateToday: new Date(),
       };
   }
 
@@ -72,15 +77,28 @@ class Group extends Component {
 
     return (
       <div>
-          <Toolbar style={{ position: 'fixed', 'backgroundColor': 'white'}}>
-              <ToolbarGroup firstChild={true}>
-                <DropDownMenu value={this.state.groupShown} onChange={this.handleChange}>
+          <Toolbar className={s.groupToolbar}>
+              <ToolbarGroup firstChild={true} className={s.groupToolbarGroup}>
+                <DropDownMenu
+                    className={s.groupToolbarDropdownMenu}
+                    value={this.state.groupShown}
+                    onChange={this.handleChange}>
                     { listItems }
                 </DropDownMenu>
+                <IconButton className={s.groupToolbarButton}>
+                  <ContentAdd onClick={this.props.handleGroupAdd} />
+                </IconButton>
               </ToolbarGroup>
               <ToolbarSeparator />
-              <ToolbarGroup>
-                <DatePicker hintText="Meeting Date" />
+              <ToolbarGroup lastChild={true} className={s.groupToolbarGroup}>
+                  <div className={s.groupToolbarTitle}>Meet on </div>
+                  <DatePicker
+                      className={s.groupToolbarDatePicker}
+                      hintText="Meeting Date"
+                      autoOk={true}
+                      defaultDate={this.state.dateToday}
+                      formateDate={this.formatDate}
+                  />
               </ToolbarGroup>
           </Toolbar>
           <div style={{ height: '70px' }} />

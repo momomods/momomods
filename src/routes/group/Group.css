@@ -20,7 +20,45 @@
   max-width: var(--max-content-width);
 }
 
-.group-toolbar {
+.groupToolbar {
+    position: fixed;
+    z-index: 10;
+    width: 100%;
     background-color: white !important;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.groupToolbarGroup {
+    width: 50% !important;
+}
+
+.groupToolbarDropdownMenu {
+    width: 70% !important;
+    height: 100% !important;
+    margin-right: 0px !important;
+}
+
+.groupToolbarButton {
+    width: 36px !important;
+    height: 36px !important;
+    object-fit: contain;
+    padding-top: 16px !important;
+}
+
+.groupToolbarDatePicker {
+    margin-left: 4px;
+    padding-right: 15px;
+}
+
+.groupToolbarDatePicker div {
+    width: 100px !important;
+}
+
+.groupToolbarDatePicker div input {
+    text-align: center;
+}
+
+.groupToolbarTitle {
+    height: 56px;
+    line-height: 56px;
 }
