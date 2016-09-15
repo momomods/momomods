@@ -82,7 +82,8 @@ class Group extends Component {
                 <DropDownMenu
                     className={s.groupToolbarDropdownMenu}
                     value={this.state.groupShown}
-                    onChange={this.handleChange}>
+                    onChange={this.handleChange}
+                    autoWidth={false}>
                     { listItems }
                 </DropDownMenu>
                 <IconButton className={s.groupToolbarButton}>

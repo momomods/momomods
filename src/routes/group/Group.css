@@ -48,14 +48,11 @@
 .groupToolbarDatePicker {
     margin-left: 4px;
     padding-right: 15px;
+    width: 80% !important;
 }
 
 .groupToolbarDatePicker div {
-    width: 100px !important;
-}
-
-.groupToolbarDatePicker div input {
-    text-align: center;
+    width: 100% !important;
 }
 
 .groupToolbarTitle {

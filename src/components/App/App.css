@@ -190,7 +190,7 @@ textarea {
 }
 
 .pageFooter {
-    position: fixed;
+    position: relative;
     width: 100%;
     height: 62px;
     bottom: 0;

@@ -70,8 +70,8 @@ class App extends Component {
             <Header title="mods+" />
             <div>
               { this.props.children }
+                <Footer />
             </div>
-            <Footer />
           </div>
         </MuiThemeProvider>
       </Provider>
