@@ -11,6 +11,7 @@ $timetable-width: 100%;
 $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 3px;
+$timetable-cell-opacity: 0.5;
 
 .timetable-container {
   overflow-x: scroll;
@@ -116,6 +117,20 @@ $timetable-cell-padding: 3px;
     padding-left: $timetable-cell-padding;
     padding-top: $timetable-cell-padding;
     text-align: left;
+
+    &.is-available {
+      opacity: $timetable-cell-opacity;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    &.is-active {
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite;
+      animation-name: pulse;
+    }
 
     .cell-module-code {
       font-weight: bold;

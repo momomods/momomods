@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
 import { LESSON_TYPE_ABBREV } from '../../utils/timetable';
@@ -15,8 +16,16 @@ const TimetableCell = (props) => {
 
   if (lesson) {
     timetableCell = (
-      <div className="timetable-module-cell" onClick={() => 
-        {props.onLessonChange(props.year, props.semester, lesson.ModuleCode, lesson.LessonType, lesson.ClassNo)}}>
+      <div className={classnames("timetable-module-cell", {
+          'is-cell-modifiable': lesson.isModifiable,
+          'is-modifiable': lesson.isModifiable,
+          'is-available': lesson.isAvailable,
+          'is-active': lesson.isActive,
+        })}
+        onClick={() => {
+          event.stopPropagation();
+          props.onLessonChange(lesson);
+        }}>
         <div className="cell-module-code">{lesson.ModuleCode}</div>
         <div>
           <span className="cell-module-lesson-type">{LESSON_TYPE_ABBREV[lesson.LessonType]}</span>

@@ -4,10 +4,12 @@ import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
+import { arrangeLessonsForWeek } from '../../utils/modules';
 import {
   addModule,
   removeModule,
   changeLesson,
+  cancelChangeLesson,
 
   fetchTimetable,
   submitTimetable,
@@ -16,7 +18,8 @@ import {
   saveTimetable,
 } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
-import { timetableLessonsArray } from '../../utils/modules';
+import { timetableLessonsArray, isSameClass } from '../../utils/modules';
+import { lessonsForLessonType } from '../../utils/timetable';
 import Timetable from './Timetable';
 import s from './timetable.scss';
 import ModuleTable from './ModuleTable';
@@ -76,19 +79,62 @@ class TimetableContainer extends Component {
       timetableForYearAndSem,
       semesterTimetable,
       semesterModuleList,
-      onLessonChange,
     } = this.props;
 
-    const lessons = timetableLessonsArray(semesterTimetable);
+    const changeLessonHelper = (lesson) => {
+      if (lesson.isAvailable) {
+        // TODO: Change to this lesson
+        console.log('lesson available');
+      } else if (lesson.isActive) {
+        console.log('isActive');
+        // this.props.cancelChangeLesson();
+      } else {
+        console.log('third case');
+        this.props.changeLesson({year, semester, activeLesson: lesson});
+      }
+    }
 
     const moduleTableModules = Object.values(
       timetableForYearAndSem.reduce(
         (p, c) => ({ ...p, [c.ModuleCode]: c }), {}));
 
-    return (
-      <div >
-        <Timetable lessons={lessons} timetable={timetable} onLessonChange={changeLesson} />
+    let timetableLessons = timetableLessonsArray(semesterTimetable);
 
+    if (this.props.activeLesson) {
+      const activeLesson = this.props.activeLesson;
+      const moduleCode = activeLesson.ModuleCode;
+
+      const moduleTimetable = JSON.parse(activeLesson.moduleDetail.timetable || null);
+      const lessons = lessonsForLessonType(moduleTimetable, activeLesson.LessonType)
+        .map((lesson) => {
+          // Inject module code in
+          return { ...lesson, ModuleCode: activeLesson.ModuleCode };
+        });
+      const otherAvailableLessons = lessons
+        .filter((lesson) => {
+          // Exclude the lesson being modified.
+          return !isSameClass(lesson, activeLesson);
+        })
+        .map((lesson) => {
+          return { ...lesson, isAvailable: true };
+        });
+      timetableLessons = timetableLessons.map((lesson) => {
+        // Identify the current lesson being modified.
+        if (isSameClass(lesson, activeLesson)) {
+          return { ...lesson, isActive: true };
+        }
+        return lesson;
+      });
+      timetableLessons = [...timetableLessons, ...otherAvailableLessons];
+    }
+
+    return (
+      <div onClick={() => {
+        if (this.props.activeLesson) {
+          // this.props.cancelChangeLesson();
+        }
+        }}>
+        <Timetable lessons={timetableLessons} timetable={timetable} onLessonChange={changeLessonHelper} />
         <ModuleTable
           modules={moduleTableModules}
           removeModule={(code) => this.props.removeModule({ year, semester, code })}
@@ -121,9 +167,11 @@ TimetableContainer.propTypes = {
   timetableForYearAndSem: PropTypes.array.isRequired,
   semesterModuleList: PropTypes.array,
   semesterTimetable: PropTypes.object,
+  activeLesson: PropTypes.object,
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   changeLesson: PropTypes.func,
+  cancelChangeLesson: PropTypes.func,
   timetable: PropTypes.object,
   isInitialized: PropTypes.bool,
   fetchTimetable: PropTypes.func.isRequired,
@@ -139,6 +187,7 @@ TimetableContainer.contextTypes = {
 
 function mapStateToProps(state) {
   const { timetable, selection, module } = state;
+  const { activeLesson } = timetable;
   const { year, semester } = selection;
   const timetableForYearAndSem =
     (timetable.data
@@ -171,6 +220,7 @@ function mapStateToProps(state) {
     semesterTimetable,
     timetableForYearAndSem,
     timetable,
+    activeLesson,
   };
 }
 
@@ -180,6 +230,7 @@ const mapDispatch = {
   addModule,
   removeModule,
   changeLesson,
+  cancelChangeLesson,
   saveTimetable,
   submitTimetable,
   loadTimetable,

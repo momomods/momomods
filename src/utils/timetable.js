@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
 export const FIRST_HOUR = 8;
@@ -16,3 +18,11 @@ export const LESSON_TYPE_ABBREV = {
   'Tutorial Type 2': 'TUT2',
   'Tutorial Type 3': 'TUT3',
 };
+
+// Filters a flat array of lessons and returns the lessons corresponding to lessonType.
+export function lessonsForLessonType(lessons, lessonType) {
+  console.log(lessons, lessonType);
+  return _.filter(lessons, (lesson) => {
+    return lesson.LessonType === lessonType;
+  });
+}

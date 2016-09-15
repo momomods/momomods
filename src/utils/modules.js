@@ -100,3 +100,10 @@ export function arrangeLessonsForWeek(lessons) {
     arrangeLessonsWithinDay(dayLesson)
   ));
 }
+
+// Do these two lessons belong to the same class?
+export function isSameClass(lesson1, lesson2) {
+  return lesson1.ModuleCode === lesson2.ModuleCode &&
+    lesson1.ClassNo === lesson2.ClassNo &&
+    lesson1.LessonType === lesson2.LessonType;
+}

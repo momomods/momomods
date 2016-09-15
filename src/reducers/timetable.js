@@ -2,6 +2,7 @@ import {
   ADD_MODULE,
   REMOVE_MODULE,
   CHANGE_LESSON,
+  CANCEL_CHANGE_LESSON,
 
   FETCH_TIMETABLE,
   LOAD_TIMETABLE,
@@ -19,6 +20,7 @@ const defaultState = {
   isFetching: false,
   isInitialized: false,
   lastFetched: null,
+  activeLesson: null,
 };
 
 export default function timetable(state = defaultState, action) {
@@ -132,27 +134,23 @@ export default function timetable(state = defaultState, action) {
       const {
         year,
         semester,
-        code,
-        lessonType,
-        classNo,
+        activeLesson,
       } = action.payload;
 
-      //TODO: FIND NEW LESSON OBJECT
-      console.log('module code', code);
-
-      // const newData = state.data[year][semester].filter(m => 
-      //   (m.ModuleCode === code &&
-      //     m.LessonType === lessonType) ? m = newLesson : m);
-      
-      const newData = state.data[year][semester]
+      console.log('change lesson', activeLesson);
 
       return {
         ...state,
-        data: {
-          [year]: {
-            [semester]: newData,
-          },
-        },
+        activeLesson: activeLesson,
+      };
+    }
+    case `${CANCEL_CHANGE_LESSON}`: {
+
+      console.log('cancelled');
+
+      return {
+        ...state,
+        activeLesson: null,
       };
     }
     default:

@@ -4,6 +4,7 @@ import {
   ADD_MODULE,
   REMOVE_MODULE,
   CHANGE_LESSON,
+  CANCEL_CHANGE_LESSON,
 
   FETCH_TIMETABLE,
   SUBMIT_TIMETABLE,
@@ -106,18 +107,25 @@ export function removeModule({ year, semester, code }) {
  * @param {string} lessonType, type of lesson
  * @param {string} classNo, class number
  */
-export function changeLesson({ year, semester, code, lessonType, classNo }) {
-
-  console.log('clicked');
+export function changeLesson({ year, semester, activeLesson }) {
+  console.log('clicked', {year, semester, activeLesson});
   return {
     type: CHANGE_LESSON,
     payload: {
       year,
       semester,
-      code,
-      lessonType,
-      classNo,
+      activeLesson,
     },
+  };
+}
+
+/**
+ * Cancel interaction to change lesson
+ */
+export function cancelChangeLesson() {
+  console.log('cancelled');
+  return {
+    type: CANCEL_CHANGE_LESSON,
   };
 }
 
