@@ -1,11 +1,3 @@
-.moduleSearchBar {
-    position: fixed;
-    z-index: 10;
-    left: 15px;
-    right: 15px;
-    overflow: none;
-}
-
 .moduleList {
     position: fixed;
     top: 180px;

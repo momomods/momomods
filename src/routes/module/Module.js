@@ -53,7 +53,7 @@ class Module extends Component {
 
     return (
       <div>
-        <div style={{ position: 'fixed', zIndex: 10, left: '15px', right: '15px' }}>
+        <div className={s.moduleSearchBar}>
           <TextField
             floatingLabelText="Module Search"
             fullWidth
