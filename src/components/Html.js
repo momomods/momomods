@@ -12,7 +12,6 @@ function Html({ title, description, style, script, children, state }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="apple-touch-icon" href="apple-touch-icon.png" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-        <link rel="stylesheet" href="/material.css" />
         <style id="css" dangerouslySetInnerHTML={{ __html: style }} />
       </head>
       <body>
