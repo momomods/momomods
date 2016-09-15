@@ -55,13 +55,12 @@ class Module extends Component {
       <div>
         <div className={s.moduleSearchBar}>
           <TextField
-            floatingLabelText="Module Search"
             fullWidth
-            hintText="e.g. CS1010"
+            hintText="Search for a module e.g. CS1010"
             onChange={this.handleUpdateInput}
           />
         </div>
-        <div style={{ height: '70px' }} />
+        <div style={{ height: '48px' }} />
         <ModuleList modules={this.getFilteredModules()} />
       </div>
     );

@@ -18,11 +18,12 @@ class SearchOverlay extends Component {
     return (
       <div className={s.overlayRoot}>
         <div className={s.overlayContent}>
-          <div>
+          <div className={s.overlayFixed}>
             <IconButton onTouchTap={this.props.hideSearch}>
               <NavigationClose color="black" />
             </IconButton>
           </div>
+          <div style={{ height: '48px' }} />
           <Module />
         </div>
         <div className={s.overlayBlock} onClick={this.props.hideSearch} />
