@@ -6,6 +6,8 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import ModuleSearch from '../ModuleSearch/ModuleSearch';
 import s from './SearchOverlay.css';
 
+import Module from '../../routes/module/Module';
+
 class SearchOverlay extends Component {
   shouldComponentUpdate = (nextProps) => (
     (nextProps.shown !== this.props.shown) ||
@@ -18,14 +20,10 @@ class SearchOverlay extends Component {
         <div className={s.overlayContent}>
           <div>
             <IconButton onTouchTap={this.props.hideSearch}>
-              <NavigationClose color="white" />
+              <NavigationClose color="black" />
             </IconButton>
           </div>
-          <ModuleSearch
-            semesterModuleList={this.props.semesterModuleList}
-            semesterTimetable={this.props.semesterTimetable}
-            addModule={this.props.addModule}
-          />
+          <Module />
         </div>
         <div className={s.overlayBlock} onClick={this.props.hideSearch} />
       </div>
