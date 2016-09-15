@@ -7,11 +7,13 @@ import ModuleList from '../../components/ModuleList/ModuleList';
 
 import s from './Module.css';
 import { fetchModules } from '../../actions/module';
+import { addModule } from '../../actions/timetable';
 
 const title = 'Modules';
 
 class Module extends Component {
   static propTypes = {
+    addModule: PropTypes.func,
     fetchModules: PropTypes.func.isRequired,
     isInitialized: PropTypes.bool.isRequired,
     modules: PropTypes.array.isRequired,
@@ -48,6 +50,15 @@ class Module extends Component {
 
   handleUpdateInput = (e) => (this.setState({ searchTerm: e.target.value }))
 
+  _addModule = (module) => {
+    const { year, semester } = this.props;
+    if (this.props.addModuleOverride) {
+      this.props.addModuleOverride({ year, semester, module });
+    } else {
+      this.props.addModule({ year, semester, module });
+    }
+  }
+
   render() {
     this.context.setTitle(title);
 
@@ -55,14 +66,16 @@ class Module extends Component {
       <div>
         <div className={s.moduleSearchBar}>
           <TextField
-            floatingLabelText="Module Search"
             fullWidth
-            hintText="e.g. CS1010"
+            hintText="Search for a module e.g. CS1010"
             onChange={this.handleUpdateInput}
           />
         </div>
-        <div style={{ height: '70px' }} />
-        <ModuleList modules={this.getFilteredModules()} />
+        <div style={{ height: '48px' }} />
+        <ModuleList
+          modules={this.getFilteredModules()}
+          addModule={this._addModule}
+        />
       </div>
     );
   }
@@ -90,6 +103,7 @@ const mapState = (state) => {
 
 const mapDispatch = {
   fetchModules,
+  addModule,
 };
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Module));

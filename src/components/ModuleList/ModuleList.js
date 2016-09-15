@@ -28,8 +28,7 @@ class ModuleList extends Component {
   handleClose = () => (this.setState({ isDialogOpen: false }))
 
   handleListButtonTouch = (module, e) => {
-    e.stopPropagation();
-    // TODO handle list button touch
+    this.props.addModule(module);
   };
 
   handleAddToTimetable = (module) => {
@@ -107,6 +106,7 @@ class ModuleList extends Component {
 
 ModuleList.propTypes = {
   modules: PropTypes.array.isRequired,
+  addModule: PropTypes.func.isRequired,
 };
 
 export default withStyles(s)(ModuleList);
