@@ -1,4 +1,4 @@
-import AutoComplete from 'material-ui/AutoComplete';
+import TextField from 'material-ui/TextField';
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
@@ -23,11 +23,13 @@ class Module extends Component {
     setTitle: PropTypes.func.isRequired,
   }
 
+  static search = null
+
   state = {
     searchTerm: '',
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     const {
       year,
       semester,
@@ -35,15 +37,15 @@ class Module extends Component {
     if (!this.props.isInitialized) this.props.fetchModules({ year, semester });
   }
 
-  handleUpdateInput = (searchTerm) => (this.setState({ searchTerm }))
-
-  getFilterItems = () => {
+  getFilterItems = (modules) => {
     const searchTerm = this.state.searchTerm;
-    if (!searchTerm || searchTerm === '') return this.props.modules;
-    return this.props.modules.filter(m => (
-      m.code.indexOf(searchTerm) >= 0
-    ));
+    const { searchIndex } = this.props;
+
+    if (!searchTerm || searchTerm === '' || searchIndex === null) return this.props.modules;
+    return searchIndex.search(searchTerm);
   };
+
+  handleUpdateInput = (e) => (this.setState({ searchTerm: e.target.value }))
 
   render() {
     this.context.setTitle(title);
@@ -52,12 +54,11 @@ class Module extends Component {
     return (
       <div>
         <div style={{ position: 'fixed', zIndex: 10, left: '15px', right: '15px' }}>
-          <AutoComplete
-            hintText="Search for modules..."
-            dataSource={modules.map(m => m.name)}
-            onUpdateInput={this.handleUpdateInput}
+          <TextField
             floatingLabelText="Module Search"
             fullWidth
+            hintText="e.g. CS1010"
+            onChange={this.handleUpdateInput}
           />
         </div>
         <div style={{ height: '70px' }} />
@@ -68,16 +69,20 @@ class Module extends Component {
 }
 
 const mapState = (state) => {
-  const { selection, module } = state;
+  const { selection, module, searchIndex } = state;
   const { year, semester } = selection;
   const semesterModuleList = (module.data
     && module.data[year]
     && module.data[year][semester]) || [];
+  const idx = (searchIndex.data
+    && searchIndex.data[year]
+    && searchIndex.data[year][semester]) || null;
 
   return {
     isFetching: module.isFetching,
     isInitialized: module.isInitialized,
     modules: semesterModuleList,
+    searchIndex: idx,
     semester,
     year,
   };
