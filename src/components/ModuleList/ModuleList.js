@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import AutoComplete from 'material-ui/AutoComplete';
+import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
+import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import ContentAddBox from 'material-ui/svg-icons/content/add-box';
 
 import FlatButton from 'material-ui/FlatButton';
@@ -17,6 +19,9 @@ class ModuleList extends Component {
   state = {
     isDialogOpen: false,
     selectedModule: {title: 'None'},
+    dialogTitle: '',
+    open: false,
+    startIndex: 0,
   }
 
   handleOpen = (module) => {
@@ -44,7 +49,21 @@ class ModuleList extends Component {
     });
   };
 
+  next = () => {
+    const { startIndex } = this.state;
+    if (startIndex + 10 > this.props.modules.length) return;
+    this.setState({startIndex: startIndex + 10})
+  }
+
+  prev = () => {
+    const { startIndex } = this.state;
+    if (startIndex - 10 < 0) return;
+    this.setState({startIndex: startIndex - 10})
+  }
+
   render() {
+    const { dialogTitle, open, startIndex } = this.state;
+    const { modules } = this.props;
     // Actions shown on the dialog
     const actions = [
       <FlatButton
@@ -55,12 +74,12 @@ class ModuleList extends Component {
     ];
 
     // Create the list of module cells
-    const listItems = this.props.modules.slice(0, 10).map((module, i) => {
+    const listItems = modules.slice(startIndex, startIndex + 10).map((module, i) => {
       return (
         <ListItem
-          key={i}
+          key={module.id}
           primaryText={module.code}
-          secondaryText={module.title}
+          secondaryText={module.name}
           rightIconButton={
             <IconButton onClick={(e) => this.handleListButtonTouch(module, e)}>
               <ContentAddBox color={lightGreen500} />
@@ -76,7 +95,7 @@ class ModuleList extends Component {
         <div style={{ position: 'fixed', zIndex: 10, left: '15px', right: '15px' }}>
           <AutoComplete
             hintText="Search for modules..."
-            dataSource={this.props.modules}
+            dataSource={modules.map(m => m.name)}
             onUpdateInput={this.handleUpdateInput}
             floatingLabelText="Module Search"
             fullWidth
@@ -86,6 +105,18 @@ class ModuleList extends Component {
         <List>
           {listItems}
         </List>
+        <div>
+          <FlatButton
+            icon={<ChevronLeft />}
+            onTouchTap={this.prev}
+            disabled={this.state.startIndex < 10}
+          />
+          <FlatButton
+            icon={<ChevronRight />}
+            onTouchTap={this.next}
+            disabled={this.state.startIndex + 10 >= this.props.modules.length}
+          />
+        </div>
         <ModuleListDialog module={this.state.selectedModule} open={this.state.isDialogOpen} handleAddToTimetable={this.handleAddToTimetable} handleClose={this.handleClose}/>
       </div>
     );
