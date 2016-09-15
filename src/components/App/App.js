@@ -68,10 +68,12 @@ class App extends Component {
         <MuiThemeProvider>
           <div>
             <Header title="mods+" />
-            <div className="page-container">
+            <div className={s.pageContainer}>
               { this.props.children }
             </div>
-            <Footer />
+            <div className={s.pageFooter}>
+                <Footer />
+            </div>
           </div>
         </MuiThemeProvider>
       </Provider>

@@ -11,6 +11,13 @@ import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
 
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+import DatePicker from 'material-ui/DatePicker';
+
+import TimetableContainer from '../../components/Timetable/TimetableContainer';
+
 import s from './Group.css';
 import { fetchGroups } from '../../actions/group';
 
@@ -26,18 +33,58 @@ class Group extends Component {
     setTitle: PropTypes.func.isRequired,
   }
 
+  constructor(props) {
+      super(props);
+
+      this.state = {
+          groupShown: 0,
+          groups: [{
+              title: 'CS3216 Group 1'
+          },
+          {
+              title: 'CS3216 Group 2'
+          },
+          {
+              title: 'CS3216 Group 3'
+          },
+          {
+              title: 'CS3216 Group 4'
+          }],
+      };
+  }
+
   componentDidMount() {
     if (!this.props.isInitialized) this.props.fetchGroups();
   }
 
+  handleChange() {
+      console.log('changed to ' + this.state.groupShown);
+  }
+
   render() {
     this.context.setTitle(title);
+
+    const listItems = this.state.groups.map((group, i) => {
+      return (
+          <MenuItem key={i} value={i} primaryText={group.title} />
+      );
+    }, this);
+
     return (
-      <div className={s.root}>
-        <div className={s.container}>
-          <h1>{title}</h1>
-          <p>...</p>
-        </div>
+      <div>
+          <Toolbar style={{ position: 'fixed', 'backgroundColor': 'white'}}>
+              <ToolbarGroup firstChild={true}>
+                <DropDownMenu value={this.state.groupShown} onChange={this.handleChange}>
+                    { listItems }
+                </DropDownMenu>
+              </ToolbarGroup>
+              <ToolbarSeparator />
+              <ToolbarGroup>
+                <DatePicker hintText="Meeting Date" />
+              </ToolbarGroup>
+          </Toolbar>
+          <div style={{ height: '70px' }} />
+          <TimetableContainer />
       </div>
     );
   }

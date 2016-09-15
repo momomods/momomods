@@ -55,7 +55,7 @@ class ModuleList extends Component {
     ];
 
     // Create the list of module cells
-    const listItems = this.props.modules.slice(0, 10).map((module, i) => {
+    const listItems = this.props.modules.slice(0, 14).map((module, i) => {
       return (
         <ListItem
           key={i}
@@ -73,7 +73,7 @@ class ModuleList extends Component {
 
     return (
       <div>
-        <div style={{ position: 'fixed', zIndex: 10, left: '15px', right: '15px' }}>
+        <div className={s.moduleSearchBar}>
           <AutoComplete
             hintText="Search for modules..."
             dataSource={this.props.modules}
@@ -82,8 +82,7 @@ class ModuleList extends Component {
             fullWidth
           />
         </div>
-        <div style={{ height: '70px' }} />
-        <List>
+        <List className={s.moduleList}>
           {listItems}
         </List>
         <ModuleListDialog module={this.state.selectedModule} open={this.state.isDialogOpen} handleAddToTimetable={this.handleAddToTimetable} handleClose={this.handleClose}/>
