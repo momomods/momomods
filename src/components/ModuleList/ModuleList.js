@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import AutoComplete from 'material-ui/AutoComplete';
+import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
+import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import ContentAddBox from 'material-ui/svg-icons/content/add-box';
 
 import FlatButton from 'material-ui/FlatButton';
@@ -16,7 +17,8 @@ import s from './ModuleList.css';
 class ModuleList extends Component {
   state = {
     isDialogOpen: false,
-    selectedModule: {title: 'None'},
+    selectedModule: {},
+    startIndex: 0,
   }
 
   handleOpen = (module) => {
@@ -31,7 +33,7 @@ class ModuleList extends Component {
   };
 
   handleAddToTimetable = (module) => {
-      console.log('add to timetable ' + module.code);
+    console.log('add to timetable ' + module.code);
   }
 
   handleUpdateInput = (value) => {
@@ -44,48 +46,60 @@ class ModuleList extends Component {
     });
   };
 
+  next = () => {
+    const { startIndex } = this.state;
+    if (startIndex + 10 > this.props.modules.length) return;
+    this.setState({ startIndex: startIndex + 10 });
+  }
+
+  prev = () => {
+    const { startIndex } = this.state;
+    if (startIndex - 10 < 0) return;
+    this.setState({ startIndex: startIndex - 10 });
+  }
+
   render() {
-    // Actions shown on the dialog
-    const actions = [
-      <FlatButton
-        label="Add to Timetable"
-        primary
-        onTouchTap={this.handleClose}
-      />,
-    ];
+    const { isDialogOpen, selectedModule, startIndex } = this.state;
+    const { modules } = this.props;
 
     // Create the list of module cells
-    const listItems = this.props.modules.slice(0, 14).map((module, i) => {
-      return (
-        <ListItem
-          key={i}
-          primaryText={module.code}
-          secondaryText={module.title}
-          rightIconButton={
-            <IconButton onClick={(e) => this.handleListButtonTouch(module, e)}>
-              <ContentAddBox color={lightGreen500} />
-            </IconButton>
-          }
-          onClick={() => this.handleOpen(module)}
-        />
-      );
-    }, this);
+    const listItems = modules.slice(startIndex, startIndex + 10).map((module) => (
+      <ListItem
+        key={module.id}
+        primaryText={module.code}
+        secondaryText={module.name}
+        rightIconButton={
+          <IconButton onClick={(e) => this.handleListButtonTouch(module, e)}>
+            <ContentAddBox color={lightGreen500} />
+          </IconButton>
+        }
+        onClick={() => this.handleOpen(module)}
+      />
+    ));
 
     return (
       <div>
-        <div className={s.moduleSearchBar}>
-          <AutoComplete
-            hintText="Search for modules..."
-            dataSource={this.props.modules}
-            onUpdateInput={this.handleUpdateInput}
-            floatingLabelText="Module Search"
-            fullWidth
-          />
-        </div>
-        <List className={s.moduleList}>
+        <List>
           {listItems}
         </List>
-        <ModuleListDialog module={this.state.selectedModule} open={this.state.isDialogOpen} handleAddToTimetable={this.handleAddToTimetable} handleClose={this.handleClose}/>
+        <div>
+          <FlatButton
+            icon={<ChevronLeft />}
+            onTouchTap={this.prev}
+            disabled={startIndex < 10}
+          />
+          <FlatButton
+            icon={<ChevronRight />}
+            onTouchTap={this.next}
+            disabled={startIndex + 10 >= this.props.modules.length}
+          />
+        </div>
+        <ModuleListDialog
+          module={selectedModule}
+          open={isDialogOpen}
+          handleAddToTimetable={this.handleAddToTimetable}
+          handleClose={this.handleClose}
+        />
       </div>
     );
   }

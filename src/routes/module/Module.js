@@ -1,3 +1,4 @@
+import TextField from 'material-ui/TextField';
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
@@ -14,6 +15,7 @@ class Module extends Component {
     fetchModules: PropTypes.func.isRequired,
     isInitialized: PropTypes.bool.isRequired,
     modules: PropTypes.array.isRequired,
+    searchIndex: PropTypes.object.isRequired,
     semester: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
   }
@@ -22,7 +24,13 @@ class Module extends Component {
     setTitle: PropTypes.func.isRequired,
   }
 
-  componentDidMount() {
+  static search = null
+
+  state = {
+    searchTerm: '',
+  }
+
+  componentDidMount = () => {
     const {
       year,
       semester,
@@ -30,26 +38,51 @@ class Module extends Component {
     if (!this.props.isInitialized) this.props.fetchModules({ year, semester });
   }
 
+  getFilteredModules = () => {
+    const searchTerm = this.state.searchTerm;
+    const { modules, searchIndex } = this.props;
+
+    if (!searchTerm || searchTerm === '' || searchIndex === null) return modules;
+    return searchIndex.search(searchTerm);
+  };
+
+  handleUpdateInput = (e) => (this.setState({ searchTerm: e.target.value }))
+
   render() {
     this.context.setTitle(title);
 
     return (
-      <ModuleList modules={this.props.modules} />
+      <div>
+        <div style={{ position: 'fixed', zIndex: 10, left: '15px', right: '15px' }}>
+          <TextField
+            floatingLabelText="Module Search"
+            fullWidth
+            hintText="e.g. CS1010"
+            onChange={this.handleUpdateInput}
+          />
+        </div>
+        <div style={{ height: '70px' }} />
+        <ModuleList modules={this.getFilteredModules()} />
+      </div>
     );
   }
 }
 
 const mapState = (state) => {
-  const { selection, module } = state;
+  const { selection, module, searchIndex } = state;
   const { year, semester } = selection;
   const semesterModuleList = (module.data
     && module.data[year]
     && module.data[year][semester]) || [];
+  const idx = (searchIndex.data
+    && searchIndex.data[year]
+    && searchIndex.data[year][semester]) || null;
 
   return {
     isFetching: module.isFetching,
     isInitialized: module.isInitialized,
     modules: semesterModuleList,
+    searchIndex: idx,
     semester,
     year,
   };

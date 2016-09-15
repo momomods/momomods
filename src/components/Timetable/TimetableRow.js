@@ -10,7 +10,7 @@ import s from './timetable.scss';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
-const generateCells = (lessons) => {
+const generateCells = (lessons, onLessonChange) => {
   const lessonsGroupedByStartTime = _(lessons).groupBy('StartTime').mapValues((value) => (
     value[0]
   )).value();
@@ -25,7 +25,12 @@ const generateCells = (lessons) => {
       const lessonStartIndex = i;
       const lessonEndIndex = convertTimeToIndex(lesson.EndTime);
       const width = lessonEndIndex - lessonStartIndex;
-      cells.push(<TimetableCell key={i} width={width} lesson={lesson} />);
+      cells.push(
+        <TimetableCell 
+          key={i}
+          width={width}
+          lesson={lesson}
+          onLessonChange={onLessonChange}/>);
       i += (width - 1);
     } else {
       cells.push(<TimetableCell key={i} />);
@@ -37,13 +42,14 @@ const generateCells = (lessons) => {
 const TimetableRow = (props) => (
   <div className="timetable-day-row">
     <div className="timetable-day-cell timetable-cell"><span>{props.day}</span></div>
-    {generateCells(props.lessons)}
+    {generateCells(props.lessons, props.onLessonChange)}
   </div>
 );
 
 TimetableRow.propTypes = {
   day: PropTypes.string,
   lessons: PropTypes.array,
+  onLessonChange: PropTypes.func,
 };
 
 export default withStyles(s)(TimetableRow);

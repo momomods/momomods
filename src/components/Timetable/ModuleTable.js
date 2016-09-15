@@ -1,27 +1,33 @@
 import React, { PropTypes } from 'react';
+import { Table, TableBody, TableRow, TableRowColumn } from 'material-ui/Table';
 
 const ModuleTable = ({
   modules,
   removeModule,
 }) => (
-  <table className="table table-bordered">
-    <tbody>
+  <Table
+    selectable={false}
+    style={{ tableLayout: 'auto' }}
+  >
+    <TableBody
+      displayRowCheckbox={false}
+    >
       {modules.map(module =>
-        <tr key={module.ModuleCode}>
-          <td>{module.ModuleCode}</td>
-          <td>{module.ModuleTitle}</td>
-          <td>
+        <TableRow key={module.ModuleCode}>
+          <TableRowColumn>{module.ModuleCode}</TableRowColumn>
+          <TableRowColumn>{module.ModuleTitle}</TableRowColumn>
+          <TableRowColumn>
             <button
               className="btn btn-sm btn-danger"
               onClick={() => removeModule(module.ModuleCode)}
             >
               Remove
             </button>
-          </td>
-        </tr>
+          </TableRowColumn>
+        </TableRow>
       )}
-    </tbody>
-  </table>
+    </TableBody>
+  </Table>
 );
 
 ModuleTable.propTypes = {

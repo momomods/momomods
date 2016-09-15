@@ -2,6 +2,7 @@
 import group from './group';
 import module from './module';
 import runtime from './runtime';
+import searchIndex from './searchIndex';
 import timetable from './timetable';
 import user from './user';
 
@@ -24,6 +25,7 @@ export default function (state = {}, action) {
     group: group(state.group, action),
     module: module(state.module, action),
     runtime: runtime(state.runtime, action),
+    searchIndex: searchIndex(state.searchIndex, action),
     timetable: timetable(state.timetable, action),
     user: user(state.user, action),
     entities: entities(state.entities, action),
