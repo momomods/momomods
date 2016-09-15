@@ -18,9 +18,7 @@ import s from './ModuleList.css';
 class ModuleList extends Component {
   state = {
     isDialogOpen: false,
-    selectedModule: {title: 'None'},
-    dialogTitle: '',
-    open: false,
+    selectedModule: {},
     startIndex: 0,
   }
 
@@ -36,7 +34,7 @@ class ModuleList extends Component {
   };
 
   handleAddToTimetable = (module) => {
-      console.log('add to timetable ' + module.code);
+    console.log('add to timetable ' + module.code);
   }
 
   handleUpdateInput = (value) => {
@@ -52,43 +50,33 @@ class ModuleList extends Component {
   next = () => {
     const { startIndex } = this.state;
     if (startIndex + 10 > this.props.modules.length) return;
-    this.setState({startIndex: startIndex + 10})
+    this.setState({ startIndex: startIndex + 10 });
   }
 
   prev = () => {
     const { startIndex } = this.state;
     if (startIndex - 10 < 0) return;
-    this.setState({startIndex: startIndex - 10})
+    this.setState({ startIndex: startIndex - 10 });
   }
 
   render() {
-    const { dialogTitle, open, startIndex } = this.state;
+    const { isDialogOpen, selectedModule, startIndex } = this.state;
     const { modules } = this.props;
-    // Actions shown on the dialog
-    const actions = [
-      <FlatButton
-        label="Add to Timetable"
-        primary
-        onTouchTap={this.handleClose}
-      />,
-    ];
 
     // Create the list of module cells
-    const listItems = modules.slice(startIndex, startIndex + 10).map((module, i) => {
-      return (
-        <ListItem
-          key={module.id}
-          primaryText={module.code}
-          secondaryText={module.name}
-          rightIconButton={
-            <IconButton onClick={(e) => this.handleListButtonTouch(module, e)}>
-              <ContentAddBox color={lightGreen500} />
-            </IconButton>
-          }
-          onClick={() => this.handleOpen(module)}
-        />
-      );
-    }, this);
+    const listItems = modules.slice(startIndex, startIndex + 10).map((module) => (
+      <ListItem
+        key={module.id}
+        primaryText={module.code}
+        secondaryText={module.name}
+        rightIconButton={
+          <IconButton onClick={(e) => this.handleListButtonTouch(module, e)}>
+            <ContentAddBox color={lightGreen500} />
+          </IconButton>
+        }
+        onClick={() => this.handleOpen(module)}
+      />
+    ));
 
     return (
       <div>
@@ -109,15 +97,20 @@ class ModuleList extends Component {
           <FlatButton
             icon={<ChevronLeft />}
             onTouchTap={this.prev}
-            disabled={this.state.startIndex < 10}
+            disabled={startIndex < 10}
           />
           <FlatButton
             icon={<ChevronRight />}
             onTouchTap={this.next}
-            disabled={this.state.startIndex + 10 >= this.props.modules.length}
+            disabled={startIndex + 10 >= this.props.modules.length}
           />
         </div>
-        <ModuleListDialog module={this.state.selectedModule} open={this.state.isDialogOpen} handleAddToTimetable={this.handleAddToTimetable} handleClose={this.handleClose}/>
+        <ModuleListDialog
+          module={selectedModule}
+          open={isDialogOpen}
+          handleAddToTimetable={this.handleAddToTimetable}
+          handleClose={this.handleClose}
+        />
       </div>
     );
   }
