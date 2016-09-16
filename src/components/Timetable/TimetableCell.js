@@ -16,7 +16,8 @@ const TimetableCell = (props) => {
 
   if (lesson) {
     timetableCell = (
-      <div className={classnames("timetable-module-cell", {
+      <div
+        className={classnames('timetable-module-cell', {
           'is-cell-modifiable': lesson.isModifiable,
           'is-modifiable': lesson.isModifiable,
           'is-available': lesson.isAvailable,
@@ -57,13 +58,13 @@ TimetableCell.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { timetable, selection, module } = state;
+  const { selection } = state;
   const { year, semester } = selection;
 
   return {
-    year: year,
-    semester: semester,
-  }
+    year,
+    semester,
+  };
 }
 
 export default connect(mapStateToProps)(withStyles(s)(TimetableCell));

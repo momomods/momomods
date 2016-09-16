@@ -107,7 +107,6 @@ export function removeModule({ year, semester, code }) {
  * @param {string} activeLesson, the lesson being modified
  */
 export function changeLesson({ year, semester, activeLesson }) {
-  console.log('clicked', {year, semester, activeLesson});
   return {
     type: CHANGE_LESSON,
     payload: {
@@ -126,7 +125,6 @@ export function changeLesson({ year, semester, activeLesson }) {
  * @param {string} activeLesson, the new lesson selected
  */
 export function changeToLesson({ year, semester, activeLesson }) {
-  console.log('clicked changed to', {year, semester, activeLesson});
   return {
     type: CHANGE_TO_LESSON,
     payload: {
@@ -141,7 +139,6 @@ export function changeToLesson({ year, semester, activeLesson }) {
  * Cancel interaction to change lesson
  */
 export function cancelChangeLesson() {
-  console.log('cancelled');
   return {
     type: CANCEL_CHANGE_LESSON,
   };

@@ -4,7 +4,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
-import { arrangeLessonsForWeek } from '../../utils/modules';
 import {
   addModule,
   removeModule,
@@ -84,14 +83,14 @@ class TimetableContainer extends Component {
 
     const changeLessonHelper = (lesson) => {
       if (lesson.isAvailable) {
-        this.props.changeToLesson({year, semester, activeLesson: lesson});
+        this.props.changeToLesson({ year, semester, activeLesson: lesson });
       } else if (lesson.isActive) {
         this.props.cancelChangeLesson();
       } else {
         // begin selection of module
-        this.props.changeLesson({activeLesson: lesson});
+        this.props.changeLesson({ activeLesson: lesson });
       }
-    }
+    };
 
     const moduleTableModules = Object.values(
       timetableForYearAndSem.reduce(
@@ -106,18 +105,18 @@ class TimetableContainer extends Component {
 
       const moduleTimetable = JSON.parse(activeLesson.moduleDetail.timetable || null);
       const lessons = lessonsForLessonType(moduleTimetable, activeLesson.LessonType)
-        .map((lesson) => {
+        .map(lesson => (
           // Inject module detail in
-          return { ...lesson, moduleDetail: moduleDetail, ModuleCode: moduleCode };
-        });
+          { ...lesson, moduleDetail, ModuleCode: moduleCode }
+        ));
       const otherAvailableLessons = lessons
-        .filter((lesson) => {
+        .filter(lesson => (
           // Exclude the lesson being modified.
-          return !isSameClass(lesson, activeLesson);
-        })
-        .map((lesson) => {
-          return { ...lesson, isAvailable: true };
-        });
+          !isSameClass(lesson, activeLesson)
+        ))
+        .map((lesson) => (
+          { ...lesson, isAvailable: true }
+        ));
       timetableLessons = timetableLessons.map((lesson) => {
         // Identify the current lesson being modified.
         if (isSameClass(lesson, activeLesson)) {
@@ -129,12 +128,17 @@ class TimetableContainer extends Component {
     }
 
     return (
-      <div onClick={() => {
-        if (this.props.activeLesson) {
-          // this.props.cancelChangeLesson();
-        }
-        }}>
-        <Timetable lessons={timetableLessons} timetable={timetable} onLessonChange={changeLessonHelper} />
+      <div
+        onClick={() => {
+            if (this.props.activeLesson) {
+              // this.props.cancelChangeLesson();
+            }
+          }}>
+        <Timetable 
+          lessons={timetableLessons}
+          timetable={timetable}
+          onLessonChange={changeLessonHelper}
+        />
         <ModuleTable
           modules={moduleTableModules}
           removeModule={(code) => this.props.removeModule({ year, semester, code })}
@@ -171,6 +175,7 @@ TimetableContainer.propTypes = {
   addModule: PropTypes.func,
   removeModule: PropTypes.func,
   changeLesson: PropTypes.func,
+  changeToLesson: PropTypes.func,
   cancelChangeLesson: PropTypes.func,
   timetable: PropTypes.object,
   isInitialized: PropTypes.bool,
