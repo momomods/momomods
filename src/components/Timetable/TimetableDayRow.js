@@ -9,12 +9,12 @@ const TimetableDayRow = (props) => (
   <div className="timetable-day">
     {props.dayLessonRows ?
       props.dayLessonRows.map((dayLessonRow, i) => (
-        <TimetableRow 
+        <TimetableRow
           day={i === 0 ? props.day : ''}
           key={i}
           lessons={dayLessonRow}
-          onLessonChange={props.onLessonChange} />
-      )) : <TimetableRow day={props.day} />
+          onLessonChange={props.onLessonChange}
+        />)) : <TimetableRow day={props.day} />
     }
   </div>
 );

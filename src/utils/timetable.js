@@ -21,8 +21,7 @@ export const LESSON_TYPE_ABBREV = {
 
 // Filters a flat array of lessons and returns the lessons corresponding to lessonType.
 export function lessonsForLessonType(lessons, lessonType) {
-  console.log(lessons, lessonType);
-  return _.filter(lessons, (lesson) => {
-    return lesson.LessonType === lessonType;
-  });
+  return _.filter(lessons, (lesson) => (
+    lesson.LessonType === lessonType
+  ));
 }

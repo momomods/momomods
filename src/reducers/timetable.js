@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {
   ADD_MODULE,
   REMOVE_MODULE,
@@ -146,15 +145,10 @@ export default function timetable(state = defaultState, action) {
         activeLesson,
       } = action.payload;
 
-      const moduleDetail = activeLesson.moduleDetail;
-      const lessons = activeLesson.moduleDetail.timetable;
-      const lessonType = activeLesson.LessonType;
-      const classNo = activeLesson.ClassNo;
-
       // remove old class
-      state.data[year][semester] = state.data[year][semester].filter((m) => {
-        return !(m.ModuleCode === state.activeLesson.ModuleCode && m.LessonType === state.activeLesson.LessonType);
-      });
+      state.data[year][semester] = state.data[year][semester].filter(m =>
+        !(m.ModuleCode === state.activeLesson.ModuleCode && m.LessonType === state.activeLesson.LessonType)
+      );
       // remove isAvailable status and add in selected class
       activeLesson.isAvailable = false;
       state.data[year][semester].push(activeLesson);
@@ -166,21 +160,14 @@ export default function timetable(state = defaultState, action) {
       };
     }
     case `${CHANGE_LESSON}`: {
-      const {
-        year,
-        semester,
-        activeLesson,
-      } = action.payload;
+      const { activeLesson } = action.payload;
 
       return {
         ...state,
-        activeLesson: activeLesson,
+        activeLesson,
       };
     }
     case `${CANCEL_CHANGE_LESSON}`: {
-
-      console.log('cancelled');
-
       return {
         ...state,
         activeLesson: null,

@@ -26,11 +26,12 @@ const generateCells = (lessons, onLessonChange) => {
       const lessonEndIndex = convertTimeToIndex(lesson.EndTime);
       const width = lessonEndIndex - lessonStartIndex;
       cells.push(
-        <TimetableCell 
+        <TimetableCell
           key={i}
           width={width}
           lesson={lesson}
-          onLessonChange={onLessonChange}/>);
+          onLessonChange={onLessonChange}
+        />);
       i += (width - 1);
     } else {
       cells.push(<TimetableCell key={i} />);

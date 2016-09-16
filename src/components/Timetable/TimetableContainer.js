@@ -89,7 +89,7 @@ class TimetableContainer extends Component {
         this.props.cancelChangeLesson();
       } else {
         // begin selection of module
-        this.props.changeLesson({year, semester, activeLesson: lesson});
+        this.props.changeLesson({activeLesson: lesson});
       }
     }
 
