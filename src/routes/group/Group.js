@@ -103,7 +103,7 @@ class Group extends Component {
                   />
               </ToolbarGroup>
           </Toolbar>
-          <div style={{ height: '70px' }} />
+          <div style={{ height: '56px' }} />
           <TimetableContainer />
       </div>
     );

@@ -19,7 +19,7 @@ class Header extends Component {
             iconElementRight={<FlatButton label="Login" />}
             zDepth={0}
           />
-          <Navigation />
+          <Navigation activeTab={this.props.activeTab} />
         </div>
         <div style={{ height: '112px', width: '100%' }} />
       </div>

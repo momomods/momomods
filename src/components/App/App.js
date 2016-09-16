@@ -38,6 +38,16 @@ class App extends Component {
     setMeta: PropTypes.func.isRequired,
   };
 
+  constructor(props) {
+      super(props);
+
+      this.getActiveTabFromPage = this.getActiveTabFromPage.bind(this);
+
+      this.state = {
+          activeTab: '',
+      }
+  }
+
   getChildContext() {
     const context = this.props.context;
     return {
@@ -57,6 +67,23 @@ class App extends Component {
     this.removeCss();
   }
 
+  getActiveTabFromPage(page) {
+      var activeTab = '';
+      switch(page.type.ComposedComponent.displayName) {
+          case 'TimetablePage':
+                activeTab = 'Main';
+                break;
+          case 'Module':
+                activeTab = 'Mods';
+                break;
+          case 'Group':
+                activeTab = 'Meet';
+                break;
+      }
+
+      return activeTab;
+  }
+
   render() {
     if (this.props.error) {
       return this.props.children;
@@ -67,7 +94,7 @@ class App extends Component {
       <Provider store={store}>
         <MuiThemeProvider>
           <div>
-            <Header title="mods+" />
+            <Header title="mods+" activeTab={this.getActiveTabFromPage(this.props.children)} />
             <div>
               { this.props.children }
             </div>
