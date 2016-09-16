@@ -162,11 +162,9 @@ function run() {
   });
 
   // it's buggy right now so don't register
-  // if ('serviceWorker' in navigator) {
-  //   navigator.serviceWorker
-  //     .register('./service-worker.js')
-  //     .then(() => console.log('Service Worker Registered')); // eslint-disable-line
-  // }
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js');
+  }
 }
 
 // Run the application when both DOM is ready and page content is loaded

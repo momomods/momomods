@@ -1,53 +1,19 @@
 /* eslint-disable */
+// TODO: do we need to manually clear cache when we upgrade cacheName?
 var cacheName = 'modsplus-1';
-var filesToCache = [
-  '/',
-  '/timetable',
-  '/module',
-  '/group',
-  '/material.js',
-  '/material.css',
-  '/assets/main.js',
-  '/graphql',
-];
+importScripts('/sw-toolbox.js');
 
-self.addEventListener('install', function(e) {
-  console.log('[ServiceWorker] Install');
-  e.waitUntil(
-    caches.open(cacheName).then(function(cache) {
-      console.log('[ServiceWorker] Caching app shell');
-      return cache.addAll(filesToCache);
-    })
-  );
-});
+toolbox.options.debug = true;
+toolbox.precache(['/manifest.json', '/assets/main.js']);
 
-self.addEventListener('activate', function(e) {
-  console.log('[ServiceWorker] Activate');
-  e.waitUntil(
-    caches.keys().then(function(keyList) {
-      return Promise.all(keyList.map(function(key) {
-        if (key !== cacheName) {
-          console.log('[ServiceWorker] Removing old cache', key);
-          return caches.delete(key);
-        }
-      }));
-    })
-  );
-  return self.clients.claim();
-});
+// TODO: think about how we want to handle other routes
+// toolbox.router.default = toolbox.networkOnly;
 
-self.addEventListener('fetch', function(e) {
-  console.log('[ServiceWorker] Fetch', e.request.url);
-  if (e.request.url.indexOf('main.js') > -1 ) {
-    e.respondWith(caches.match('/assets/main.js').then(function(response) {
-      return response || fetch(e.request);
-    }))
-  } else {
-    e.respondWith(
-      caches.match(e.request).then(function(response) {
-        return response || fetch(e.request);
-      })
-    );
-  }
-});
-/* eslint-enable */
+// we use query busting to fetch new main.js
+toolbox.router.get('/assets/main.js', toolbox.cacheFirst);
+
+toolbox.router.get('/manifest.json', toolbox.networkFirst);
+toolbox.router.get('/graphql', toolbox.networkFirst);
+toolbox.router.get('/api', toolbox.networkFirst);
+toolbox.router.get('/', toolbox.networkFirst);
+// /* eslint-enable */

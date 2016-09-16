@@ -23,6 +23,7 @@ async function copy({ watch } = {}) {
     ncp('src/public', 'build/public'),
     ncp('src/content', 'build/content'),
     ncp('src/service-worker.js', 'build/public/service-worker.js'),
+    ncp('node_modules/sw-toolbox/sw-toolbox.js', 'build/public/sw-toolbox.js'),
   ]);
 
   await fs.writeFile('./build/package.json', JSON.stringify({
