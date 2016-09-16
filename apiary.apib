@@ -12,12 +12,25 @@ MoMoMods helps you plan your timetable with friends!
 + Response 200 (application/json)
         
         {
+            "id": 1,
+            "userId: 1,
+            year: "2016-2017",
+            semester: 1,
+            createdAt: "2016-09-12T08:51:25.000Z",
+            updatedAt: "2016-09-12T08:51:25.000Z",
             "last_synced": "2016-09-08T00:09:35+00:00",
-            "data": [
+            "timetableModules": [
                 {
-                    "module_code": "CS1010",
-                    "lesson_type": "sectional",
-                    "class_number": "1"
+                    id: 1,
+                    timetableId: 1,
+                    moduleId: 1,
+                    lessonType: "Lecture",
+                    classNumber: "1",
+                    module:{
+                        "module_code": "CS1010",
+                        "lesson_type": "sectional",
+                        "class_number": "1"
+                    }
                 }
             ]
         }
@@ -67,27 +80,46 @@ The response is the complete timetable for year and sem with the module added.
             }
         ]
         
-## Group Collection [/{year}/{sem}/group]
+## Team Collection [/{year}/{sem}/team]
 
-### List groups I belong to [GET]
+### List teams I belong to [GET]
 
 + Response 200 (application/json)
 
         [
             {
-                "group_id": "1",
-                "group_name": "3216 assignment 3",
-                "members": ["1", "2"]
+                "createdBy": {
+                    "userId": "1",
+                    "name": "Niko"
+                },
+                "teamId": "1",
+                "teamName": "3216 assignment 3",
+                "members": [
+                    {"userId": "1", "name": "Niko"},
+                    {"userId": "2", "name": "Mich"}
+                ]
+            },
+            {
+                "createdBy": {
+                    "userId": "3",
+                    "name": "Zhi An"
+                },
+                "teamId": "2",
+                "teamName": "3216 final project",
+                "members": [
+                    {"userId": "1", "name": "Niko"},
+                    {"userId": "3", "name": "Zhi An"}
+                ]
             }
         ]
 
-### Create a new group [POST]
+### Create a new team [POST]
 
 + Request (application/json)
 
         [
             {
-                "group_name": "3216 final project"
+                "teamName": "3216 final project"
             }
         ]
 
@@ -95,9 +127,15 @@ The response is the complete timetable for year and sem with the module added.
 
         [
             {
-                "group_id": "3",
-                "group_name": "3216 final project",
-                "members": ["1"]
+                "createdBy": {
+                    "userId": "1",
+                    "name": "Niko"
+                },
+                "teamId": "3",
+                "teamName": "3216 final project",
+                "members": [
+                    {"userId": "1", "name": "Niko"},
+                ]
             }
         ]
         
