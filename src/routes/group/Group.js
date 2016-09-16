@@ -40,6 +40,8 @@ class Group extends Component {
   constructor(props) {
       super(props);
 
+      this.handleChange = this.handleChange.bind(this);
+
       this.state = {
           groupShown: 0,
           groups: [{
@@ -62,8 +64,9 @@ class Group extends Component {
     if (!this.props.isInitialized) this.props.fetchGroups();
   }
 
-  handleChange() {
-      console.log('changed to ' + this.state.groupShown);
+  handleChange(event, key, value) {
+      console.log('changed to ' + value);
+      this.setState({groupShown: value});
   }
 
   render() {
@@ -92,13 +95,11 @@ class Group extends Component {
               </ToolbarGroup>
               <ToolbarSeparator />
               <ToolbarGroup lastChild={true} className={s.groupToolbarGroup}>
-                  <div className={s.groupToolbarTitle}>Meet on </div>
                   <DatePicker
                       className={s.groupToolbarDatePicker}
                       hintText="Meeting Date"
                       autoOk={true}
                       defaultDate={this.state.dateToday}
-                      formateDate={this.formatDate}
                   />
               </ToolbarGroup>
           </Toolbar>
