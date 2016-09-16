@@ -103,6 +103,13 @@ export default function timetable(state = defaultState, action) {
           moduleDetail: module,
         }));
 
+      // ensure timetable data is initialized, it could be null
+      // if the user entered the app via the /module route,
+      // because we only fetch timetable (and initialize timetable state)
+      // when user enters app via /
+      state.data[year] = state.data[year] || {};
+      state.data[year][semester] = state.data[year][semester] || [];
+
       // for each lesson type, push a class onto timetable
       Object.keys(lessonTypeToX).forEach(k => (
         state.data[year][semester].push(lessonTypeToX[k])

@@ -32,7 +32,8 @@ class ModuleList extends Component {
   };
 
   handleAddToTimetable = (module) => {
-    console.log('add to timetable ' + module.code);
+    this.props.addModule(module);
+    this.handleClose();
   }
 
   handleUpdateInput = (value) => {
@@ -68,11 +69,11 @@ class ModuleList extends Component {
         primaryText={module.code}
         secondaryText={module.name}
         rightIconButton={
-          <IconButton onClick={(e) => this.handleListButtonTouch(module, e)}>
+          <IconButton onTouchTap={(e) => this.handleListButtonTouch(module, e)}>
             <ContentAddBox color={lightGreen500} />
           </IconButton>
         }
-        onClick={() => this.handleOpen(module)}
+        onTouchTap={() => this.handleOpen(module)}
       />
     ));
 
