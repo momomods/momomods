@@ -1,11 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import ContentAddBox from 'material-ui/svg-icons/content/add-box';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import { lightGreen500 } from 'material-ui/styles/colors';
 
 import s from './ModuleListDialog.css';
 
@@ -18,25 +15,30 @@ import s from './ModuleListDialog.css';
 class ModuleListDialog extends Component {
   displayName = 'ModuleListDialog'
 
-  handleAdd = () => this.props.handleAddToTimetable(this.props.module)
-
   render() {
-    let {
+    const {
       handleAddToTimetable,
       handleClose,
       module,
       open,
     } = this.props;
+
     const title = `${module.code} ${module.title}`;
 
-    let actions = []
+    const actions = [
+      <FlatButton
+        label="Close"
+        onTouchTap={() => handleClose(module)}
+      />,
+    ];
+
     if (handleAddToTimetable) {
-      actions = [
+      actions.push(
         <FlatButton
           label="Add to Timetable"
           primary
           onTouchTap={() => handleAddToTimetable(module)}
-        />];
+        />);
     }
 
     return (
