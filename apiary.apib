@@ -95,8 +95,16 @@ The response is the complete timetable for year and sem with the module added.
                 "teamId": "1",
                 "teamName": "3216 assignment 3",
                 "members": [
-                    {"userId": "1", "name": "Niko"},
-                    {"userId": "2", "name": "Mich"}
+                    {
+                        "userId": "1", 
+                        "name": "Niko",
+                        "acceptInvitation": 1
+                    },
+                    {
+                        "userId": "2", 
+                        "name": "Mich",
+                        "acceptInvitation": 0
+                    }
                 ]
             },
             {
@@ -107,8 +115,16 @@ The response is the complete timetable for year and sem with the module added.
                 "teamId": "2",
                 "teamName": "3216 final project",
                 "members": [
-                    {"userId": "1", "name": "Niko"},
-                    {"userId": "3", "name": "Zhi An"}
+                    {
+                        "userId": "1", 
+                        "name": "Niko",
+                        "acceptInvitation": 1
+                    },
+                    {
+                        "userId": "3", 
+                        "name": "Zhi An",
+                        "acceptInvitation": 1
+                    }
                 ]
             }
         ]
@@ -125,50 +141,108 @@ The response is the complete timetable for year and sem with the module added.
 
 + Response 200 (application/json)
 
-        [
-            {
-                "createdBy": {
-                    "userId": "1",
-                    "name": "Niko"
+        {
+            "createdBy": {
+                "userId": "1",
+                "name": "Niko"
+            },
+            "teamId": "3",
+            "teamName": "3216 final project",
+            "members": [
+                {
+                    "userId": "1", 
+                    "name": "Niko",
+                    "acceptInvitation": 1
                 },
-                "teamId": "3",
-                "teamName": "3216 final project",
-                "members": [
-                    {"userId": "1", "name": "Niko"},
-                ]
-            }
-        ]
+            ]
+        }
         
-## Group [/{year}/{sem}/group/{id}]
+## Team [/team/{id}]
 
-### Get group info [GET]
+### Get team info [GET]
 
 + Response 200 (application/json)
 
         {
-            "group_id": "{id}",
-            "group_name": "3216 final project",
-            "members": ["1", "2"]
+            "createdBy": {
+                "userId": "3",
+                "name": "Zhi An"
+            },
+            "teamId": "{id}",
+            "teamName": "3216 final project",
+            "year": "2016-2017",
+            "semester": "1",
+            "members": [
+                {
+                    "userId": "1", 
+                    "name": "Niko",
+                    "acceptInvitation": 1
+                },
+                {
+                    "userId": "3", 
+                    "name": "Zhi An",
+                    "acceptInvitation": 0
+                }
+            ]
         }
 
-### Add members to group [POST]
+### Invite new users to team [POST]
 
 + Request (application/json)
 
-        {
-            "members": ["2", "3"]
-        }
+        [ "1", "2" ]
 
 + Response 200 (application/json)
 
-        [
-            {
-                "group_id": "3",
-                "group_name": "3216 final project",
-                "members": ["1", "2", "3"]
-            }
-        ]
-        
+        {
+            "createdBy": {
+                "userId": "3",
+                "name": "Zhi An"
+            },
+            "teamId": "{id}",
+            "teamName": "3216 final project",
+            "year": "2016-2017",
+            "semester": "1",
+            "addedMembers": [
+                {
+                    "userId": "1", 
+                    "name": "Niko",
+                    "acceptInvitation": 0
+                },
+                {
+                    "userId": "2", 
+                    "name": "Mich",
+                    "acceptInvitation": 0
+                }
+            ]
+        }
+
+### Accept invitation to team [PUT]
+
++ Request (application/json)
+
+
+
++ Response 200 (application/json)
+
+        {
+            "teamId": "{id}",
+            "userId": "1",
+            "acceptInvitation": 1
+        }
+
+### Reject invitation to team / Remove yourself from team [DELETE]
+
++ Request (application/json)
+
+
+
++ Response 200 (application/json)
+
+        {
+            "removed": true
+        }
+
 ## Friends [/friends]
 
 ### Get connected friends [GET]
