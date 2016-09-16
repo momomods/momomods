@@ -9,6 +9,7 @@ import {
   addModule,
   removeModule,
   changeLesson,
+  changeToLesson,
   cancelChangeLesson,
 
   fetchTimetable,
@@ -83,13 +84,11 @@ class TimetableContainer extends Component {
 
     const changeLessonHelper = (lesson) => {
       if (lesson.isAvailable) {
-        // TODO: Change to this lesson
-        console.log('lesson available');
+        this.props.changeToLesson({year, semester, activeLesson: lesson});
       } else if (lesson.isActive) {
-        console.log('isActive');
-        // this.props.cancelChangeLesson();
+        this.props.cancelChangeLesson();
       } else {
-        console.log('third case');
+        // begin selection of module
         this.props.changeLesson({year, semester, activeLesson: lesson});
       }
     }
@@ -102,13 +101,14 @@ class TimetableContainer extends Component {
 
     if (this.props.activeLesson) {
       const activeLesson = this.props.activeLesson;
+      const moduleDetail = activeLesson.moduleDetail;
       const moduleCode = activeLesson.ModuleCode;
 
       const moduleTimetable = JSON.parse(activeLesson.moduleDetail.timetable || null);
       const lessons = lessonsForLessonType(moduleTimetable, activeLesson.LessonType)
         .map((lesson) => {
-          // Inject module code in
-          return { ...lesson, ModuleCode: activeLesson.ModuleCode };
+          // Inject module detail in
+          return { ...lesson, moduleDetail: moduleDetail, ModuleCode: moduleCode };
         });
       const otherAvailableLessons = lessons
         .filter((lesson) => {
@@ -230,6 +230,7 @@ const mapDispatch = {
   addModule,
   removeModule,
   changeLesson,
+  changeToLesson,
   cancelChangeLesson,
   saveTimetable,
   submitTimetable,

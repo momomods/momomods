@@ -4,6 +4,7 @@ import {
   ADD_MODULE,
   REMOVE_MODULE,
   CHANGE_LESSON,
+  CHANGE_TO_LESSON,
   CANCEL_CHANGE_LESSON,
 
   FETCH_TIMETABLE,
@@ -103,14 +104,31 @@ export function removeModule({ year, semester, code }) {
  *
  * @param {string} year, in the format of "YYYY-YYYY"
  * @param {string} semester, "1", "2", etc.
- * @param {string} code, module code
- * @param {string} lessonType, type of lesson
- * @param {string} classNo, class number
+ * @param {string} activeLesson, the lesson being modified
  */
 export function changeLesson({ year, semester, activeLesson }) {
   console.log('clicked', {year, semester, activeLesson});
   return {
     type: CHANGE_LESSON,
+    payload: {
+      year,
+      semester,
+      activeLesson,
+    },
+  };
+}
+
+/**
+ * Change a class in a module in a timetable
+ *
+ * @param {string} year, in the format of "YYYY-YYYY"
+ * @param {string} semester, "1", "2", etc.
+ * @param {string} activeLesson, the new lesson selected
+ */
+export function changeToLesson({ year, semester, activeLesson }) {
+  console.log('clicked changed to', {year, semester, activeLesson});
+  return {
+    type: CHANGE_TO_LESSON,
     payload: {
       year,
       semester,
