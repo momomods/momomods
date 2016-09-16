@@ -161,7 +161,6 @@ function run() {
     }
   });
 
-  // it's buggy right now so don't register
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js');
   }

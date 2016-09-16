@@ -3,7 +3,7 @@
 var cacheName = 'modsplus-1';
 importScripts('/sw-toolbox.js');
 
-toolbox.options.debug = true;
+// toolbox.options.debug = true;
 toolbox.precache(['/manifest.json', '/assets/main.js']);
 
 // TODO: think about how we want to handle other routes
