@@ -17,3 +17,7 @@ CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 -- Insert TimetableModules
 INSERT INTO TimetableModule (timetableId, moduleId, lessonType, classNumber, createdAt, updatedAt) VALUES 
 (1,1,"Lecture",1,CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO Team (name, year, semester, createdAt, updatedAt) VALUES ('group1', 2016, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO TeamUser (groupId, userId, createdAt, updatedAt) VALUES (1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

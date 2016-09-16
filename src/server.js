@@ -33,10 +33,12 @@ import { logUserIn } from './actions/user';
 import { port, auth } from './config';
 
 import models, {
-  // User as UserModel,
+  User as UserModel,
   Timetable as TimetableModel,
   TimetableModule as TimetableModuleModel,
   Module as ModuleModel,
+  TeamUser as TeamUserModel,
+  Team as TeamModel,
 } from './data/models';
 
 const app = express();
@@ -105,6 +107,263 @@ app.get('/logout', (req, res) => {
 });
 
 // APIs
+
+app.route('/api/:year/:semester/team')
+.get((req, res) => {
+  const userId = 1; // TO CHANGE
+  const year = req.params.year;
+  const semester = req.params.semester;
+  TeamUserModel.findAll({
+    where: {
+      userId,
+    },
+    include: [{
+      model: TeamModel,
+      as: 'team',
+      where: {
+        year,
+        semester,
+      },
+      include: [{
+        model: TeamUserModel,
+        as: 'users',
+        include: [{
+          model: UserModel,
+          as: 'user',
+        }],
+      }, {
+        model: UserModel,
+        as: 'creator',
+      }],
+    }],
+  }).then((result) => {
+    let finalResult = [];
+    for (let i = 0; i < result.length; ++i) {
+      let members = [];
+      for (let j = 0; j < result[i].team.users.length; ++j) {
+        members.push({
+          userId: result[i].team.users[j].userId,
+          name: result[i].team.users[j].user.name,
+          acceptInvitation: result[i].team.users[j].acceptInvitation,
+        });
+      }
+      finalResult.push({
+        createdBy: {
+          userId: result[i].team.creator.id,
+          name: result[i].team.creator.name,
+        },
+        teamId: result[i].teamId,
+        teamName: result[i].team.name,
+        members,
+      });
+    }
+    res.json(finalResult);
+  });
+})
+.post((req, res) => {
+  const userId = 1; // TO CHANGE
+  const year = req.params.year;
+  const semester = req.params.semester;
+  const name = req.body[0].teamName;
+  TeamModel.create({
+    createdBy: userId,
+    year,
+    semester,
+    name,
+  }).then((newTeam) => {
+    TeamUserModel.create({
+      userId,
+      teamId: newTeam.dataValues.id,
+      acceptInvitation: 1, // Creator of Team is automatically invited and accepted
+    }).then((newTeamUser) => {
+      UserModel.find({
+        where: {
+          id: userId,
+        },
+      }).then((creator) => {
+        res.json({
+          createdBy: {
+            userId,
+            name: creator.name,
+          },
+          teamId: newTeam.dataValues.id,
+          teamName: newTeam.dataValues.name,
+          members: [{
+            userId,
+            name: creator.name,
+            acceptInvitation: 1,
+          }],
+        });
+      });
+    });
+  });
+});
+
+app.route('/api/team/:id')
+.get((req, res) => {
+  const userId = 1; // TO CHANGE
+  const teamId = req.params.id;
+  TeamModel.find({
+    where: {
+      id: teamId,
+    },
+    include: [{
+      model: TeamUserModel,
+      as: 'users',
+      include: [{
+        model: UserModel,
+        as: 'user',
+      }],
+    }, {
+      model: UserModel,
+      as: 'creator',
+    }],
+  }).then((result) => {
+    // Shows even if invitation has not been accepted
+    let show = false;
+    let members = [];
+    for (let j = 0; j < result.users.length; ++j) {
+      if (userId === result.users[j].userId) {
+        show = true;
+      }
+      members.push({
+        userId: result.users[j].userId,
+        name: result.users[j].user.name,
+        acceptInvitation: result.users[j].acceptInvitation,
+      });
+    }
+    if (show) {
+      res.json({
+        createdBy: {
+          userId: result.creator.id,
+          name: result.creator.name,
+        },
+        year: result.year,
+        semester: result.semester,
+        teamId: result.id,
+        teamName: result.name,
+        members,
+      });
+    } else {
+      res.json({});
+    }
+  });
+})
+.post((req, res) => {
+  const userId = 1; // TO CHANGE
+  const teamId = req.params.id;
+  const usersToAdd = req.body;
+  TeamModel.find({
+    where: {
+      id: teamId,
+    },
+    include: [{
+      model: TeamUserModel,
+      as: 'users',
+      include: [{
+        model: UserModel,
+        as: 'user',
+      }],
+    }, {
+      model: UserModel,
+      as: 'creator',
+    }],
+  }).then((result) => {
+    let member = false;
+    for (let j = 0; j < result.users.length; ++j) {
+      if (userId === result.users[j].userId && result.users[j].acceptInvitation) {
+        member = true;
+      }
+      const index = usersToAdd.indexOf(result.users[j].userId.toString());
+      if (index > -1) {
+        usersToAdd.splice(index, 1);
+      }
+    }
+    if (member) {
+      let addedMembers = [];
+      const acceptInvitation = 0;
+      for (let i = 0; i < usersToAdd.length; ++i) {
+        TeamUserModel.create({
+          userId: parseInt(usersToAdd[i]),
+          teamId,
+          acceptInvitation, // Invitation not accepted yet
+        });
+      }
+      UserModel.findAll({
+        where: {
+          id: usersToAdd,
+        },
+      }).then((allNewUsers) => {
+        for (let j = 0; j < allNewUsers.length; ++j) {
+          addedMembers.push({
+            userId: allNewUsers[j].id,
+            name: allNewUsers[j].name,
+            acceptInvitation,
+          });
+        }
+        res.json({
+          createdBy: {
+            userId: result.creator.id,
+            name: result.creator.name,
+          },
+          year: result.year,
+          semester: result.semester,
+          teamId: result.id,
+          teamName: result.name,
+          addedMembers,
+        });
+      });
+    } else {
+      res.json({});
+    }
+  });
+})
+.put((req, res) => {
+  const userId = 1; // TO CHANGE
+  const teamId = req.params.id;
+  TeamUserModel.find({
+    where: {
+      teamId,
+      userId,
+    },
+  }).then((result) => {
+    if (result) {
+      const acceptInvitation = 1;
+      result.update({
+        acceptInvitation,
+      });
+      res.json({
+        userId,
+        teamId,
+        acceptInvitation,
+      });
+    } else {
+      res.json({});
+    }
+  });
+})
+.delete((req, res) => {
+  const userId = 1; // TO CHANGE
+  const teamId = req.params.id;
+  TeamUserModel.find({
+    where: {
+      teamId,
+      userId,
+    },
+  }).then((result) => {
+    if (result) {
+      result.destroy();
+      // TODO: delete group too if no more users in team
+      res.json({
+        destroy: true,
+      });
+    } else {
+      res.json({
+        destroy: false,
+      });
+    }
+  });
+});
 
 function updateTimetable(timetableId, year, semester, allNewMods) {
   for (let i = 0; i < allNewMods.length; ++i) {

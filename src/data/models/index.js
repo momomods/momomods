@@ -14,6 +14,46 @@ import UserProfile from './UserProfile';
 import Timetable from './Timetable';
 import TimetableModule from './TimetableModule';
 import Module from './Module';
+import Team from './Team';
+import TeamUser from './TeamUser';
+
+User.hasMany(TeamUser, {
+  foreignKey: 'userId',
+  as: 'teams',
+  onUpdate: 'cascade',
+  onDelete: 'cascade',
+});
+
+TeamUser.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'user',
+  targetKey: 'id',
+  onUpdate: 'NO ACTION',
+  onDelete: 'NO ACTION',
+});
+
+Team.hasMany(TeamUser, {
+  foreignKey: 'teamId',
+  as: 'users',
+  onUpdate: 'cascade',
+  onDelete: 'cascade',
+});
+
+Team.belongsTo(User, {
+  foreignKey: 'createdBy',
+  as: 'creator',
+  targetKey: 'id',
+  onUpdate: 'NO ACTION',
+  onDelete: 'NO ACTION',
+});
+
+TeamUser.belongsTo(Team, {
+  foreignKey: 'teamId',
+  as: 'team',
+  targetKey: 'id',
+  onUpdate: 'NO ACTION',
+  onDelete: 'NO ACTION',
+});
 
 User.hasMany(UserLogin, {
   foreignKey: 'userId',
@@ -94,4 +134,4 @@ function sync(...args) {
 }
 
 export default { sync };
-export { User, UserLogin, UserProfile, Timetable, TimetableModule, Module };
+export { User, UserLogin, UserProfile, Timetable, TimetableModule, Module, Team, TeamUser };
