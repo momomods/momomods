@@ -71,14 +71,22 @@ export function submitTimetable({ year, semester, timetable }) {
  * @param {Object} module, module model
  */
 export function addModule({ year, semester, module }) {
-  return {
-    type: ADD_MODULE,
-    payload: {
-      year,
-      semester,
-      module,
-    },
-  };
+  return (dispatch, getState) => {
+    dispatch({
+      type: ADD_MODULE,
+      payload: {
+        year,
+        semester,
+        module,
+      },
+    })
+    const allTimetables = getState().timetable.data;
+    const timetable = (
+      allTimetables
+      && allTimetables[year]
+      && allTimetables[year][semester]);
+    return dispatch(saveTimetable({ year, semester, timetable}))
+  }
 }
 
 /**
