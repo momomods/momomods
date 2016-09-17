@@ -35,19 +35,96 @@ class Group extends Component {
       this.handleGroupChange = this.handleGroupChange.bind(this);
 
       this.state = {
-          groupShown: 0,
           groups: [{
-              title: 'CS3216 Group 1'
+              id: 0,
+              title: 'CS3216 Group 1',
+              members: [
+                  {
+                      id: 0,
+                      name: 'Bob Lee'
+                  },
+                  {
+                      id: 1,
+                      name: 'Alan Tan'
+                  },
+                  {
+                      id: 2,
+                      name: 'Catherine Woo'
+                  }
+              ]
           },
           {
-              title: 'CS3216 Group 2'
+              id: 1,
+              title: 'CS3216 Group 2',
+              members: [
+                  {
+                      id: 0,
+                      name: 'Bob Lee'
+                  },
+                  {
+                      id: 1,
+                      name: 'Alan Tan'
+                  },
+                  {
+                      id: 2,
+                      name: 'Catherine Woo'
+                  }
+              ]
           },
           {
-              title: 'CS3216 Group 3'
+              id: 2,
+              title: 'CS3216 Group 3',
+              members: [
+                  {
+                      id: 0,
+                      name: 'Bob Lee'
+                  },
+                  {
+                      id: 1,
+                      name: 'Alan Tan'
+                  },
+                  {
+                      id: 2,
+                      name: 'Catherine Woo'
+                  }
+              ]
           },
           {
-              title: 'CS3216 Group 4'
+              id: 3,
+              title: 'CS3216 Group 4',
+              members: [
+                  {
+                      id: 0,
+                      name: 'Bob Lee'
+                  },
+                  {
+                      id: 1,
+                      name: 'Alan Tan'
+                  },
+                  {
+                      id: 2,
+                      name: 'Catherine Woo'
+                  }
+              ]
           }],
+          groupShown: {
+              id: 0,
+              title: 'CS3216 Group 1',
+              members: [
+                  {
+                      id: 0,
+                      name: 'Bob Lee'
+                  },
+                  {
+                      id: 1,
+                      name: 'Alan Tan'
+                  },
+                  {
+                      id: 2,
+                      name: 'Catherine Woo'
+                  }
+              ]
+          },
           dateToday: new Date(),
       };
   }
@@ -56,9 +133,8 @@ class Group extends Component {
     if (!this.props.isInitialized) this.props.fetchGroups();
   }
 
-  handleGroupChange(event, key, value) {
-      console.log('changed to ' + value);
-      this.setState({groupShown: value});
+  handleGroupChange(event, key, groupId) {
+      this.setState({groupShown: this.state.groups[groupId]});
   }
 
   handleGroupAdd() {

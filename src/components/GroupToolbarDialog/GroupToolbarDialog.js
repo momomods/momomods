@@ -20,8 +20,8 @@ class GroupToolbarDialog extends Component {
   displayName = 'GroupToolbarDialog'
 
   state = {
-      groupName: '',
-      groupMembers: [],
+      groupName: this.props.initialGroupName,
+      groupMembers: this.props.initialSelectedUsers,
       users: [
           {
               id: 1,
@@ -42,6 +42,13 @@ class GroupToolbarDialog extends Component {
       ],
   }
 
+  componentWillReceiveProps(nextProps) {
+      this.setState({
+          groupName: nextProps.initialGroupName,
+          groupMembers: nextProps.initialSelectedUsers
+      });
+  }
+
   handleNameChange = (event) => {
       this.setState({groupName: event.target.value});
   }
@@ -50,14 +57,19 @@ class GroupToolbarDialog extends Component {
       this.setState({groupMembers: users});
   }
 
+  isCreateMode = () => {
+      return this.props.initialGroupName === '';
+  }
+
   render() {
     const {
       handleCreateGroup,
+      handleEditGroup,
       handleClose,
       open,
     } = this.props;
 
-    const title = `Create Group`;
+    const title = this.isCreateMode() ? 'Create Group' : 'Edit Group';
 
     const actions = [
       <FlatButton
@@ -66,13 +78,21 @@ class GroupToolbarDialog extends Component {
       />,
     ];
 
-    if (handleCreateGroup) {
+    // If dialog is in create mode
+    if (this.isCreateMode()) {
       actions.push(
         <FlatButton
           label="Create"
           primary
           onTouchTap={() => handleCreateGroup(this.state.groupName, this.state.groupMembers)}
         />);
+    } else {
+        actions.push(
+          <FlatButton
+            label="Edit"
+            primary
+            onTouchTap={() => handleEditGroup(this.state.groupName, this.state.groupMembers)}
+          />);
     }
 
     return (
@@ -97,6 +117,7 @@ class GroupToolbarDialog extends Component {
         <div className={s.inputContainer}>
             <p>Group Members</p>
             <GroupMemberSearch
+              initialSelectedUsers={this.props.initialSelectedUsers}
               users={this.state.users}
               onChange={this.handleSelectedUsersChange}
             />
@@ -107,9 +128,12 @@ class GroupToolbarDialog extends Component {
 }
 
 GroupToolbarDialog.propTypes = {
-  handleCreateGroup: PropTypes.func,
+  handleCreateGroup: PropTypes.func.isRequired,
+  handleEditGroup: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  initialGroupName: PropTypes.string,
+  initialSelectedUsers: PropTypes.array
 };
 
 export default withStyles(s)(GroupToolbarDialog);

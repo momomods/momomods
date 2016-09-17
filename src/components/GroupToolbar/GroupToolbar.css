@@ -17,9 +17,6 @@
 }
 
 .groupToolbarButton {
-    width: 36px !important;
-    height: 36px !important;
-    object-fit: contain;
     padding-top: 16px !important;
 }
 

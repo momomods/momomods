@@ -18,7 +18,8 @@ class GroupMemberSearch extends Component {
   state = {
       searchText: '',
       dataSource: [],
-      selectedUsers: [],
+      selectedUsers: this.props.initialSelectedUsers ?
+                     this.props.initialSelectedUsers : [],
   }
 
   styles = {
@@ -65,6 +66,7 @@ class GroupMemberSearch extends Component {
   }
 
   render() {
+      console.log(this.props.initialSelectedUsers);
 
     const selectedUserChips = this.state.selectedUsers.map((user, i) => (
         <Chip
@@ -97,6 +99,7 @@ class GroupMemberSearch extends Component {
 }
 
 GroupMemberSearch.propTypes = {
+    initialSelectedUsers: PropTypes.array,
     users: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired,
 };

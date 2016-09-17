@@ -9,6 +9,7 @@ import IconButton from 'material-ui/IconButton';
 
 import GroupToolbarDialog from '../GroupToolbarDialog/GroupToolbarDialog';
 
+import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { lightGreen500 } from 'material-ui/styles/colors';
 
@@ -19,18 +20,43 @@ const title = 'Groups';
 class GroupToolbar extends Component {
     state = {
       isDialogOpen: false,
+      groupName: '',
+      groupMembers: [],
     }
 
-    handleOpen = () => {
-        this.setState({isDialogOpen: true});
+    handleTouchCreate = () => {
+        this.setState({
+            isDialogOpen: true,
+            groupName: '',
+            groupMembers: []
+        });
     }
 
     handleClose = () => {
         this.setState({isDialogOpen: false});
     }
 
-    handleGroupAdd = () =>  {
+    handleTouchEdit = () => {
+        this.setState({
+            isDialogOpen: true,
+            groupName: this.props.groupShown.title,
+            groupMembers: this.props.groupShown.members
+        });
+        console.log(this.state.groupMembers);
+    }
 
+    handleCreateGroup = (name, members) =>  {
+        console.log('create group ' + name);
+        console.log(name);
+        console.log(members);
+        // TODO dispatch to create group?
+    }
+
+    handleEditGroup = (name, members) => {
+        console.log('edit group ' + this.props.groupShown.title);
+        console.log(name);
+        console.log(members);
+        // TODO dispatch to edit group?
     }
 
     render() {
@@ -47,13 +73,16 @@ class GroupToolbar extends Component {
                   <ToolbarGroup firstChild={true} className={s.groupToolbarGroup}>
                     <DropDownMenu
                         className={s.groupToolbarDropdownMenu}
-                        value={this.props.groupShown}
+                        value={this.props.groupShown.id}
                         onChange={this.props.handleGroupChange}
                         autoWidth={false}>
                         { listItems }
                     </DropDownMenu>
-                    <IconButton className={s.groupToolbarButton} onClick={this.handleOpen}>
-                      <ContentAdd />
+                    <IconButton className={s.groupToolbarButton} onClick={this.handleTouchEdit}>
+                        <EditorModeEdit />
+                    </IconButton>
+                    <IconButton className={s.groupToolbarButton} onClick={this.handleTouchCreate}>
+                        <ContentAdd />
                     </IconButton>
                   </ToolbarGroup>
                   <ToolbarSeparator />
@@ -70,8 +99,11 @@ class GroupToolbar extends Component {
               <div style={{ height: '56px' }} />
               <GroupToolbarDialog
                 open={this.state.isDialogOpen}
-                handleCreateGroup={this.handleGroupAdd}
+                handleCreateGroup={this.handleCreateGroup}
+                handleEditGroup={this.handleEditGroup}
                 handleClose={this.handleClose}
+                initialGroupName={this.state.groupName}
+                initialSelectedUsers={this.state.groupMembers}
               />
           </div>
         );
