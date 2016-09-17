@@ -28,7 +28,7 @@ class ModuleTable extends Component {
 
     return (
       <div className="module-table">
-        <List style={{ width: '100%', 'padding-left': '15%' }}>
+        <List style={{ width: '100%', paddingLeft: '15%' }}>
           {modules.map(module =>
             <ListItem
               key={module.ModuleCode}
