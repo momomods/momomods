@@ -75,6 +75,13 @@ class GroupToolbar extends Component {
         // TODO dispatch to edit group?
     }
 
+    handleDeleteGroup = () => {
+        this.handleClose();
+
+        console.log('delete group ' + this.props.groupShown.title);
+        // TODO dispatch to delete group?
+    }
+
     render() {
 
         const listItems = this.props.groups.map((group, i) => {
@@ -125,6 +132,7 @@ class GroupToolbar extends Component {
                 open={this.state.isDialogOpen}
                 handleCreateGroup={this.handleCreateGroup}
                 handleEditGroup={this.handleEditGroup}
+                handleDeleteGroup={this.handleDeleteGroup}
                 handleClose={this.handleClose}
                 initialGroupName={this.state.groupName}
                 initialSelectedUsers={this.state.groupMembers}
