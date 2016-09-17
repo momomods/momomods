@@ -2,6 +2,7 @@
 @import '../../../node_modules/react-virtualized/styles.css';
 @import '../../../node_modules/react-select/dist/react-select.css';
 @import '../../../node_modules/react-virtualized-select/styles.css';
+@import '../../utils/animations';
 @import '../../utils/mixins';
 @import 'themes';
 
@@ -140,13 +141,20 @@ $timetable-cell-opacity: 0.5;
 
       &:hover {
         opacity: 1;
+        animation-duration: 0.1s;
+        animation-fill-mode: forwards;
+        animation-name: grow;
       }
     }
 
     &.is-active {
-      animation-duration: 1.5s;
-      animation-iteration-count: infinite;
-      animation-name: pulse;
+
+      &:hover {
+        opacity: 1;
+        animation-duration: 0.1s;
+        animation-fill-mode: forwards;
+        animation-name: grow;
+      }
     }
 
     .cell-module-code {
