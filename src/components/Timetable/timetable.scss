@@ -14,9 +14,45 @@ $timetable-cell-padding: 3px;
 $timetable-cell-opacity: 0.5;
 
 .timetable-container {
+}
+
+.timetable-inner-container {
   overflow-x: scroll;
   position: relative;
+  width: 85%;
+  float: right;
 }
+
+.time-row {
+  height: 1000px;
+  align-items: stretch;
+  background-color: #fff;
+  display: flex;
+  width: 15%;
+  float: left;
+
+  .time-label {
+    margin-top: -0.75em;
+    text-align: right;
+  }
+
+  .timetable-cell {
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  @media (min-width: 0px) {
+    border-right: $timetable-border;
+    flex-direction: column;
+    padding-right: 10px;
+
+    .timetable-cell {
+      width: 100%;
+    }
+  }
+}
+
 
 .timetable {
   align-items: stretch;
@@ -45,8 +81,6 @@ $timetable-cell-opacity: 0.5;
       background-color: #E4F1FE;
     }
 
-    .time-label-cell {
-    }
   }
 
   .timetable-day {
@@ -54,15 +88,6 @@ $timetable-cell-opacity: 0.5;
     display: flex;
     flex-grow: 1;
     width: 100%;
-  }
-
-  .time-row {
-    background-color: #fff;
-    display: flex;
-
-    .time-label {
-      margin-top: -0.75em;
-    }
   }
 
   .timetable-day-row {
@@ -87,13 +112,6 @@ $timetable-cell-opacity: 0.5;
       border-right: $timetable-border;
       flex-direction: row;
       height: auto;
-    }
-
-    .time-row {
-      border-right: $timetable-border;
-      flex-direction: column;
-      width: 10em;
-      padding-right: 5px;
     }
 
     .timetable-day-row {
@@ -148,6 +166,11 @@ $timetable-cell-opacity: 0.5;
       font-size: $font-size-xxs;
     }
   }
+}
+
+.module-table {
+  display: -webkit-inline-box;
+  width: 100%;
 }
 
 .fab {

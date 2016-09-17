@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import classnames from 'classnames';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './timetable.scss';
 import { arrangeLessonsForWeek } from '../../utils/modules';
@@ -19,18 +20,22 @@ const Timetable = (props) => {
       <div>
         { props.timetable.isFetching }
       </div>
-      <div className="timetable">
-        <TimeRow />
-        {DAYS.map((day) =>
-          (<TimetableDayRow
-            key={day}
-            day={day.substring(0, 3)}
-            dayLessonRows={arrangedLessons[day]}
-            onLessonChange={props.onLessonChange}
-          />)
-        )}
+      <TimeRow />
+      <div className="timetable-inner-container">
+        <div className="timetable">
+          <div className={classnames('timetable', 'timetable-days')}>
+            {DAYS.map((day) =>
+              (<TimetableDayRow
+                key={day}
+                day={day.substring(0, 3)}
+                dayLessonRows={arrangedLessons[day]}
+                onLessonChange={props.onLessonChange}
+              />)
+            )}
+          </div>
+        </div>
+        <TimetableBackground />
       </div>
-      <TimetableBackground />
     </div>
   );
 };

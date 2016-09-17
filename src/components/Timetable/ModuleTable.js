@@ -27,8 +27,8 @@ class ModuleTable extends Component  {
     const { modules, removeModule } = this.props;
 
     return (
-      <div>
-        <List>
+      <div className="module-table">
+        <List style={{ width: '100%', 'padding-left': '15%', }}>
           {modules.map(module =>
             <ListItem
               key={module.ModuleCode}
