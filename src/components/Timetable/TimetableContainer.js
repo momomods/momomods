@@ -32,28 +32,6 @@ class TimetableContainer extends Component {
     showSearch: false,
   }
 
-  componentDidMount() {
-    const {
-      year,
-      semester,
-    } = this.props;
-    const {
-      isInitialized,
-    } = this.props.timetable;
-
-
-    if (!isInitialized) {
-      if (this.props.loggedIn) {
-        this.props.fetchTimetable({ year, semester });
-      } else {
-        this.props.loadTimetable({ year, semester });
-      }
-    }
-    if (this.props.semesterModuleList && this.props.semesterModuleList.length === 0) {
-      this.props.fetchModules({ year, semester });
-    }
-  }
-
   showSearch= () => this.setState({ showSearch: true })
   hideSearch= () => this.setState({ showSearch: false })
 
@@ -131,7 +109,7 @@ class TimetableContainer extends Component {
       <div
         onClick={() => {
           if (this.props.activeLesson) {
-            // this.props.cancelChangeLesson();
+            this.props.cancelChangeLesson();
           }
         }}>
         <Timetable

@@ -10,12 +10,10 @@
 import React, { Component, PropTypes } from 'react';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import { Provider } from 'react-redux';
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import s from './App.css';
-import Header from '../Header';
-import Footer from '../Footer';
+import Base from '../Base';
 
 class App extends Component {
 
@@ -93,13 +91,11 @@ class App extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider>
-          <div>
-            <Header title="mods+" activeTab={this.getActiveTabFromPage(this.props.children)} />
-            <div>
-              { this.props.children }
-            </div>
-            <Footer />
-          </div>
+          <Base
+            activeTab={this.getActiveTabFromPage(this.props.children)}
+          >
+            {this.props.children}
+          </Base>
         </MuiThemeProvider>
       </Provider>
     );
