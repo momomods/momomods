@@ -12,17 +12,17 @@ class Navigation extends Component {
         <Tab
           label="Main"
           containerElement={<Link to="/" className="tab" />}
-          value='Main'
+          value="Main"
         />
         <Tab
           label="Mods"
           containerElement={<Link to="/module" style={{ 'background-color': '#00bcd4' }} />}
-          value='Mods'
+          value="Mods"
         />
         <Tab
           label="Meet"
           containerElement={<Link to="/group" style={{ 'background-color': '#00bcd4' }} />}
-          value='Meet'
+          value="Meet"
         />
       </Tabs>
     );

@@ -7,7 +7,7 @@ import { red700 } from 'material-ui/styles/colors';
 
 import ModuleListDialog from '../ModuleListDialog';
 
-class ModuleTable extends Component  {
+class ModuleTable extends Component {
   // modules,
   // removeModule,
   state = {
@@ -28,7 +28,7 @@ class ModuleTable extends Component  {
 
     return (
       <div className="module-table">
-        <List style={{ width: '100%', 'padding-left': '15%', }}>
+        <List style={{ width: '100%', 'padding-left': '15%' }}>
           {modules.map(module =>
             <ListItem
               key={module.ModuleCode}
@@ -54,7 +54,7 @@ class ModuleTable extends Component  {
           handleClose={this.handleClose}
         />
       </div>
-    )
+    );
   }
 }
 
