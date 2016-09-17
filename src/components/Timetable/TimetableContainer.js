@@ -162,6 +162,7 @@ TimetableContainer.propTypes = {
   submitTimetable: PropTypes.func.isRequired,
   saveTimetable: PropTypes.func.isRequired,
   loadTimetable: PropTypes.func.isRequired,
+  colors: PropTypes.object,
 };
 
 TimetableContainer.contextTypes = {

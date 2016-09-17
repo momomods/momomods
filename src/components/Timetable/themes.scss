@@ -1,0 +1,33 @@
+.theme-default {
+  .color-0 {
+    @include color(#f9ad81);
+  }
+
+  .color-1 {
+    @include color(#fff79a);
+  }
+
+  .color-2 {
+    @include color(#a2d39c);
+  }
+
+  .color-3 {
+    @include color(#7bcdc8);
+  }
+
+  .color-4 {
+    @include color(#7ea7d8);
+  }
+
+  .color-5 {
+    @include color(#8882be);
+  }
+
+  .color-6 {
+    @include color(#bc8dbf);
+  }
+
+  .color-7 {
+    @include color(#f6989d);
+  }
+}
