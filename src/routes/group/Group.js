@@ -11,15 +11,7 @@ import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
 
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
-import DatePicker from 'material-ui/DatePicker';
-import IconButton from 'material-ui/IconButton';
-
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import { lightGreen500 } from 'material-ui/styles/colors';
-
+import GroupToolbar from '../../components/GroupToolbar/GroupToolbar';
 import TimetableContainer from '../../components/Timetable/TimetableContainer';
 
 import s from './Group.css';
@@ -40,7 +32,7 @@ class Group extends Component {
   constructor(props) {
       super(props);
 
-      this.handleChange = this.handleChange.bind(this);
+      this.handleGroupChange = this.handleGroupChange.bind(this);
 
       this.state = {
           groupShown: 0,
@@ -64,46 +56,31 @@ class Group extends Component {
     if (!this.props.isInitialized) this.props.fetchGroups();
   }
 
-  handleChange(event, key, value) {
+  handleGroupChange(event, key, value) {
       console.log('changed to ' + value);
       this.setState({groupShown: value});
+  }
+
+  handleGroupAdd() {
+
+  }
+
+  handleDateChange(event, date) {
+      console.log('date was changed ' + date);
   }
 
   render() {
     this.context.setTitle(title);
 
-    const listItems = this.state.groups.map((group, i) => {
-      return (
-          <MenuItem key={i} value={i} primaryText={group.title} />
-      );
-    }, this);
-
     return (
       <div>
-          <Toolbar className={s.groupToolbar}>
-              <ToolbarGroup firstChild={true} className={s.groupToolbarGroup}>
-                <DropDownMenu
-                    className={s.groupToolbarDropdownMenu}
-                    value={this.state.groupShown}
-                    onChange={this.handleChange}
-                    autoWidth={false}>
-                    { listItems }
-                </DropDownMenu>
-                <IconButton className={s.groupToolbarButton}>
-                  <ContentAdd onClick={this.props.handleGroupAdd} />
-                </IconButton>
-              </ToolbarGroup>
-              <ToolbarSeparator />
-              <ToolbarGroup lastChild={true} className={s.groupToolbarGroup}>
-                  <DatePicker
-                      className={s.groupToolbarDatePicker}
-                      hintText="Meeting Date"
-                      autoOk={true}
-                      defaultDate={this.state.dateToday}
-                  />
-              </ToolbarGroup>
-          </Toolbar>
-          <div style={{ height: '56px' }} />
+          <GroupToolbar
+            groupShown={this.state.groupShown}
+            groups={this.state.groups}
+            handleGroupChange={this.handleGroupChange}
+            handleGroupAdd={this.handleGroupAdd}
+            handleDateChange={this.handleDateChange}
+          />
           <TimetableContainer />
       </div>
     );

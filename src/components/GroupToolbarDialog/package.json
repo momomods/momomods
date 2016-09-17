@@ -1,0 +1,6 @@
+{
+  "name": "GroupToolbarDialog",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./GroupToolbarDialog.js"
+}
