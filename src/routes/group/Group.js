@@ -148,6 +148,13 @@ class Group extends Component {
   render() {
     this.context.setTitle(title);
 
+    const noGroupContainer = (
+        <div className={s.noGroupContainer}>
+            <p>You do not have any groups. Create one!</p>
+            <img src="http://dl.dropbox.com/s/2fth5ceonfa3iww/group.png?dl=0"/>
+        </div>
+    );
+
     return (
       <div>
           <GroupToolbar
@@ -157,7 +164,8 @@ class Group extends Component {
             handleGroupAdd={this.handleGroupAdd}
             handleDateChange={this.handleDateChange}
           />
-          <TimetableContainer />
+          {this.state.groups.length > 0 ? <TimetableContainer /> : noGroupContainer }
+
       </div>
     );
   }

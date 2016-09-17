@@ -20,8 +20,24 @@ const title = 'Groups';
 class GroupToolbar extends Component {
     state = {
       isDialogOpen: false,
+      isGroupSelected: false,
       groupName: '',
       groupMembers: [],
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.groupShown) {
+            this.setState({
+                isGroupSelected: true,
+                groupId: nextProps.groupShown.id,
+                groupName: nextProps.groupShown.title,
+                groupMembers: nextProps.groupShown.members
+            });
+        } else {
+            this.setState({
+                isGroupSelected: false,
+            });
+        }
     }
 
     handleTouchCreate = () => {
@@ -73,15 +89,22 @@ class GroupToolbar extends Component {
                   <ToolbarGroup firstChild={true} className={s.groupToolbarGroup}>
                     <DropDownMenu
                         className={s.groupToolbarDropdownMenu}
-                        value={this.props.groupShown.id}
+                        value={this.state.groupId}
                         onChange={this.props.handleGroupChange}
-                        autoWidth={false}>
+                        autoWidth={false}
+                        disabled={!this.state.isGroupSelected}
+                        >
                         { listItems }
                     </DropDownMenu>
-                    <IconButton className={s.groupToolbarButton} onClick={this.handleTouchEdit}>
+                    <IconButton
+                        className={s.groupToolbarButton}
+                        onClick={this.handleTouchEdit}
+                        disabled={!this.state.isGroupSelected}>
                         <EditorModeEdit />
                     </IconButton>
-                    <IconButton className={s.groupToolbarButton} onClick={this.handleTouchCreate}>
+                    <IconButton
+                        className={s.groupToolbarButton}
+                        onClick={this.handleTouchCreate}>
                         <ContentAdd />
                     </IconButton>
                   </ToolbarGroup>
@@ -93,6 +116,7 @@ class GroupToolbar extends Component {
                           autoOk={true}
                           defaultDate={this.props.dateToday}
                           onChange={this.props.handleDateChange}
+                          disabled={!this.state.isGroupSelected}
                       />
                   </ToolbarGroup>
                 </Toolbar>
