@@ -16,7 +16,7 @@ const Timetable = (props) => {
   const arrangedLessons = arrangeLessonsForWeek(props.lessons);
 
   return (
-    <div className="timetable-container">
+    <div className="timetable-container theme-default">
       <div>
         { props.timetable.isFetching }
       </div>

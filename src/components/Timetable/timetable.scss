@@ -2,6 +2,8 @@
 @import '../../../node_modules/react-virtualized/styles.css';
 @import '../../../node_modules/react-select/dist/react-select.css';
 @import '../../../node_modules/react-virtualized-select/styles.css';
+@import '../../utils/mixins';
+@import 'themes';
 
 $breakpoint: map-get($grid-breakpoints, 'md');
 
@@ -126,9 +128,6 @@ $timetable-cell-opacity: 0.5;
 
   .timetable-module-cell {
     $smaller-text: 0.6rem;
-
-    background-color: rgba(156, 252, 92, 0.6);
-    border-left: 2px solid #63df11;
     font-size: $font-size-xs;
     height: 100%;
     line-height: 0.85rem;

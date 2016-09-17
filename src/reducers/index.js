@@ -9,6 +9,7 @@ import user from './user';
 import requests from './requests';
 import entities from './entities/index';
 import selection from './selection';
+import theme from './theme';
 
 // export default combineReducers({
 //   group,
@@ -31,6 +32,7 @@ export default function (state = {}, action) {
     entities: entities(state.entities, action),
     requests: requests(state.requests, action),
     selection: selection(state.selection, action),
+    theme: theme(state.theme, action),
     // routing: routerReducer(state.routing, action),
   };
 }
