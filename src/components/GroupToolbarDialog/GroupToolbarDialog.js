@@ -4,11 +4,9 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import Divider from 'material-ui/Divider';
 
 import GroupMemberSearch from '../GroupMemberSearch';
-
-import ContentAdd from 'material-ui/svg-icons/content/add';
-import { lightGreen500 } from 'material-ui/styles/colors';
 
 import s from './GroupToolbarDialog.css';
 
@@ -26,18 +24,26 @@ class GroupToolbarDialog extends Component {
       groupMembers: [],
       users: [
           {
+              id: 1,
               name: 'Nicholette Li'
           },
           {
-              name: 'Nicholette Li'
+              id: 2,
+              name: 'Ng Zhi An'
           },
           {
-              name: 'Nicholette Li'
+              id: 3,
+              name: 'Patrick Cho'
           },
           {
-              name: 'Nicholette Li'
+              id: 4,
+              name: 'Michelle Tan'
           }
       ],
+  }
+
+  handleNameChange = (event) => {
+      this.setState({groupName: event.target.value});
   }
 
   handleSelectedUsersChange = (users) => {
@@ -80,13 +86,15 @@ class GroupToolbarDialog extends Component {
         autoScrollBodyContent
       >
         <div>
-            <h3>Group Name</h3>
+            <h5>Group Name</h5>
             <TextField
-              name="name"
+              id="name"
+              hintText="Group Name"
               value={this.state.groupName}
+              onChange={this.handleNameChange}
             />
-            <br />
-            <h3>Group Members</h3>
+            <Divider />
+            <h5>Group Members</h5>
             <GroupMemberSearch
               users={this.state.users}
               onChange={this.handleSelectedUsersChange}

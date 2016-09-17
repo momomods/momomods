@@ -1,10 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import TextField from 'material-ui/TextField';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import Popover from 'material-ui/Popover';
+import AutoComplete from 'material-ui/AutoComplete';
+import Chip from 'material-ui/Chip';
 
 import s from './GroupMemberSearch.css';
 
@@ -12,16 +10,15 @@ import s from './GroupMemberSearch.css';
  * This is a TextField that shows selected friends and a Menu
  * with a list of friends that can be selected.
  *
- * Requires a param to indicate if dialog is open,
- * and handlers for tapping the close button, and create group button.
+ * Requires an array of users and an onChange handler for
+ * selectedUsers.
  */
 class GroupMemberSearch extends Component {
 
   state = {
+      searchText: '',
+      dataSource: [],
       selectedUsers: [],
-      searchResults: [],
-      searchTerm: '',
-      isDropdownOpen: false,
   }
 
   styles = {
@@ -34,28 +31,36 @@ class GroupMemberSearch extends Component {
       },
   };
 
-  openDropdown = (target) => {
+  handleUpdateDataSource = (searchText) => {
+      var filteredSource = [];
+      this.props.users.map(function(user) {
+          // Return users not selected and with name matching searchText
+          if (this.state.selectedUsers.indexOf(user) < 0 &&
+              user.name.toUpperCase().includes(searchText.toUpperCase())) {
+              filteredSource.push(user.name);
+          }
+      }, this);
+
       this.setState({
-          isDropdownOpen: true,
-          anchorEl: target,
+          searchText: searchText,
+          dataSource: filteredSource,
       });
   }
 
-  handleSearch = (event) => {
-      this.openDropdown(event.target);
-  }
+  handleSelectUser = (request, index) => {
+      // When user selects a list item
+      if (index > -1) {
+          this.state.selectedUsers.push(this.props.users[index]);
+          this.setState({searchText: ''});
+          console.log(this.state.searchText);
 
-  handleRequestClose = () => {
-      console.log('close');
-  }
-
-  handleSelectUser = (user) => {
-      this.state.selectedUsers.push(user);
-      this.props.onChange(this.state.selectedUsers);
+          this.props.onChange(this.state.selectedUsers);
+      }
   }
 
   handleRemoveUser = (index) => {
       this.state.selectedUsers.splice(index, 1);
+
       this.props.onChange(this.state.selectedUsers);
   }
 
@@ -71,36 +76,20 @@ class GroupMemberSearch extends Component {
         </Chip>
     ));
 
-    const searchMenuItems = this.props.users.map((user) => (
-      <MenuItem
-        key={user.id}
-        primaryText={user.name}
-        rightIconButton={ <ContentAddBox color={lightGreen500} /> }
-        onTouchTap={() => this.handleSelectUser(user)}
-      />
-    ));
-
     return (
         <div>
-            <div>
+            <div style={this.styles.wrapper}>
                 { selectedUserChips }
             </div>
-            <TextField
-              name="search"
-              value={this.state.searchTerm}
-              onChange={this.handleSearch}
+            <AutoComplete
+              hintText="Find your friend..."
+              searchText={this.state.searchText}
+              dataSource={this.state.dataSource}
+              onNewRequest={this.handleSelectUser}
+              onUpdateInput={this.handleUpdateDataSource}
+              floatingLabelText="Find friends"
+              fullWidth={true}
             />
-            <Popover
-              open={this.state.isDropdownOpen}
-              anchorEl={this.state.anchorEl}
-              anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-              targetOrigin={{horizontal: 'left', vertical: 'top'}}
-              onRequestClose={this.handleRequestClose}
-            >
-              <Menu>
-                { searchMenuItems}
-              </Menu>
-            </Popover>
         </div>
 
     );
