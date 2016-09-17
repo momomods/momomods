@@ -47,7 +47,6 @@ class GroupToolbarDialog extends Component {
   }
 
   handleSelectedUsersChange = (users) => {
-      console.log(users);
       this.setState({groupMembers: users});
   }
 
@@ -85,16 +84,18 @@ class GroupToolbarDialog extends Component {
         onRequestClose={handleClose}
         autoScrollBodyContent
       >
-        <div>
-            <h5>Group Name</h5>
+        <div className={s.inputContainer}>
+            <p>Group Name</p>
             <TextField
               id="name"
               hintText="Group Name"
               value={this.state.groupName}
               onChange={this.handleNameChange}
+              className={s.inputField}
             />
-            <Divider />
-            <h5>Group Members</h5>
+        </div>
+        <div className={s.inputContainer}>
+            <p>Group Members</p>
             <GroupMemberSearch
               users={this.state.users}
               onChange={this.handleSelectedUsersChange}
