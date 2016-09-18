@@ -66,20 +66,26 @@ class App extends Component {
   }
 
   getActiveTabFromPage(page) {
-      var activeTab = '';
-      switch(page.type.ComposedComponent.displayName) {
-          case 'TimetablePage':
-                activeTab = 'Main';
-                break;
-          case 'Module':
-                activeTab = 'Mods';
-                break;
-          case 'Group':
-                activeTab = 'Meet';
-                break;
-      }
+    var activeTab = '';
+    let displayName = null;
+    if (page.type.ComposedComponent) {
+      displayName = page.type.ComposedComponent.displayName;
+    } else {
+      displayName = page.type.displayName;
+    }
+    switch(displayName) {
+      case 'TimetablePage':
+        activeTab = 'Main';
+        break;
+      case 'Module':
+        activeTab = 'Mods';
+        break;
+      case 'Group':
+        activeTab = 'Meet';
+        break;
+    }
 
-      return activeTab;
+    return activeTab;
   }
 
   render() {
