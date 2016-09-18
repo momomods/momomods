@@ -110,7 +110,7 @@ app.get('/logout', (req, res) => {
 
 app.route('/api/:year/:semester/team')
 .get((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
   TeamUserModel.findAll({
@@ -161,7 +161,7 @@ app.route('/api/:year/:semester/team')
   });
 })
 .post((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
   const name = req.body[0].teamName;
@@ -201,7 +201,7 @@ app.route('/api/:year/:semester/team')
 
 app.route('/api/team/:id')
 .get((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const teamId = req.params.id;
   TeamModel.find({
     where: {
@@ -250,7 +250,7 @@ app.route('/api/team/:id')
   });
 })
 .post((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const teamId = req.params.id;
   const usersToAdd = req.body;
   TeamModel.find({
@@ -319,7 +319,7 @@ app.route('/api/team/:id')
   });
 })
 .put((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const teamId = req.params.id;
   TeamUserModel.find({
     where: {
@@ -343,7 +343,7 @@ app.route('/api/team/:id')
   });
 })
 .delete((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const teamId = req.params.id;
   TeamUserModel.find({
     where: {
@@ -408,7 +408,7 @@ function updateTimetable(timetableId, year, semester, allNewMods) {
 
 app.route('/api/:year/:semester/timetable')
 .get((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
   TimetableModel.find({
@@ -430,7 +430,7 @@ app.route('/api/:year/:semester/timetable')
   });
 })
 .post((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id; // TO CHANGE
   const year = req.params.year;
   const semester = req.params.semester;
   const allNewMods = req.body;
