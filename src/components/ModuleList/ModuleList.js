@@ -27,7 +27,7 @@ class ModuleList extends Component {
 
   handleClose = () => (this.setState({ isDialogOpen: false }))
 
-  handleListButtonTouch = (module, e) => {
+  handleListButtonTouch = (module) => {
     this.props.addModule(module);
   };
 
@@ -58,24 +58,35 @@ class ModuleList extends Component {
     this.setState({ startIndex: startIndex - 10 });
   }
 
+  renderListItem = (module) => {
+    const inTimetable = this.props.moduleCodesInTimetable.includes(module.code);
+
+    const icon = (
+      <IconButton
+        disabled={inTimetable}
+        onTouchTap={(e) => this.handleListButtonTouch(module, e)}
+      >
+        <ContentAddBox color={lightGreen500} />
+      </IconButton>
+    );
+
+    return (
+      <ListItem
+        key={module.id}
+        primaryText={module.code}
+        secondaryText={module.name}
+        rightIconButton={icon}
+        onTouchTap={() => this.handleOpen(module)}
+      />
+    );
+  }
+
   render() {
     const { isDialogOpen, selectedModule, startIndex } = this.state;
     const { modules } = this.props;
 
     // Create the list of module cells
-    const listItems = modules.slice(startIndex, startIndex + 10).map((module) => (
-      <ListItem
-        key={module.id}
-        primaryText={module.code}
-        secondaryText={module.name}
-        rightIconButton={
-          <IconButton onTouchTap={(e) => this.handleListButtonTouch(module, e)}>
-            <ContentAddBox color={lightGreen500} />
-          </IconButton>
-        }
-        onTouchTap={() => this.handleOpen(module)}
-      />
-    ));
+    const listItems = modules.slice(startIndex, startIndex + 10).map(this.renderListItem);
 
     return (
       <div>
@@ -108,6 +119,7 @@ class ModuleList extends Component {
 ModuleList.propTypes = {
   modules: PropTypes.array.isRequired,
   addModule: PropTypes.func.isRequired,
+  moduleCodesInTimetable: PropTypes.array.isRequired,
 };
 
 export default withStyles(s)(ModuleList);
