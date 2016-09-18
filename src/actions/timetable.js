@@ -13,7 +13,7 @@ import {
   SAVE_TIMETABLE,
 } from '../constants';
 import { saveTheme } from './theme';
-import { request } from './helpers';
+import { request, postRequest } from './helpers';
 
 /*
  * Save timetable to local storage.
@@ -89,11 +89,7 @@ export function submitTimetable({ year, semester, timetable }) {
       semester,
     },
     payload: {
-      promise: request(url, {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      promise: postRequest(url, {
         body: JSON.stringify(timetable),
       }),
     },
