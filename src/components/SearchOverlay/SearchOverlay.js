@@ -3,7 +3,6 @@ import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import ModuleSearch from '../ModuleSearch/ModuleSearch';
 import s from './SearchOverlay.css';
 
 import Module from '../../routes/module/Module';
