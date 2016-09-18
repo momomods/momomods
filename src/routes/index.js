@@ -15,6 +15,7 @@ import App from '../components/App';
 import home from './home';
 import contact from './contact';
 import login from './login';
+import logout from './logout';
 import register from './register';
 import content from './content';
 import error from './error';
@@ -30,6 +31,7 @@ export default {
     home,
     contact,
     login,
+    logout,
     register,
     module,
     group,
