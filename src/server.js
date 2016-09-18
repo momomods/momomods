@@ -83,7 +83,8 @@ app.get('/login/facebook/return',
 
 app.post('/logout', (req, res) => {
   req.logout();
-  res.redirect('/login');
+  res.clearCookie('id_token', { httpOnly: true });
+  res.json({});
 });
 
 // APIs
