@@ -12,7 +12,44 @@ import {
   LOAD_TIMETABLE,
   SAVE_TIMETABLE,
 } from '../constants';
+import { saveTheme } from './theme';
 import { request } from './helpers';
+
+/*
+ * Save timetable to local storage.
+ */
+export function saveTimetable({ year, semester, timetable }) {
+  return (dispatch, getState) => {
+    let currentTimetable = null;
+    // if timetable is not provided, read it from state
+    if (!timetable || typeof timetable === 'undefined') {
+      const allTimetables = getState().timetable.data;
+      currentTimetable = (
+        allTimetables
+        && allTimetables[year]
+        && allTimetables[year][semester]);
+    }
+
+    // cannot find timetable data, just return
+    if (!currentTimetable) {
+      return {};
+    }
+
+    return dispatch({
+      type: SAVE_TIMETABLE,
+      payload: Promise.all([
+        localforage.setItem(
+          `timetable/${year}/${semester}`,
+          JSON.stringify({
+            savedAt: Date.now(),
+            timetable: currentTimetable,
+          })),
+        dispatch(saveTheme()),
+      ]),
+    });
+  };
+}
+
 
 /**
  * Fetch a user's timetable for specified year and semester
@@ -79,9 +116,9 @@ export function addModule({ year, semester, module }) {
         semester,
         module,
       },
-    })
+    });
     return dispatch(saveTimetable({ year, semester }));
-  }
+  };
 }
 
 /**
@@ -99,10 +136,10 @@ export function removeModule({ year, semester, code }) {
         year,
         semester,
         code,
-      }
-    })
+      },
+    });
     return dispatch(saveTimetable({ year, semester }));
-  }
+  };
 }
 
 /**
@@ -141,7 +178,7 @@ export function changeToLesson({ year, semester, activeLesson }) {
       },
     });
     return dispatch(saveTimetable({ year, semester }));
-  }
+  };
 }
 
 /**
@@ -166,35 +203,3 @@ export function loadTimetable({ year, semester }) {
     },
   };
 }
-
-export function saveTimetable({ year, semester, timetable }) {
-  return (dispatch, getState) => {
-    // if timetable is not provided, read it from state
-    if (!timetable || typeof(timetable) === "undefined") {
-      const allTimetables = getState().timetable.data;
-      timetable = (
-        allTimetables
-        && allTimetables[year]
-        && allTimetables[year][semester]);
-    }
-
-    // cannot find timetable data, just return
-    if (!timetable) {
-      return {}
-    }
-
-    return dispatch({
-      type: SAVE_TIMETABLE,
-      payload: {
-        promise: localforage.setItem(
-          `timetable/${year}/${semester}`,
-          JSON.stringify({
-            savedAt: Date.now(),
-            timetable,
-          })),
-      },
-    });
-  }
-}
-
-export function dummy() {}

@@ -26,3 +26,5 @@ export const FETCH_GROUPS = 'FETCH_GROUPS';
 
 export const CHANGE_SEMESTER = 'CHANGE_SEMESTER';
 export const CHANGE_YEAR = 'CHANGE_YEAR';
+
+export const LOAD_THEME = 'LOAD_THEME';

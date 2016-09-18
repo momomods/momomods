@@ -6,6 +6,7 @@ import Footer from '../Footer';
 import { fetchTimetable, loadTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { fetchGroups } from '../../actions/group';
+import { loadTheme } from '../../actions/theme';
 
 class Base extends Component {
   componentDidMount() {
@@ -32,6 +33,8 @@ class Base extends Component {
     if (!group.isInitialized) {
       this.props.fetchGroups({ year, semester });
     }
+
+    this.props.loadTheme();
   }
 
   render() {
@@ -69,9 +72,12 @@ const mapState = (state) => {
 
 const mapDispatch = {
   fetchTimetable,
-  fetchModules,
   loadTimetable,
+
+  fetchModules,
   fetchGroups,
+
+  loadTheme,
 };
 
 export default connect(mapState, mapDispatch)(Base);

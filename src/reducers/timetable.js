@@ -147,7 +147,8 @@ export default function timetable(state = defaultState, action) {
 
       // remove old class
       state.data[year][semester] = state.data[year][semester].filter(m =>
-        !(m.ModuleCode === state.activeLesson.ModuleCode && m.LessonType === state.activeLesson.LessonType)
+        !(m.ModuleCode === state.activeLesson.ModuleCode
+          && m.LessonType === state.activeLesson.LessonType)
       );
       // remove isAvailable status and add in selected class
       activeLesson.isAvailable = false;
