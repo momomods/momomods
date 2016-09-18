@@ -81,7 +81,7 @@ app.get('/login/facebook/return',
   }
 );
 
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
   req.logout();
   res.redirect('/login');
 });
