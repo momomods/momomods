@@ -9,20 +9,15 @@ const title = 'Log In';
 
 class Logout extends Component {
   componentDidMount() {
-    console.log('log user out');
+    this.props.logUserOut()
     this.props.navigate('/');
   }
 
   render() {
-    this.context.setTitle(title);
-    return (
-      <div className={s.root}>
-      logging user out
-      </div>
-    );
+    return null;
   }
 }
 
 Logout.contextTypes = { setTitle: PropTypes.func.isRequired };
 
-export default connect(null, { navigate })(Logout);
+export default connect(null, { navigate, logUserOut })(Logout);
