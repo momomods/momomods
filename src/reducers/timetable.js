@@ -49,6 +49,13 @@ export default function timetable(state = defaultState, action) {
     }
     case `${FETCH_TIMETABLE}_FULFILLED`: {
       const { timetableModules } = action.payload;
+
+      // this could be the first time a user visits,
+      // so we have no timetableModule info
+      // return normal state, when we save the timetable
+      // it will be created in the backend
+      if (!timetableModules) return state;
+
       const ttForDisplay = timetableModules.map(tm => {
         const { classNumber, lessonType, module } = tm;
         const tt = JSON.parse(module.timetable);
