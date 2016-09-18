@@ -426,6 +426,7 @@ app.route('/api/:year/:semester/timetable')
       }],
     }],
   }).then((result) => {
+    result = result || {};
     res.json(result);
   });
 })
