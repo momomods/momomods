@@ -43,42 +43,67 @@ The response is the complete timetable for year and sem with the module added.
 + Request (application/json)
 
         [
-            {
-                "module_code": "CS1010",
-                "lesson_type": "tutorial",
-                "class_number": "2",
-            },
-            {
-                "module_code": "CS1010",
-                "lesson_type": "sectional",
-                "class_number": "1",
-            },
-            {
-                "module_code": "CS1231",
-                "lesson_type": "sectional",
-                "class_number": "1",
+          {
+            "ClassNo": "V01",
+            "LessonType": "Tutorial",
+            "WeekText": "Every Week",
+            "DayText": "Thursday",
+            "StartTime": "1400",
+            "EndTime": "1500",
+            "Venue": "BIZ2-0303",
+            "ModuleCode": "ACC1002",
+            "ModuleTitle": "Financial Accounting",
+            "moduleDetail": {
+              "id": 3364,
+              "year": "2016-2017",
+              "semester": 1,
+              "code": "ACC1002",
+              "title": "Financial Accounting",
+              "description": "The course provides an introduction to financial accounting.",
+              "department": "Accounting",
+              "credit": 4,
+              "workload": "2-2-0-3-4",
+              "prerequisite": null,
+              "preclusion": "Students who have passed FNA1002 are not allowed to take ACC1002.",
+              "examDate": "2016-11-26T05:00:00.000Z",
+              "timetable": "[{\"ClassNo\":\"V15\",\"LessonType\":\"Tutorial\",\"WeekText\":\"Every Week\",\"DayText\":\"Friday\",\"StartTime\":\"1300\",\"EndTime\":\"1400\",\"Venue\":\"BIZ2-0228\"}]",
+              "createdAt": "2016-09-12T08:51:52.204Z",
+              "updatedAt": "2016-09-12T08:51:52.209Z"
             }
+          },
+          {
+            "ClassNo": "V2",
+            "LessonType": "Lecture",
+            "WeekText": "Every Week",
+            "DayText": "Wednesday",
+            "StartTime": "1000",
+            "EndTime": "1200",
+            "Venue": "LT17",
+            "moduleDetail": {
+              "id": 3364,
+              "year": "2016-2017",
+              "semester": 1,
+              "code": "ACC1002",
+              "title": "Financial Accounting",
+              "description": "The course provides an introduction to financial accounting.",
+              "department": "Accounting",
+              "credit": 4,
+              "workload": "2-2-0-3-4",
+              "prerequisite": null,
+              "preclusion": "Students who have passed FNA1002 are not allowed to take ACC1002.",
+              "examDate": "2016-11-26T05:00:00.000Z",
+              "timetable": "[{\"ClassNo\":\"V15\",\"LessonType\":\"Tutorial\",\"WeekText\":\"Every Week\",\"DayText\":\"Friday\",\"StartTime\":\"1300\",\"EndTime\":\"1400\",\"Venue\":\"BIZ2-0228\"}]",
+              "createdAt": "2016-09-12T08:51:52.204Z",
+              "updatedAt": "2016-09-12T08:51:52.209Z"
+            },
+            "ModuleCode": "ACC1002",
+            "isAvailable": false
+          }
         ]
 
 + Response 201 (application/json)
 
-        [
-            {
-                "module_code": "CS1010",
-                "lesson_type": "sectional",
-                "class_number": "1"
-            },
-            {
-                "module_code": "CS1010",
-                "lesson_type": "tutorial",
-                "class_number": "2",
-            },
-            {
-                "module_code": "CS1231",
-                "lesson_type": "sectional",
-                "class_number": "1",
-            }
-        ]
+            {}
         
 ## Team Collection [/{year}/{sem}/team]
 
