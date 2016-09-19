@@ -493,6 +493,59 @@ app.route('/api/:year/:semester/timetable')
   });
 });
 
+app.route('/api/:year/:semester/friends')
+.get((req, res) => {
+  const userId = req.user.id;
+  const year = req.params.year;
+  const semester = req.params.semester;
+  TimetableModel.find({
+    where: {
+      userId,
+      year,
+      semester,
+    },
+    include: [{
+      model: TimetableModuleModel,
+      as: 'timetableModules',
+    }],
+  }).then((result) => {
+    let myMods = [];
+    for (let i = 0; i < result.timetableModules.length; ++i) {
+      myMods.push(result.timetableModules[i].moduleId);
+    }
+    ModuleModel.findAll({
+      attributes: ['id'],
+      where: {
+        id: myMods,
+      },
+      include: [{
+        model: TimetableModuleModel,
+        as: 'timetableModules',
+        include: [{
+          model: TimetableModel,
+          as: 'timetable',
+        }],
+      }],
+    }).then((allFriends) => {
+      let myFriends = [];
+      for (let i = 0; i < allFriends.length; ++i) {
+        for (let j = 0; j < allFriends[i].timetableModules.length; ++j) {
+          if (allFriends[i].timetableModules[j].timetable.userId !== userId) {
+            myFriends.push(allFriends[i].timetableModules[j].timetable.userId);
+          }
+        }
+      }
+      UserModel.findAll({
+        attributes: ['id', 'name'],
+        where: {
+          id: myFriends,
+        },
+      }).then((myFriendsNames) => {
+        res.json(myFriendsNames);
+      })
+    });
+  });
+});
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
