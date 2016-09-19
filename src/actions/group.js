@@ -1,9 +1,4 @@
-import {
-  FETCH_GROUPS,
-  ADD_GROUP,
-  EDIT_GROUP,
-  CHANGE_GROUP,
-} from '../constants';
+import { FETCH_GROUPS } from '../constants';
 import { request } from './helpers';
 
 /**
@@ -15,41 +10,11 @@ import { request } from './helpers';
  */
 export function fetchGroups({ year, semester }) {
   const url = `/api/${year}/${semester}/team`;
+
   return {
     type: FETCH_GROUPS,
-    meta: {
-      year,
-      semester,
-    },
-    payload: {
-      promise: request(url),
-    },
-  };
-}
-
-export function addGroup({ year, semester, teamName}) {
-  const url = `/api/${year}/${semester}/team`;
-  return {
-    type: ADD_GROUP,
-    meta: {
-      year,
-      semester,
-    },
-    payload: {
-      promise: postRequest(url, {
-        body: JSON.stringify(teamName),
-      }),
-    },
-  };
-}
-
-// TODO: Add/ delete friends?
-export function editGroup({ year, semester }) {
-  return {
-    type: EDIT_GROUP,
-    payload: {
-      promise: Promise.resolve({ year, semester, data: [] }),
-    },
+    meta: { year, semester },
+    payload: { promise: request(url) },
   };
 }
 
