@@ -36,16 +36,6 @@ class ModuleList extends Component {
     this.handleClose();
   }
 
-  handleUpdateInput = (value) => {
-    this.setState({
-      dataSource: [
-        value,
-        value + value,
-        value + value + value,
-      ],
-    });
-  };
-
   next = () => {
     const { startIndex } = this.state;
     if (startIndex + 10 > this.props.modules.length) return;
@@ -79,6 +69,11 @@ class ModuleList extends Component {
         onTouchTap={() => this.handleOpen(module)}
       />
     );
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    // when we receive new modules, reset the start index to 0 to show page 1
+    this.setState({ startIndex: 0 });
   }
 
   render() {
