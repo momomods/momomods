@@ -16,6 +16,7 @@ import TimetableContainer from '../../components/Timetable/TimetableContainer';
 
 import s from './Group.css';
 import { fetchGroups } from '../../actions/group';
+import dummyState from './data';
 
 const title = 'Groups';
 
@@ -29,112 +30,14 @@ class Group extends Component {
     setTitle: PropTypes.func.isRequired,
   }
 
-  constructor(props) {
-      super(props);
-
-      this.handleGroupChange = this.handleGroupChange.bind(this);
-
-      this.state = {
-          groups: [{
-              id: 0,
-              title: 'CS3216 Group 1',
-              members: [
-                  {
-                      id: 0,
-                      name: 'Bob Lee'
-                  },
-                  {
-                      id: 1,
-                      name: 'Alan Tan'
-                  },
-                  {
-                      id: 2,
-                      name: 'Catherine Woo'
-                  }
-              ]
-          },
-          {
-              id: 1,
-              title: 'CS3216 Group 2',
-              members: [
-                  {
-                      id: 0,
-                      name: 'Bob Lee'
-                  },
-                  {
-                      id: 1,
-                      name: 'Alan Tan'
-                  },
-                  {
-                      id: 2,
-                      name: 'Catherine Woo'
-                  }
-              ]
-          },
-          {
-              id: 2,
-              title: 'CS3216 Group 3',
-              members: [
-                  {
-                      id: 0,
-                      name: 'Bob Lee'
-                  },
-                  {
-                      id: 1,
-                      name: 'Alan Tan'
-                  },
-                  {
-                      id: 2,
-                      name: 'Catherine Woo'
-                  }
-              ]
-          },
-          {
-              id: 3,
-              title: 'CS3216 Group 4',
-              members: [
-                  {
-                      id: 0,
-                      name: 'Bob Lee'
-                  },
-                  {
-                      id: 1,
-                      name: 'Alan Tan'
-                  },
-                  {
-                      id: 2,
-                      name: 'Catherine Woo'
-                  }
-              ]
-          }],
-          groupShown: {
-              id: 0,
-              title: 'CS3216 Group 1',
-              members: [
-                  {
-                      id: 0,
-                      name: 'Bob Lee'
-                  },
-                  {
-                      id: 1,
-                      name: 'Alan Tan'
-                  },
-                  {
-                      id: 2,
-                      name: 'Catherine Woo'
-                  }
-              ]
-          },
-          dateToday: new Date(),
-      };
-  }
+  state = dummyState;
 
   componentDidMount() {
     if (!this.props.isInitialized) this.props.fetchGroups();
   }
 
-  handleGroupChange(event, key, groupId) {
-      this.setState({groupShown: this.state.groups[groupId]});
+  handleGroupChange = (event, key, groupId) => {
+    this.setState({groupShown: this.state.groups[groupId]});
   }
 
   handleGroupAdd() {
@@ -149,23 +52,22 @@ class Group extends Component {
     this.context.setTitle(title);
 
     const noGroupContainer = (
-        <div className={s.noGroupContainer}>
-            <p>You do not have any groups. Create one!</p>
-            <img src="http://dl.dropbox.com/s/2fth5ceonfa3iww/group.png?dl=0"/>
-        </div>
+      <div className={s.noGroupContainer}>
+        <p>You do not have any groups. Create one!</p>
+        <img src="http://dl.dropbox.com/s/2fth5ceonfa3iww/group.png?dl=0"/>
+      </div>
     );
 
     return (
       <div>
-          <GroupToolbar
-            groupShown={this.state.groupShown}
-            groups={this.state.groups}
-            handleGroupChange={this.handleGroupChange}
-            handleGroupAdd={this.handleGroupAdd}
-            handleDateChange={this.handleDateChange}
-          />
-          {this.state.groups.length > 0 ? <TimetableContainer /> : noGroupContainer }
-
+        <GroupToolbar
+          groupShown={this.state.groupShown}
+          groups={this.state.groups}
+          handleGroupChange={this.handleGroupChange}
+          handleGroupAdd={this.handleGroupAdd}
+          handleDateChange={this.handleDateChange}
+        />
+        {this.state.groups.length > 0 ? <TimetableContainer /> : noGroupContainer }
       </div>
     );
   }

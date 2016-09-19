@@ -20,31 +20,11 @@ const title = 'Groups';
 class GroupToolbar extends Component {
     state = {
       isDialogOpen: false,
-      isGroupSelected: false,
-      groupName: '',
-      groupMembers: [],
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.groupShown) {
-            this.setState({
-                isGroupSelected: true,
-                groupId: nextProps.groupShown.id,
-                groupName: nextProps.groupShown.title,
-                groupMembers: nextProps.groupShown.members
-            });
-        } else {
-            this.setState({
-                isGroupSelected: false,
-            });
-        }
     }
 
     handleTouchCreate = () => {
         this.setState({
             isDialogOpen: true,
-            groupName: '',
-            groupMembers: []
         });
     }
 
@@ -53,12 +33,6 @@ class GroupToolbar extends Component {
     }
 
     handleTouchEdit = () => {
-        this.setState({
-            isDialogOpen: true,
-            groupName: this.props.groupShown.title,
-            groupMembers: this.props.groupShown.members
-        });
-        console.log(this.state.groupMembers);
     }
 
     handleCreateGroup = (name, members) =>  {
@@ -89,6 +63,13 @@ class GroupToolbar extends Component {
               <MenuItem key={i} value={i} primaryText={group.title} />
           );
         }, this);
+      const { groupShown : {
+        id: groupId, title: groupName, members: groupMembers
+      }} = this.props;
+      const isGroupSelected = (typeof groupId !== 'undefined');
+      const {
+        handleGroupChange
+      } = this.props;
 
         return (
           <div>
@@ -96,17 +77,17 @@ class GroupToolbar extends Component {
                   <ToolbarGroup firstChild={true} className={s.groupToolbarGroup}>
                     <DropDownMenu
                         className={s.groupToolbarDropdownMenu}
-                        value={this.state.groupId}
-                        onChange={this.props.handleGroupChange}
+                        value={groupId}
+                        onChange={handleGroupChange}
                         autoWidth={false}
-                        disabled={!this.state.isGroupSelected}
+                        disabled={!isGroupSelected}
                         >
                         { listItems }
                     </DropDownMenu>
                     <IconButton
                         className={s.groupToolbarButton}
                         onClick={this.handleTouchEdit}
-                        disabled={!this.state.isGroupSelected}>
+                        disabled={!isGroupSelected}>
                         <EditorModeEdit />
                     </IconButton>
                     <IconButton
@@ -123,7 +104,7 @@ class GroupToolbar extends Component {
                           autoOk={true}
                           defaultDate={this.props.dateToday}
                           onChange={this.props.handleDateChange}
-                          disabled={!this.state.isGroupSelected}
+                          disabled={!isGroupSelected}
                       />
                   </ToolbarGroup>
                 </Toolbar>
@@ -134,8 +115,8 @@ class GroupToolbar extends Component {
                 handleEditGroup={this.handleEditGroup}
                 handleDeleteGroup={this.handleDeleteGroup}
                 handleClose={this.handleClose}
-                initialGroupName={this.state.groupName}
-                initialSelectedUsers={this.state.groupMembers}
+                initialGroupName={groupName}
+                initialSelectedUsers={groupMembers}
               />
           </div>
         );
