@@ -14,7 +14,6 @@ import s from './Header.css';
 class Header extends Component {
   render() {
     let rightIcon = null;
-    console.log(this.props);
     if (this.props.isLoggedIn) {
       rightIcon = (
         <FlatButton
