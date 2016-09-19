@@ -10,13 +10,16 @@ $breakpoint: map-get($grid-breakpoints, 'md');
 
 $timetable-background: #fff;
 $timetable-row-height: 60px;
-$timetable-width: 100%;
+$timetable-width: 850px;
+$timetable-height: 1000px;
 $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 3px;
 $timetable-cell-opacity: 0.5;
+$timetable-day-column-width: 40px;
 
 .timetable-container {
+  padding-top: $timetable-day-column-width;
 }
 
 .timetable-inner-container {
@@ -27,7 +30,7 @@ $timetable-cell-opacity: 0.5;
 }
 
 .time-row {
-  height: 1000px;
+  height: $timetable-height;
   align-items: stretch;
   background-color: #fff;
   display: flex;
@@ -56,6 +59,26 @@ $timetable-cell-opacity: 0.5;
   }
 }
 
+.day-column {
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  min-width: $timetable-min-width;
+  width: $timetable-width;
+  height: $timetable-day-column-width;
+  position: fixed;
+  z-index: 100;
+  margin-top: -$timetable-day-column-width;
+
+  .timetable-cell {
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+    border-right: 1px solid #ccc;
+    background-color: #fff;
+  }
+}
+
 
 .timetable {
   align-items: stretch;
@@ -63,10 +86,11 @@ $timetable-cell-opacity: 0.5;
   min-width: $timetable-min-width;
   width: $timetable-width;
   z-index: 1;
+  height: $timetable-height;
 
   &.timetable-bg {
     background-color: $timetable-background;
-    height: 100%;
+    height: $timetable-height;
     position: absolute;
     top: 0;
     z-index: -1;

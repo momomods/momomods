@@ -42,7 +42,6 @@ const generateCells = (lessons, onLessonChange) => {
 
 const TimetableRow = (props) => (
   <div className="timetable-day-row">
-    <div className="timetable-day-cell timetable-cell"><span>{props.day}</span></div>
     {generateCells(props.lessons, props.onLessonChange)}
   </div>
 );

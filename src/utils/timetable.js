@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 export const FIRST_HOUR = 6;
 export const LAST_HOUR = 24;
-export const CELLS_COUNT = ((LAST_HOUR - FIRST_HOUR) + 1) * 2;
+export const CELLS_COUNT = ((LAST_HOUR - FIRST_HOUR)) * 2;
 export const LESSON_TYPE_ABBREV = {
   'Design Lecture': 'DLEC',
   Laboratory: 'LAB',

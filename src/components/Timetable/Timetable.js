@@ -6,6 +6,7 @@ import { arrangeLessonsForWeek } from '../../utils/modules';
 import TimetableBackground from './TimetableBackground';
 import TimetableDayRow from './TimetableDayRow';
 import TimeRow from './TimeRow';
+import DayColumn from './DayColumn';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
@@ -22,6 +23,7 @@ const Timetable = (props) => {
       </div>
       <TimeRow />
       <div className="timetable-inner-container">
+        <DayColumn />
         <div className="timetable">
           <div className={classnames('timetable', 'timetable-days')}>
             {DAYS.map((day) =>
