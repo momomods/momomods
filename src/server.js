@@ -347,6 +347,22 @@ app.route('/api/team/:id')
 });
 
 function updateTimetable(timetableId, year, semester, allNewMods) {
+  // remove all timetable mod that is not in the new mods
+  const tts = TimetableModuleModel.findAll({
+    where: {
+      timetableId,
+    },
+    include: {
+      model: ModuleModel,
+      as: 'module',
+    }
+  }).then(tts => {
+    tts.map(tm => {
+      if (!allNewMods.map(m => m.ModuleCode).includes(tm.code)) {
+        tm.destroy()
+      }
+    })
+  });
   for (let i = 0; i < allNewMods.length; ++i) {
     // the frontend uses nusmods naming convention for displaying
     // we reuse it here for simplicity, this might change in the future
