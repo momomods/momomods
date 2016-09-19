@@ -50,3 +50,4 @@ jspm_packages
 
 *.swp
 .DS_Store
+oauth_config

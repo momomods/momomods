@@ -147,6 +147,7 @@ class GroupToolbarDialog extends Component {
               onChange={this.handleSelectedUsersChange}
             />
         </div>
+        {this.isCreateMode() ? '' :
         <div className={s.inputContainer}>
             <RaisedButton
                 label="Delete Group"
@@ -164,6 +165,7 @@ class GroupToolbarDialog extends Component {
               Are you sure you want to delete {this.state.groupName}?
             </Dialog>
         </div>
+        }
       </Dialog>
     );
   }
