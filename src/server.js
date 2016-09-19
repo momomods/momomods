@@ -180,8 +180,6 @@ app.route('/api/:year/:semester/team')
   });
 });
 
-
-
 app.route('/api/team/:id')
 .get((req, res) => {
   const userId = req.user.id;
@@ -189,7 +187,7 @@ app.route('/api/team/:id')
   TeamModel.find({
     where: {
       id: teamId,
-    }
+    },
   }).then((oneTeam) => {
     TeamModel.find({
       where: {
@@ -223,7 +221,6 @@ app.route('/api/team/:id')
         as: 'creator',
       }],
     }).then((result) => {
-      console.log(result);
       // Shows even if invitation has not been accepted
       let show = false;
       let members = [];
@@ -314,7 +311,7 @@ app.route('/api/team/:id')
                 year: result.year,
                 semester: result.semester,
               })
-            }
+            };
           });
           addedMembers.push({
             userId: allNewUsers[j].id,
@@ -388,20 +385,20 @@ app.route('/api/team/:id')
 
 function updateTimetable(timetableId, year, semester, allNewMods) {
   // remove all timetable mod that is not in the new mods
-  const tts = TimetableModuleModel.findAll({
+  TimetableModuleModel.findAll({
     where: {
       timetableId,
     },
     include: {
       model: ModuleModel,
       as: 'module',
-    }
+    },
   }).then(tts => {
     tts.map(tm => {
       if (!allNewMods.map(m => m.ModuleCode).includes(tm.code)) {
-        tm.destroy()
+        tm.destroy();
       }
-    })
+    });
   });
   for (let i = 0; i < allNewMods.length; ++i) {
     // the frontend uses nusmods naming convention for displaying
