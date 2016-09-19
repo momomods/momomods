@@ -24,6 +24,9 @@ const defaultState = {
   activeLesson: null,
 };
 
+const timetableHasModule = (timetable, module) => (
+  !!timetable.find(t => t.ModuleCode === module.code))
+
 export default function timetable(state = defaultState, action) {
   switch (action.type) {
     case `${LOAD_TIMETABLE}_PENDING`:
@@ -34,7 +37,17 @@ export default function timetable(state = defaultState, action) {
       };
     case `${LOAD_TIMETABLE}_FULFILLED`: {
       const { year, semester } = action.meta;
-      const tt = (action.payload && action.payload.timetable) || [];
+      const tt = (action.payload && action.payload.timetable);
+
+      // if somehow our local storage is cleared, don't update store
+      if (tt === null || typeof tt === 'undefined') {
+        return {
+          ...state,
+          isFetching: false,
+          isInitialized: true,
+        };
+      }
+
       return {
         ...state,
         data: {
@@ -45,10 +58,33 @@ export default function timetable(state = defaultState, action) {
         },
         isFetching: false,
         isInitialized: true,
+        lastLoaded: {
+          [year]: {
+            [semester]: Date.now(),
+          },
+        },
       };
     }
     case `${FETCH_TIMETABLE}_FULFILLED`: {
-      const { timetableModules } = action.payload;
+      const { timetableModules, updatedAtS } = action.payload;
+
+      // this could be the first time a user visits,
+      // so we have no timetableModule info
+      // return normal state, when we save the timetable
+      // it will be created in the backend
+      if (!timetableModules) return state;
+
+      const updatedAt = (new Date(updatedAt)).getTime();
+      // we wanna sync with the local version
+      const { year, semester } = action.meta;
+      const oldTt = state.data && state.data[year] && state.data[year][semester];
+      const lastLoaded = state.lastLoaded && state.lastLoaded[year] && state.lastLoaded[year][semester];
+      // if local version is newer than the backend, we use the local state
+      if (lastLoaded && updatedAt < lastLoaded) {
+        return state
+      }
+
+      // otherwise we update state with the backend version
       const ttForDisplay = timetableModules.map(tm => {
         const { classNumber, lessonType, module } = tm;
         const tt = JSON.parse(module.timetable);
@@ -66,13 +102,17 @@ export default function timetable(state = defaultState, action) {
         ...state,
         data: {
           ...state.data,
-          [action.meta.year]: {
-            [action.meta.semester]: ttForDisplay,
+          [year]: {
+            [semester]: ttForDisplay,
           },
         },
         isFetching: false,
         isInitialized: true,
-        lastFetched: Date.now(),
+        lastFetched: {
+          [year]: {
+            [semester]: Date.now(),
+          },
+        },
       };
     }
     case `${FETCH_TIMETABLE}_REJECTED`:
@@ -93,6 +133,16 @@ export default function timetable(state = defaultState, action) {
       // if selected module has no timetable, just pretend it's not added
       if (!tt) return state;
 
+      // ensure timetable data is initialized, it could be null
+      // if the user entered the app via the /module route,
+      // because we only fetch timetable (and initialize timetable state)
+      // when user enters app via /
+      state.data[year] = state.data[year] || {};
+      state.data[year][semester] = state.data[year][semester] || [];
+
+      // if module is already in timetable, don't add it
+      if (timetableHasModule(state.data[year][semester], module)) return state;
+
       const lessonTypeToX = {};
       // each lesson type can have potentially many class no,
       // for simplicity we just get the first lesson of each lesson type first
@@ -103,13 +153,6 @@ export default function timetable(state = defaultState, action) {
           ModuleTitle: module.title,
           moduleDetail: module,
         }));
-
-      // ensure timetable data is initialized, it could be null
-      // if the user entered the app via the /module route,
-      // because we only fetch timetable (and initialize timetable state)
-      // when user enters app via /
-      state.data[year] = state.data[year] || {};
-      state.data[year][semester] = state.data[year][semester] || [];
 
       // for each lesson type, push a class onto timetable
       Object.keys(lessonTypeToX).forEach(k => (
@@ -147,7 +190,8 @@ export default function timetable(state = defaultState, action) {
 
       // remove old class
       state.data[year][semester] = state.data[year][semester].filter(m =>
-        !(m.ModuleCode === state.activeLesson.ModuleCode && m.LessonType === state.activeLesson.LessonType)
+        !(m.ModuleCode === state.activeLesson.ModuleCode
+          && m.LessonType === state.activeLesson.LessonType)
       );
       // remove isAvailable status and add in selected class
       activeLesson.isAvailable = false;

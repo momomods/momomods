@@ -1,5 +1,10 @@
 import _ from 'lodash';
-import { ADD_MODULE, REMOVE_MODULE } from '../constants';
+import {
+  ADD_MODULE,
+  REMOVE_MODULE,
+
+  LOAD_THEME,
+} from '../constants';
 
 const defaultThemeState = {
   // Theme is defined in `themes.scss`
@@ -31,13 +36,12 @@ function getNewColor(currentColorIndices) {
 function colors(state, action) {
   switch (action.type) {
     case ADD_MODULE:
-      console.log('add module state', action.payload.module);
       state[action.payload.module.code] = getNewColor(_.values(state));
       return {
         ...state,
       };
     case REMOVE_MODULE:
-      return _.omit(state, action.payload.module.code);
+      return _.omit(state, action.payload.code);
     default:
       return state;
   }
@@ -50,6 +54,11 @@ function theme(state = defaultThemeState, action) {
       return {
         ...state,
         colors: colors(state.colors, action),
+      };
+    case `${LOAD_THEME}_FULFILLED`:
+      return {
+        ...state,
+        ...action.payload,
       };
     default:
       return state;

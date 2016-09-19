@@ -12,7 +12,7 @@ export default function user(state = defaultState, action) {
         isFetching: false,
         data: action.payload.user,
       };
-    case LOG_USER_OUT:
+    case `${LOG_USER_OUT}_FULFILLED`:
       return {
         isFetching: false,
         data: {},

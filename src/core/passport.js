@@ -15,7 +15,6 @@
 
 import passport from 'passport';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth';
 import { User, UserLogin, UserProfile } from '../data/models';
 import { auth as config } from '../config';
 
@@ -25,7 +24,7 @@ import { auth as config } from '../config';
 passport.use(new FacebookStrategy({
   clientID: config.facebook.id,
   clientSecret: config.facebook.secret,
-  callbackURL: '/login/facebook/return',
+  callbackURL: config.facebook.callbackUrl,
   profileFields: ['name', 'email'],
   passReqToCallback: true,
 }, (req, accessToken, refreshToken, profile, done) => {
@@ -82,7 +81,10 @@ passport.use(new FacebookStrategy({
         ],
       });
       if (users.length) {
-        done(null, users[0]);
+        done(null, {
+          id: users[0].id,
+          email: users[0].email,
+        });
       } else {
         let user = await User.findOne({ where: { email: profile._json.email } });
         if (user) {
@@ -119,14 +121,5 @@ passport.use(new FacebookStrategy({
 
   fooBar().catch(done);
 }));
-
-passport.use(new GoogleStrategy({
-  consumerKey: config.google.id,
-  consumerSecret: config.google.secret,
-  callbackURL: '/login/google/return',
-  passReqToCallback: true,
-}, (req, accessToken, refreshToken, profile, cb) => (
-  User.findOrCreate({ googleId: profile.id }, (err, user) => cb(err, user))
-)));
 
 export default passport;

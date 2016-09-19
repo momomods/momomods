@@ -81,36 +81,17 @@ app.get('/login/facebook/return',
   }
 );
 
-app.get('/login/google',
-  passport.authenticate('google', {
-    scope: [
-      'https://www.googleapis.com/auth/plus.login',
-      'https://www.googleapis.com/auth/plus.profile.emails.read',
-    ],
-    session: false,
-  })
-);
-
-app.get('/login/google/return',
-  passport.authenticate('google', { failureRedirect: '/login', session: false }),
-  (req, res) => {
-    const expiresIn = 60 * 60 * 24 * 180; // 180 days
-    const token = jwt.sign(req.user, auth.jwt.secret, { expiresIn });
-    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-    res.redirect('/');
-  }
-);
-
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
   req.logout();
-  res.redirect('/login');
+  res.clearCookie('id_token', { httpOnly: true });
+  res.json({});
 });
 
 // APIs
 
 app.route('/api/:year/:semester/team')
 .get((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
   TeamUserModel.findAll({
@@ -161,7 +142,7 @@ app.route('/api/:year/:semester/team')
   });
 })
 .post((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
   const name = req.body[0].teamName;
@@ -201,7 +182,7 @@ app.route('/api/:year/:semester/team')
 
 app.route('/api/team/:id')
 .get((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const teamId = req.params.id;
   TeamModel.find({
     where: {
@@ -250,7 +231,7 @@ app.route('/api/team/:id')
   });
 })
 .post((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const teamId = req.params.id;
   const usersToAdd = req.body;
   TeamModel.find({
@@ -319,7 +300,7 @@ app.route('/api/team/:id')
   });
 })
 .put((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const teamId = req.params.id;
   TeamUserModel.find({
     where: {
@@ -343,7 +324,7 @@ app.route('/api/team/:id')
   });
 })
 .delete((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const teamId = req.params.id;
   TeamUserModel.find({
     where: {
@@ -366,6 +347,22 @@ app.route('/api/team/:id')
 });
 
 function updateTimetable(timetableId, year, semester, allNewMods) {
+  // remove all timetable mod that is not in the new mods
+  const tts = TimetableModuleModel.findAll({
+    where: {
+      timetableId,
+    },
+    include: {
+      model: ModuleModel,
+      as: 'module',
+    }
+  }).then(tts => {
+    tts.map(tm => {
+      if (!allNewMods.map(m => m.ModuleCode).includes(tm.code)) {
+        tm.destroy()
+      }
+    })
+  });
   for (let i = 0; i < allNewMods.length; ++i) {
     // the frontend uses nusmods naming convention for displaying
     // we reuse it here for simplicity, this might change in the future
@@ -408,7 +405,7 @@ function updateTimetable(timetableId, year, semester, allNewMods) {
 
 app.route('/api/:year/:semester/timetable')
 .get((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
   TimetableModel.find({
@@ -426,11 +423,12 @@ app.route('/api/:year/:semester/timetable')
       }],
     }],
   }).then((result) => {
+    result = result || {};
     res.json(result);
   });
 })
 .post((req, res) => {
-  const userId = 1; // TO CHANGE
+  const userId = req.user.id; // TO CHANGE
   const year = req.params.year;
   const semester = req.params.semester;
   const allNewMods = req.body;

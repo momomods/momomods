@@ -20,6 +20,7 @@ class Module extends Component {
     searchIndex: PropTypes.object.isRequired,
     semester: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
+    moduleCodesInTimetable: PropTypes.array.isRequired,
   }
 
   static contextTypes = {
@@ -75,6 +76,7 @@ class Module extends Component {
         <ModuleList
           modules={this.getFilteredModules()}
           addModule={this._addModule}
+          moduleCodesInTimetable={this.props.moduleCodesInTimetable}
         />
       </div>
     );
@@ -82,7 +84,7 @@ class Module extends Component {
 }
 
 const mapState = (state) => {
-  const { selection, module, searchIndex } = state;
+  const { selection, module, searchIndex, timetable } = state;
   const { year, semester } = selection;
   const semesterModuleList = (module.data
     && module.data[year]
@@ -91,6 +93,10 @@ const mapState = (state) => {
     && searchIndex.data[year]
     && searchIndex.data[year][semester]) || null;
 
+  const lessons = (
+    timetable.data && timetable.data[year] && timetable.data[year][semester] || []);
+  const moduleCodesInTimetable = lessons.map(l => l.ModuleCode);
+
   return {
     isFetching: module.isFetching,
     isInitialized: module.isInitialized,
@@ -98,6 +104,7 @@ const mapState = (state) => {
     searchIndex: idx,
     semester,
     year,
+    moduleCodesInTimetable,
   };
 };
 

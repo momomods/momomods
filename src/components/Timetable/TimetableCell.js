@@ -57,17 +57,11 @@ TimetableCell.propTypes = {
   width: PropTypes.number,
   time: PropTypes.string,
   onLessonChange: PropTypes.func,
+  colors: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
-  const { selection } = state;
-  const { year, semester } = selection;
-
-  return {
-    year,
-    semester,
-    colors: state.theme.colors,
-  };
-}
+const mapStateToProps = (state) => ({
+  colors: state.theme.colors,
+})
 
 export default connect(mapStateToProps)(withStyles(s)(TimetableCell));

@@ -13,19 +13,30 @@ import s from './Header.css';
 
 class Header extends Component {
   render() {
-    const loginButton = (
-      <FlatButton
-        label="Login"
-        onTouchTap={() => this.props.navigate("/login")}
-      />
-    )
+    let rightIcon = null;
+    if (this.props.isLoggedIn) {
+      rightIcon = (
+        <FlatButton
+          label="Logout"
+          onTouchTap={() => this.props.navigate("/logout")}
+        />
+      )
+    } else {
+      rightIcon = (
+        <FlatButton
+          label="Login"
+          onTouchTap={() => this.props.navigate("/login")}
+        />
+      )
+    }
+
     return (
       <div>
         <div style={{ position: 'fixed', width: '100%', zIndex: 10 }}>
           <AppBar
             title="mods+"
             showMenuIconButton={false}
-            iconElementRight={loginButton}
+            iconElementRight={rightIcon}
             zDepth={0}
           />
           <Navigation activeTab={this.props.activeTab || "mods+"} />
@@ -38,6 +49,15 @@ class Header extends Component {
 
 Header.propTypes = {
   activeTab: PropTypes.string.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  email: PropTypes.string,
+  id: PropTypes.number,
 }
 
-export default connect(null, { navigate })(withStyles(s)(Header));
+const mapState = (state) => ({
+  isLoggedIn: !!state.user.data.id,
+  email: state.user.data.email,
+  id: state.user.data.id,
+});
+
+export default connect(mapState, { navigate })(withStyles(s)(Header));

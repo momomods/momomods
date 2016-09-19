@@ -30,10 +30,30 @@ const defaultOptions = {
   credentials: 'include',
 };
 
+const defaultPostOptions = {
+  ...defaultOptions,
+  method: 'post',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
+
 export function request(url, options = {}) {
   return new Promise((resolve, reject) => {
     fetch(url, {
       ...defaultOptions,
+      ...options,
+    })
+      .then(response => response.json())
+      .then(response => resolve(response))
+      .catch(reject);
+  });
+}
+
+export function postRequest(url, options = {}) {
+  return new Promise((resolve, reject) => {
+    fetch(url, {
+      ...defaultPostOptions,
       ...options,
     })
       .then(response => response.json())

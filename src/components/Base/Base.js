@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 
 import Header from '../Header';
 import Footer from '../Footer';
+import Sync from '../Sync';
 import { fetchTimetable, loadTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { fetchGroups } from '../../actions/group';
+import { loadTheme } from '../../actions/theme';
 
 class Base extends Component {
   componentDidMount() {
@@ -18,10 +20,9 @@ class Base extends Component {
     } = this.props;
 
     if (!timetable.isInitialized) {
+      this.props.loadTimetable({ year, semester });
       if (this.props.loggedIn) {
         this.props.fetchTimetable({ year, semester });
-      } else {
-        this.props.loadTimetable({ year, semester });
       }
     }
 
@@ -32,6 +33,8 @@ class Base extends Component {
     if (!group.isInitialized) {
       this.props.fetchGroups({ year, semester });
     }
+
+    this.props.loadTheme();
   }
 
   render() {
@@ -44,6 +47,7 @@ class Base extends Component {
             { this.props.children }
           </div>
         <Footer />
+        <Sync />
       </div>
     )
   }
@@ -69,9 +73,12 @@ const mapState = (state) => {
 
 const mapDispatch = {
   fetchTimetable,
-  fetchModules,
   loadTimetable,
+
+  fetchModules,
   fetchGroups,
+
+  loadTheme,
 };
 
 export default connect(mapState, mapDispatch)(Base);
