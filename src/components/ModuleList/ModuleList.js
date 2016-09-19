@@ -73,7 +73,7 @@ class ModuleList extends Component {
       <ListItem
         key={module.id}
         primaryText={module.code}
-        secondaryText={module.name}
+        secondaryText={module.title}
         rightIconButton={icon}
         onTouchTap={() => this.handleOpen(module)}
       />
