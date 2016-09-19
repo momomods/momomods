@@ -35,14 +35,6 @@ class TimetableContainer extends Component {
   showSearch= () => this.setState({ showSearch: true })
   hideSearch= () => this.setState({ showSearch: false })
 
-  sync = ({ year, semester, timetable }) => () => {
-    this.props.saveTimetable({ year, semester, timetable });
-
-    if (this.props.loggedIn) {
-      this.props.submitTimetable({ year, semester, timetable });
-    }
-  }
-
   addModuleAndHideSearch = ({ module }) => {
     const { year, semester } = this.props;
     this.props.addModule({ year, semester, module });
@@ -120,10 +112,6 @@ class TimetableContainer extends Component {
         <ModuleTable
           modules={moduleTableModules}
           removeModule={(code) => this.props.removeModule({ year, semester, code })}
-        />
-        <RaisedButton
-          label="Sync"
-          onClick={this.sync({ year, semester, timetable: timetableForYearAndSem })}
         />
 
         <FloatingActionButton onTouchTap={this.showSearch} className="fab">
