@@ -69,6 +69,8 @@ $timetable-day-column-width: 40px;
   position: fixed;
   z-index: 100;
   margin-top: -$timetable-day-column-width;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.22);
+
 
   .timetable-cell {
     flex-basis: 0;
