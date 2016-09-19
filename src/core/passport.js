@@ -24,7 +24,7 @@ import { auth as config } from '../config';
 passport.use(new FacebookStrategy({
   clientID: config.facebook.id,
   clientSecret: config.facebook.secret,
-  callbackURL: '/login/facebook/return',
+  callbackURL: config.facebook.callbackUrl,
   profileFields: ['name', 'email'],
   passReqToCallback: true,
 }, (req, accessToken, refreshToken, profile, done) => {

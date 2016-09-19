@@ -31,5 +31,8 @@ export const auth = {
   facebook: {
     id: process.env.FACEBOOK_APP_ID,
     secret: process.env.FACEBOOK_APP_SECRET,
+    callbackUrl: (process.env.NODE_ENV === 'production' ?
+      'https://beta.nusmods.com/login/facebok/return' :
+      'http://localhost:3001/login/facebook/return'),
   },
 };
