@@ -19,10 +19,10 @@ class Base extends Component {
     } = this.props;
 
     if (!timetable.isInitialized) {
+      this.props.loadTimetable({ year, semester });
       if (this.props.loggedIn) {
         this.props.fetchTimetable({ year, semester });
       } else {
-        this.props.loadTimetable({ year, semester });
       }
     }
 
