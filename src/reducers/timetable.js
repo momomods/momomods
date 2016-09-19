@@ -24,6 +24,9 @@ const defaultState = {
   activeLesson: null,
 };
 
+const timetableHasModule = (timetable, module) => (
+  !!timetable.find(t => t.ModuleCode === module.code))
+
 export default function timetable(state = defaultState, action) {
   switch (action.type) {
     case `${LOAD_TIMETABLE}_PENDING`:
@@ -130,6 +133,16 @@ export default function timetable(state = defaultState, action) {
       // if selected module has no timetable, just pretend it's not added
       if (!tt) return state;
 
+      // ensure timetable data is initialized, it could be null
+      // if the user entered the app via the /module route,
+      // because we only fetch timetable (and initialize timetable state)
+      // when user enters app via /
+      state.data[year] = state.data[year] || {};
+      state.data[year][semester] = state.data[year][semester] || [];
+
+      // if module is already in timetable, don't add it
+      if (timetableHasModule(state.data[year][semester], module)) return state;
+
       const lessonTypeToX = {};
       // each lesson type can have potentially many class no,
       // for simplicity we just get the first lesson of each lesson type first
@@ -140,13 +153,6 @@ export default function timetable(state = defaultState, action) {
           ModuleTitle: module.title,
           moduleDetail: module,
         }));
-
-      // ensure timetable data is initialized, it could be null
-      // if the user entered the app via the /module route,
-      // because we only fetch timetable (and initialize timetable state)
-      // when user enters app via /
-      state.data[year] = state.data[year] || {};
-      state.data[year][semester] = state.data[year][semester] || [];
 
       // for each lesson type, push a class onto timetable
       Object.keys(lessonTypeToX).forEach(k => (

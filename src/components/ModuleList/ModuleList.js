@@ -25,7 +25,12 @@ class ModuleList extends Component {
     this.setState({ isDialogOpen: true, selectedModule: module });
   }
 
-  handleClose = () => (this.setState({ isDialogOpen: false }))
+  handleClose = () => {
+    this.setState({
+      isDialogOpen: false,
+      selectedModule: {},
+    });
+  }
 
   handleListButtonTouch = (module) => {
     this.props.addModule(module);
@@ -48,8 +53,12 @@ class ModuleList extends Component {
     this.setState({ startIndex: startIndex - 10 });
   }
 
+  isModuleInTimetable = (module) => {
+    return module.code && this.props.moduleCodesInTimetable.includes(module.code);
+  }
+
   renderListItem = (module) => {
-    const inTimetable = this.props.moduleCodesInTimetable.includes(module.code);
+    const inTimetable = this.isModuleInTimetable(module);
 
     const icon = (
       <IconButton
@@ -78,10 +87,11 @@ class ModuleList extends Component {
 
   render() {
     const { isDialogOpen, selectedModule, startIndex } = this.state;
-    const { modules } = this.props;
+    const { modules, moduleCodesInTimetable } = this.props;
 
     // Create the list of module cells
     const listItems = modules.slice(startIndex, startIndex + 10).map(this.renderListItem);
+    const inTimetable = selectedModule && this.isModuleInTimetable(selectedModule);
 
     return (
       <div>
@@ -103,8 +113,9 @@ class ModuleList extends Component {
         <ModuleListDialog
           module={selectedModule}
           open={isDialogOpen}
-          handleAddToTimetable={this.handleAddToTimetable}
+          handleAddToTimetable={inTimetable ? null : this.handleAddToTimetable}
           handleClose={this.handleClose}
+          moduleCodesInTimetable={moduleCodesInTimetable}
         />
       </div>
     );
