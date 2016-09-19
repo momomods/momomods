@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import Header from '../Header';
 import Footer from '../Footer';
+import Sync from '../Sync';
 import { fetchTimetable, loadTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { fetchGroups } from '../../actions/group';
@@ -46,6 +47,7 @@ class Base extends Component {
             { this.props.children }
           </div>
         <Footer />
+        <Sync />
       </div>
     )
   }
