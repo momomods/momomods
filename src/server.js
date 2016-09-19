@@ -180,6 +180,8 @@ app.route('/api/:year/:semester/team')
   });
 });
 
+
+
 app.route('/api/team/:id')
 .get((req, res) => {
   const userId = req.user.id;
@@ -187,47 +189,71 @@ app.route('/api/team/:id')
   TeamModel.find({
     where: {
       id: teamId,
-    },
-    include: [{
-      model: TeamUserModel,
-      as: 'users',
+    }
+  }).then((oneTeam) => {
+    TeamModel.find({
+      where: {
+        id: teamId,
+      },
       include: [{
+        model: TeamUserModel,
+        as: 'users',
+        include: [{
+          model: UserModel,
+          as: 'user',
+          include: [{
+            model: TimetableModel,
+            as: 'timetables',
+            where: {
+              year: oneTeam.year,
+              semester: oneTeam.semester,
+            },
+            include: [{
+              model: TimetableModuleModel,
+              as: 'timetableModules',
+              include: [{
+                model: ModuleModel,
+                as: 'module',
+              }],
+            }],
+          }],
+        }],
+      }, {
         model: UserModel,
-        as: 'user',
+        as: 'creator',
       }],
-    }, {
-      model: UserModel,
-      as: 'creator',
-    }],
-  }).then((result) => {
-    // Shows even if invitation has not been accepted
-    let show = false;
-    let members = [];
-    for (let j = 0; j < result.users.length; ++j) {
-      if (userId === result.users[j].userId) {
-        show = true;
+    }).then((result) => {
+      console.log(result);
+      // Shows even if invitation has not been accepted
+      let show = false;
+      let members = [];
+      for (let j = 0; j < result.users.length; ++j) {
+        if (userId === result.users[j].userId && result.users[j].acceptInvitation) {
+          show = true;
+        }
+        members.push({
+          userId: result.users[j].userId,
+          name: result.users[j].user.name,
+          acceptInvitation: result.users[j].acceptInvitation,
+          timetable: result.users[j].acceptInvitation ? result.users[j].user.timetables[0].timetableModules : [],
+        });
       }
-      members.push({
-        userId: result.users[j].userId,
-        name: result.users[j].user.name,
-        acceptInvitation: result.users[j].acceptInvitation,
-      });
-    }
-    if (show) {
-      res.json({
-        createdBy: {
-          userId: result.creator.id,
-          name: result.creator.name,
-        },
-        year: result.year,
-        semester: result.semester,
-        teamId: result.id,
-        teamName: result.name,
-        members,
-      });
-    } else {
-      res.json({});
-    }
+      if (show) {
+        res.json({
+          createdBy: {
+            userId: result.creator.id,
+            name: result.creator.name,
+          },
+          year: result.year,
+          semester: result.semester,
+          teamId: result.id,
+          teamName: result.name,
+          members,
+        });
+      } else {
+        res.json({});
+      }
+    });
   });
 })
 .post((req, res) => {
@@ -263,19 +289,33 @@ app.route('/api/team/:id')
     if (member) {
       let addedMembers = [];
       const acceptInvitation = 0;
-      for (let i = 0; i < usersToAdd.length; ++i) {
-        TeamUserModel.create({
-          userId: parseInt(usersToAdd[i]),
-          teamId,
-          acceptInvitation, // Invitation not accepted yet
-        });
-      }
       UserModel.findAll({
         where: {
           id: usersToAdd,
         },
       }).then((allNewUsers) => {
         for (let j = 0; j < allNewUsers.length; ++j) {
+          TeamUserModel.create({
+            userId: allNewUsers[j].id,
+            teamId,
+            acceptInvitation, // Invitation not accepted yet
+          });
+          // Create timetable for user if not exist
+          TimetableModel.find({
+            where: {
+              userId: allNewUsers[j].id,
+              year: result.year,
+              semester: result.semester,
+            },
+          }).then((aTimetable) => {
+            if (!aTimetable) { // if user timetable does not exist, create one.
+              TimetableModel.create({
+                userId: allNewUsers[j].id,
+                year: result.year,
+                semester: result.semester,
+              })
+            }
+          });
           addedMembers.push({
             userId: allNewUsers[j].id,
             name: allNewUsers[j].name,
