@@ -45,10 +45,15 @@ export default function timetable(state = defaultState, action) {
         },
         isFetching: false,
         isInitialized: true,
+        lastLoaded: {
+          [year]: {
+            [semester]: Date.now(),
+          },
+        },
       };
     }
     case `${FETCH_TIMETABLE}_FULFILLED`: {
-      const { timetableModules } = action.payload;
+      const { timetableModules, updatedAtS } = action.payload;
 
       // this could be the first time a user visits,
       // so we have no timetableModule info
@@ -56,6 +61,17 @@ export default function timetable(state = defaultState, action) {
       // it will be created in the backend
       if (!timetableModules) return state;
 
+      const updatedAt = (new Date(updatedAt)).getTime();
+      // we wanna sync with the local version
+      const { year, semester } = action.meta;
+      const oldTt = state.data && state.data[year] && state.data[year][semester];
+      const lastLoaded = state.lastLoaded && state.lastLoaded[year] && state.lastLoaded[year][semester];
+      // if local version is newer than the backend, we use the local state
+      if (updatedAt < lastLoaded) {
+        return state
+      }
+
+      // otherwise we update state with the backend version
       const ttForDisplay = timetableModules.map(tm => {
         const { classNumber, lessonType, module } = tm;
         const tt = JSON.parse(module.timetable);
@@ -73,13 +89,17 @@ export default function timetable(state = defaultState, action) {
         ...state,
         data: {
           ...state.data,
-          [action.meta.year]: {
-            [action.meta.semester]: ttForDisplay,
+          [year]: {
+            [semester]: ttForDisplay,
           },
         },
         isFetching: false,
         isInitialized: true,
-        lastFetched: Date.now(),
+        lastFetched: {
+          [year]: {
+            [semester]: Date.now(),
+          },
+        },
       };
     }
     case `${FETCH_TIMETABLE}_REJECTED`:
