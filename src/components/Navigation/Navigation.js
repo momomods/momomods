@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import Link from '../Link';
@@ -28,5 +28,9 @@ class Navigation extends Component {
     );
   }
 }
+
+Navigation.propTypes = {
+  activeTab: PropTypes.string,
+};
 
 export default withStyles(s)(Navigation);

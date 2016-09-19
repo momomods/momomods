@@ -15,7 +15,7 @@ const TimetableCell = (props) => {
   const widthStyle = props.width ? { flexGrow: props.width } : null;
 
   if (lesson) {
-    const colorIndex = props.colors[lesson.ModuleCode]
+    const colorIndex = props.colors[lesson.ModuleCode];
     timetableCell = (
       <div
         className={classnames('timetable-module-cell', {
@@ -28,7 +28,8 @@ const TimetableCell = (props) => {
         onClick={() => {
           event.stopPropagation();
           props.onLessonChange(lesson);
-        }}>
+        }}
+      >
         <div className="cell-module-code">{lesson.ModuleCode}</div>
         <div>
           <span className="cell-module-lesson-type">{LESSON_TYPE_ABBREV[lesson.LessonType]}</span>
@@ -62,6 +63,6 @@ TimetableCell.propTypes = {
 
 const mapStateToProps = (state) => ({
   colors: state.theme.colors,
-})
+});
 
 export default connect(mapStateToProps)(withStyles(s)(TimetableCell));

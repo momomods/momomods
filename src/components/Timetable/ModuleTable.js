@@ -35,7 +35,7 @@ class ModuleTable extends Component {
               rightIconButton={
                 <IconButton
                   onTouchTap={() => removeModule(module.ModuleCode)}
-                  touch={true}
+                  touch
                   tooltip="Remove module"
                   tooltipPosition="bottom-left"
                 >

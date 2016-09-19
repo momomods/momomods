@@ -14,6 +14,7 @@ const title = 'Modules';
 class Module extends Component {
   static propTypes = {
     addModule: PropTypes.func,
+    addModuleOverride: PropTypes.func,
     fetchModules: PropTypes.func.isRequired,
     isInitialized: PropTypes.bool.isRequired,
     modules: PropTypes.array.isRequired,
@@ -94,7 +95,8 @@ const mapState = (state) => {
     && searchIndex.data[year][semester]) || null;
 
   const lessons = (
-    timetable.data && timetable.data[year] && timetable.data[year][semester] || []);
+    (timetable.data && timetable.data[year] && timetable.data[year][semester])
+    || []);
   const moduleCodesInTimetable = lessons.map(l => l.ModuleCode);
 
   return {

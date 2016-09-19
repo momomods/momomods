@@ -24,8 +24,8 @@ const defaultState = {
   activeLesson: null,
 };
 
-const timetableHasModule = (timetable, module) => (
-  !!timetable.find(t => t.ModuleCode === module.code))
+const timetableHasModule = (tt, module) => (
+  !!tt.find(t => t.ModuleCode === module.code));
 
 export default function timetable(state = defaultState, action) {
   switch (action.type) {
@@ -74,11 +74,13 @@ export default function timetable(state = defaultState, action) {
       // it will be created in the backend
       if (!timetableModules) return state;
 
-      const updatedAt = (new Date(updatedAt)).getTime();
+      const updatedAt = (new Date(updatedAtS)).getTime();
       // we wanna sync with the local version
       const { year, semester } = action.meta;
-      const oldTt = state.data && state.data[year] && state.data[year][semester];
-      const lastLoaded = state.lastLoaded && state.lastLoaded[year] && state.lastLoaded[year][semester];
+      const lastLoaded = (
+        state.lastLoaded
+        && state.lastLoaded[year]
+        && state.lastLoaded[year][semester]);
       // if local version is newer than the backend, we use the local state
       if (lastLoaded && updatedAt < lastLoaded) {
         return state
