@@ -67,7 +67,7 @@ class ModuleList extends Component {
       <ListItem
         key={module.id}
         primaryText={module.code}
-        secondaryText={module.name}
+        secondaryText={module.title}
         rightIconButton={
           <IconButton onTouchTap={(e) => this.handleListButtonTouch(module, e)}>
             <ContentAddBox color={lightGreen500} />
