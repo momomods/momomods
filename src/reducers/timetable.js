@@ -34,7 +34,17 @@ export default function timetable(state = defaultState, action) {
       };
     case `${LOAD_TIMETABLE}_FULFILLED`: {
       const { year, semester } = action.meta;
-      const tt = (action.payload && action.payload.timetable) || [];
+      const tt = (action.payload && action.payload.timetable);
+
+      // if somehow our local storage is cleared, don't update store
+      if (tt === null || typeof tt === 'undefined') {
+        return {
+          ...state,
+          isFetching: false,
+          isInitialized: true,
+        };
+      }
+
       return {
         ...state,
         data: {
@@ -67,7 +77,7 @@ export default function timetable(state = defaultState, action) {
       const oldTt = state.data && state.data[year] && state.data[year][semester];
       const lastLoaded = state.lastLoaded && state.lastLoaded[year] && state.lastLoaded[year][semester];
       // if local version is newer than the backend, we use the local state
-      if (updatedAt < lastLoaded) {
+      if (lastLoaded && updatedAt < lastLoaded) {
         return state
       }
 

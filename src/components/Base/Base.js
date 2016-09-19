@@ -22,7 +22,6 @@ class Base extends Component {
       this.props.loadTimetable({ year, semester });
       if (this.props.loggedIn) {
         this.props.fetchTimetable({ year, semester });
-      } else {
       }
     }
 
