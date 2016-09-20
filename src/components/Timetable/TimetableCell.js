@@ -12,7 +12,7 @@ const TimetableCell = (props) => {
 
   const lesson = props.lesson;
   const time = props.time;
-  const widthStyle = props.width ? { flexGrow: props.width } : null;
+  const heightStyle = props.width ? { height: `${props.width * 2.777777777777}%` } : null;
 
   if (lesson) {
     const colorIndex = props.colors[lesson.ModuleCode];
@@ -25,6 +25,7 @@ const TimetableCell = (props) => {
           'is-active': lesson.isActive,
           [`color-${colorIndex}`]: true,
         })}
+
         onClick={() => {
           event.stopPropagation();
           props.onLessonChange(lesson);
@@ -47,7 +48,7 @@ const TimetableCell = (props) => {
   }
 
   return (
-    <div className="timetable-cell" style={widthStyle} >
+    <div className="timetable-cell" style={heightStyle}>
       {timetableCell}
     </div>
   );

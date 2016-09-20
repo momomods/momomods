@@ -41,12 +41,13 @@ const generateCells = (lessons, onLessonChange) => {
 };
 
 const TimetableRow = (props) => (
-  <div className="timetable-day-row">
+  <div className="timetable-day-row" style={{ width: `${100/props.width}%` }}>
     {generateCells(props.lessons, props.onLessonChange)}
   </div>
 );
 
 TimetableRow.propTypes = {
+  width: PropTypes.number,
   day: PropTypes.string,
   lessons: PropTypes.array,
   onLessonChange: PropTypes.func,

@@ -26,7 +26,7 @@ const generateCells = () => {
 };
 
 const TimeRow = () => (
-  <div className="time-row">
+  <div className="time-col">
     {generateCells()}
   </div>
 );
