@@ -20,9 +20,6 @@ export default function friend(state = defaultState, action) {
       const { year, semester } = action.meta;
       const friends = action.payload;
 
-      // if (!state.data[year]) state.data[year] = {[semester]: {}};
-      // if (!state.data[year][semester]) state.data[year][semester] = {};
-
       return {
         ...state,
         data: {
