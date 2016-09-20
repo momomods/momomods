@@ -31,6 +31,7 @@ import configureStore from './store/configureStore';
 import { setRuntimeVariable } from './actions/runtime';
 import { logUserIn } from './actions/user';
 import { port, auth } from './config';
+import cache from './core/cache';
 
 import models, {
   User as UserModel,
@@ -547,7 +548,7 @@ app.route('/api/:year/:semester/friends')
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
-app.use('/graphql', expressGraphQL(req => ({
+app.use('/graphql', cache(60 * 60), expressGraphQL(req => ({
   schema,
   graphiql: true,
   rootValue: { request: req },
