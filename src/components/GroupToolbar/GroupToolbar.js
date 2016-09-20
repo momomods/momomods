@@ -70,6 +70,9 @@ class GroupToolbar extends Component {
       dateToday,
       handleDateChange,
       groupShown,
+      friend,
+      year,
+      semester,
     } = this.props;
 
     const groupId = (groupShown && groupShown.teamId) || null;
@@ -81,24 +84,9 @@ class GroupToolbar extends Component {
     ));
     const isGroupSelected = (typeof groupId !== 'undefined');
 
-    const iusers = [
-          {
-              userId: 1,
-              name: 'Nicholette Li'
-          },
-          {
-              userId: 2,
-              name: 'Ng Zhi An'
-          },
-          {
-              userId: 3,
-              name: 'Patrick Cho'
-          },
-          {
-              userId: 4,
-              name: 'Michelle Tan'
-          }
-      ];
+    const users = (
+      friend.data[year] &&
+      friend.data[year][semester]) || [];
 
     return (
       <div>
@@ -139,7 +127,7 @@ class GroupToolbar extends Component {
         </Toolbar>
         <div style={{ height: '56px' }} />
         <GroupToolbarDialog
-          users={iusers}
+          users={users}
           open={this.state.isDialogOpen}
           handleCreateGroup={this.handleCreateGroup.bind(this)}
           handleEditGroup={this.handleEditGroup}
@@ -162,11 +150,13 @@ GroupToolbar.propTypes = {
   year: PropTypes.string.isRequired,
   semester: PropTypes.string.isRequired,
   fetchGroups: PropTypes.func.isRequired,
+  friend: PropTypes.object.isRequired,
 };
 
 const mapState = (state) => ({
   year: state.selection.year,
   semester: state.selection.semester,
+  friend: state.friend,
 });
 
 const mapDispatch = {

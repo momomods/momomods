@@ -32,7 +32,7 @@ class GroupMemberSearch extends Component {
   };
 
   notSelected = (user) => (
-    !this.state.selectedUsers.find(u => u.userId == user.userId))
+    !this.state.selectedUsers.find(u => u.userId == user.id))
 
   nameMatches = (searchText, user) => (
     user.name.toLowerCase().includes(searchText.toLowerCase()))
@@ -70,7 +70,7 @@ class GroupMemberSearch extends Component {
   render() {
     const dataSourceConfig = {
       text: 'name',
-      value: 'userId',
+      value: 'id',
     };
 
     const selectedUserChips = this.state.selectedUsers.map((user, i) => (
