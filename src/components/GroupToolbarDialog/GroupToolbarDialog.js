@@ -27,19 +27,19 @@ class GroupToolbarDialog extends Component {
       groupMembers: this.props.initialSelectedUsers,
       users: [
           {
-              id: 1,
+              userId: 1,
               name: 'Nicholette Li'
           },
           {
-              id: 2,
+              userId: 2,
               name: 'Ng Zhi An'
           },
           {
-              id: 3,
+              userId: 3,
               name: 'Patrick Cho'
           },
           {
-              id: 4,
+              userId: 4,
               name: 'Michelle Tan'
           }
       ],

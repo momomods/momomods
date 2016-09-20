@@ -78,7 +78,7 @@ class Group extends Component {
           handleGroupChange={this.handleGroupChange}
           handleDateChange={this.handleDateChange}
         />
-        {this.props.isFetching ? null : (
+        {this.props.isFetching || !this.props.isInitialized ? null : (
           this.props.data.length > 0 ?
           <TimetableContainer /> :
           noGroupContainer
