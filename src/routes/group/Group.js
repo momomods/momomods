@@ -57,8 +57,11 @@ class Group extends Component {
   render() {
     if (!this.props.isLoggedIn) {
       return (
-        <div>
-          You need to login
+        <div className={s.notLoggedInContainer}>
+            <div className={s.logoContainer}>
+                <img src="/facebook.png" />
+            </div>
+            <div className={s.textContainer}>Please login to compare your timetable!</div>
         </div>
       )
     }
@@ -67,7 +70,7 @@ class Group extends Component {
     const noGroupContainer = (
       <div className={s.noGroupContainer}>
         <p>You do not have any groups. Create one!</p>
-        <img src="http://dl.dropbox.com/s/2fth5ceonfa3iww/group.png?dl=0"/>
+        <img src="/group.png"/>
       </div>
     );
 
