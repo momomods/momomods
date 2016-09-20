@@ -8,6 +8,7 @@ import { fetchTimetable, loadTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { fetchGroups } from '../../actions/group';
 import { loadTheme } from '../../actions/theme';
+import { fetchFriends } from '../../actions/friend';
 
 class Base extends Component {
   componentDidMount() {
@@ -17,6 +18,7 @@ class Base extends Component {
       group,
       module,
       timetable,
+      friend,
     } = this.props;
 
     if (!timetable.isInitialized) {
@@ -34,6 +36,10 @@ class Base extends Component {
       if (this.props.loggedIn) {
         this.props.fetchGroups({ year, semester });
       }
+    }
+
+    if (!friend.isInitialized && this.props.loggedIn) {
+      this.props.fetchFriends({ year, semester });
     }
 
     this.props.loadTheme();
@@ -73,7 +79,7 @@ Base.propTypes = {
 };
 
 const mapState = (state) => {
-  const { timetable, selection, module, user, group } = state;
+  const { timetable, selection, module, user, group, friend } = state;
   const { year, semester } = selection;
 
   return {
@@ -83,6 +89,7 @@ const mapState = (state) => {
     group,
     module,
     timetable,
+    friend,
   };
 };
 
@@ -92,6 +99,7 @@ const mapDispatch = {
 
   fetchModules,
   fetchGroups,
+  fetchFriends,
 
   loadTheme,
 };

@@ -16,13 +16,17 @@ import TimetableContainer from '../../components/Timetable/TimetableContainer';
 
 import s from './Group.css';
 import { fetchGroups } from '../../actions/group';
+import { fetchFriends } from '../../actions/friend';
 
 const title = 'Groups';
 
 class Group extends Component {
   static propTypes = {
-    isInitialized: PropTypes.bool.isRequired,
-    fetchGroups: PropTypes.func.isRequired,
+    friend: PropTypes.object.isRequired,
+    group: PropTypes.object.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    semester: PropTypes.string.isRequired,
+    year: PropTypes.string.isRequired,
   }
 
   static contextTypes = {
@@ -34,15 +38,15 @@ class Group extends Component {
   }
 
   componentDidMount() {
-    const { year, semester, isInitialized, isLoggedIn } = this.props;
-    if (!isInitialized && isLoggedIn) {
+    const { year, semester, isLoggedIn, group, friend } = this.props;
+    if (!group.isInitialized && isLoggedIn) {
       this.props.fetchGroups({ year, semester });
     }
   }
 
   handleGroupChange = (event, key, groupId) => {
     this.setState({
-      groupShown: this.props.data.find(d => d.teamId === groupId)
+      groupShown: this.props.group.data.find(d => d.teamId === groupId)
     });
   }
 
@@ -73,13 +77,13 @@ class Group extends Component {
     return (
       <div>
         <GroupToolbar
-          groupShown={this.state.groupShown || this.props.data[0]}
-          groups={this.props.data}
+          groupShown={this.state.groupShown || this.props.group.data[0]}
+          groups={this.props.group.data}
           handleGroupChange={this.handleGroupChange}
           handleDateChange={this.handleDateChange}
         />
-        {this.props.isFetching || !this.props.isInitialized ? null : (
-          this.props.data.length > 0 ?
+        {this.props.group.isFetching || !this.props.group.isInitialized ? null : (
+          this.props.group.data.length > 0 ?
           <TimetableContainer /> :
           noGroupContainer
         )}
@@ -93,12 +97,14 @@ const mapState = (state) => {
     year: state.selection.year,
     semester: state.selection.semester,
     isLoggedIn: !!state.user.data.id,
-    ...state.group,
+    group: state.group,
+    friend: state.friend,
   }
 }
 
 const mapDispatch = (dispatch) => ({
   fetchGroups,
+  fetchFriends,
 });
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Group));

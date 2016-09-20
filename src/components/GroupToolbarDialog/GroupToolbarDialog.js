@@ -25,24 +25,6 @@ class GroupToolbarDialog extends Component {
       isDeleteDialogOpen: false,
       groupName: this.props.initialGroupName,
       groupMembers: this.props.initialSelectedUsers,
-      users: [
-          {
-              userId: 1,
-              name: 'Nicholette Li'
-          },
-          {
-              userId: 2,
-              name: 'Ng Zhi An'
-          },
-          {
-              userId: 3,
-              name: 'Patrick Cho'
-          },
-          {
-              userId: 4,
-              name: 'Michelle Tan'
-          }
-      ],
   }
 
   componentWillReceiveProps(nextProps) {
@@ -143,7 +125,7 @@ class GroupToolbarDialog extends Component {
             <p>Group Members</p>
             <GroupMemberSearch
               initialSelectedUsers={this.props.initialSelectedUsers}
-              users={this.state.users}
+              users={this.props.users}
               onChange={this.handleSelectedUsersChange}
             />
         </div>
@@ -178,7 +160,8 @@ GroupToolbarDialog.propTypes = {
   handleClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   initialGroupName: PropTypes.string,
-  initialSelectedUsers: PropTypes.array
+  initialSelectedUsers: PropTypes.array,
+  users: PropTypes.array,
 };
 
 export default withStyles(s)(GroupToolbarDialog);

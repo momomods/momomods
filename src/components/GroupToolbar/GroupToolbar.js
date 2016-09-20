@@ -81,6 +81,25 @@ class GroupToolbar extends Component {
     ));
     const isGroupSelected = (typeof groupId !== 'undefined');
 
+    const iusers = [
+          {
+              userId: 1,
+              name: 'Nicholette Li'
+          },
+          {
+              userId: 2,
+              name: 'Ng Zhi An'
+          },
+          {
+              userId: 3,
+              name: 'Patrick Cho'
+          },
+          {
+              userId: 4,
+              name: 'Michelle Tan'
+          }
+      ];
+
     return (
       <div>
         <Toolbar className={s.groupToolbar}>
@@ -120,6 +139,7 @@ class GroupToolbar extends Component {
         </Toolbar>
         <div style={{ height: '56px' }} />
         <GroupToolbarDialog
+          users={iusers}
           open={this.state.isDialogOpen}
           handleCreateGroup={this.handleCreateGroup.bind(this)}
           handleEditGroup={this.handleEditGroup}

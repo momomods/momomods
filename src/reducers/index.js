@@ -10,6 +10,7 @@ import requests from './requests';
 import entities from './entities/index';
 import selection from './selection';
 import theme from './theme';
+import friend from './friend';
 
 // export default combineReducers({
 //   group,
@@ -33,6 +34,7 @@ export default function (state = {}, action) {
     requests: requests(state.requests, action),
     selection: selection(state.selection, action),
     theme: theme(state.theme, action),
+    friend: friend(state.friend, action),
     // routing: routerReducer(state.routing, action),
   };
 }
