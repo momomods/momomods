@@ -20,33 +20,35 @@ $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 3px;
 $timetable-cell-opacity: 0.5;
-$timetable-day-column-width: 40px;
+$timetable-header-height: 40px;
 
 $time-col-width: 15%;
+$timetable-width: 100% - $time-col-width;
 
+$timetable-header-z-index: 3;
 $timetable-module-cell-z-index: 2;
-
 $timetable-background-z-index: -1;
 
 .timetable-container {
-  margin-top: $timetable-day-column-width;
-  height: $timetable-height;
+  height: $timetable-height + $timetable-header-height;
 }
 
 .timetable-inner-container {
   overflow-x: scroll;
   float: left;
-  width: 100% - $time-col-width;
-  height: 100%;
+  width: $timetable-width;
+  height: $timetable-height + $timetable-header-height;
 }
 
 .timetable-inner-wrapper {
-  height: 100%;
+  margin-top: $timetable-header-height;
+  height: $timetable-height;
   position: relative;
 }
 
 .time-col {
-  height: 100%;
+  margin-top: $timetable-header-height;
+  height: $timetable-height;
   background-color: #fff;
   width: $time-col-width;
   float: left;
@@ -66,8 +68,22 @@ $timetable-background-z-index: -1;
 .timetable {
   display: flex;
   flex-direction: row;
-  height: 100%;
-  // z-index: 1;
+  height: $timetable-height;
+
+  &.timetable-header {
+    background-color: #fff;
+    height: $timetable-header-height;
+    margin-top: -$timetable-header-height;
+    position: absolute;
+    z-index: $timetable-header-z-index;
+    box-shadow: 0 10px 28px rgba(0,0,0,.1), 0 3px 3px rgba(0,0,0,.22);
+    width: 100%;
+
+    .timetable-day {
+      text-align: center;
+      padding-top: 10px;
+    }
+  }
 
   &.timetable-bg {
     background-color: $timetable-background;
@@ -186,24 +202,6 @@ $timetable-background-z-index: -1;
   z-index: 2;
 }
 
-// .day-column {
-//   display: flex;
-//   align-items: stretch;
-//   flex-direction: row;
-//   min-width: $timetable-min-width;
-//   width: $timetable-width;
-//   height: $timetable-day-column-width;
-//   position: fixed;
-//   z-index: 100;
-//   margin-top: -$timetable-day-column-width;
-//   box-shadow: 0 10px 28px rgba(0,0,0,0.1), 0 3px 3px rgba(0,0,0,0.22);
-
-
-//   .timetable-cell {
-//     flex-basis: 0;
-//     flex-grow: 1;
-//     text-align: center;
-//     border-right: 1px solid #ccc;
-//     background-color: #fff;
-//   }
-// }
+.day-column {
+  width: $timetable-width;
+}
