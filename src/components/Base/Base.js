@@ -31,7 +31,9 @@ class Base extends Component {
     }
 
     if (!group.isInitialized) {
-      this.props.fetchGroups({ year, semester });
+      if (this.props.loggedIn) {
+        this.props.fetchGroups({ year, semester });
+      }
     }
 
     this.props.loadTheme();

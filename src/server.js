@@ -145,7 +145,8 @@ app.route('/api/:year/:semester/team')
   const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
-  const name = req.body[0].teamName;
+  console.log(req.body);
+  const name = req.body.name;
   TeamModel.create({
     createdBy: userId,
     year,
@@ -256,7 +257,8 @@ app.route('/api/team/:id')
 .post((req, res) => {
   const userId = req.user.id;
   const teamId = req.params.id;
-  const usersToAdd = req.body;
+  const newTeamName = req.body.name;
+  const usersToAdd = req.body.members;
   TeamModel.find({
     where: {
       id: teamId,

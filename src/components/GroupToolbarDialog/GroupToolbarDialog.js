@@ -115,7 +115,7 @@ class GroupToolbarDialog extends Component {
             <FlatButton
                 label="Edit"
                 primary
-                onTouchTap={() => handleEditGroup(this.state.groupName, this.state.groupMembers)}
+                onTouchTap={() => handleEditGroup(this.props.groupId, this.state.groupName, this.state.groupMembers)}
             />
         );
     }

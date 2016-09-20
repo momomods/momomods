@@ -30,14 +30,21 @@ class Group extends Component {
     setTitle: PropTypes.func.isRequired,
   }
 
-  state = dummyState;
+  state = {
+    groupShown: null
+  }
 
   componentDidMount() {
-    if (!this.props.isInitialized) this.props.fetchGroups();
+    const { year, semester, isInitialized, isLoggedIn } = this.props;
+    if (!isInitialized && isLoggedIn) {
+      this.props.fetchGroups({ year, semester });
+    }
   }
 
   handleGroupChange = (event, key, groupId) => {
-    this.setState({groupShown: this.state.groups[groupId]});
+    this.setState({
+      groupShown: this.props.data.find(d => d.teamId === groupId)
+    });
   }
 
   handleGroupAdd() {
@@ -49,6 +56,13 @@ class Group extends Component {
   }
 
   render() {
+    if (!this.props.isLoggedIn) {
+      return (
+        <div>
+          You need to login
+        </div>
+      )
+    }
     this.context.setTitle(title);
 
     const noGroupContainer = (
@@ -61,24 +75,29 @@ class Group extends Component {
     return (
       <div>
         <GroupToolbar
-          groupShown={this.state.groupShown}
-          groups={this.state.groups}
+          groupShown={this.state.groupShown || this.props.data[0]}
+          groups={this.props.data}
           handleGroupChange={this.handleGroupChange}
           handleGroupAdd={this.handleGroupAdd}
           handleDateChange={this.handleDateChange}
         />
-        {this.state.groups.length > 0 ? <TimetableContainer /> : noGroupContainer }
+        {this.props.data.length > 0 ? <TimetableContainer /> : noGroupContainer }
       </div>
     );
   }
 }
 
-const mapState = (state) => ({
-  ...state.group,
-});
+const mapState = (state) => {
+  return {
+    year: state.selection.year,
+    semester: state.selection.semester,
+    isLoggedIn: !!state.user.data.id,
+    ...state.group,
+  }
+}
 
 const mapDispatch = (dispatch) => ({
-  fetchGroups: () => dispatch(fetchGroups({})),
+  fetchGroups,
 });
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Group));
