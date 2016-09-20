@@ -5,19 +5,28 @@ import s from './timetable.scss';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
-const TimetableDayRow = (props) => (
-  <div className="timetable-day">
-    {props.dayLessonRows ?
-      props.dayLessonRows.map((dayLessonRow, i) => (
-        <TimetableRow
-          day={i === 0 ? props.day : ''}
-          key={i}
-          lessons={dayLessonRow}
-          onLessonChange={props.onLessonChange}
-        />)) : <TimetableRow day={props.day} />
-    }
-  </div>
-);
+const dayRowWidth = 16.6666666666666;
+
+const TimetableDayRow = (props) => {
+  const size = props.dayLessonRows ? props.dayLessonRows.length : 1;
+  const style = {
+    width: `${dayRowWidth * size}%`
+  };
+  return (
+    <div className="timetable-day" style={style}>
+      {props.dayLessonRows ?
+        props.dayLessonRows.map((dayLessonRow, i) => (
+          <TimetableRow
+            day={i === 0 ? props.day : ''}
+            key={i}
+            lessons={dayLessonRow}
+            width={size}
+            onLessonChange={props.onLessonChange}
+          />)) : <TimetableRow day={props.day} />
+      }
+    </div>
+  );
+}
 
 TimetableDayRow.propTypes = {
   day: PropTypes.string,

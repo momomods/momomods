@@ -12,9 +12,19 @@ import DayColumn from './DayColumn';
 
 // Ignore Sundays since there is no school
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const minColWidth = 100;
 
 const Timetable = (props) => {
   const arrangedLessons = arrangeLessonsForWeek(props.lessons);
+  const numCols = DAYS.reduce((prev, curr) => {
+    return prev + (arrangedLessons[curr] ? arrangedLessons[curr].length : 1);
+  }, 0);
+  const width = window.innerWidth * 0.85;
+  const style = {};
+  const minInnerContainerWidth = minColWidth * numCols;
+  if (minInnerContainerWidth > width) {
+    style.minWidth = `${minInnerContainerWidth}px`
+  }
 
   return (
     <div className="timetable-container theme-default">
@@ -23,9 +33,9 @@ const Timetable = (props) => {
       </div>
       <TimeRow />
       <div className="timetable-inner-container">
-        <DayColumn />
-        <div className="timetable">
-          <div className={classnames('timetable', 'timetable-days')}>
+        <div className="timetable-inner-wrapper" style={style}>
+          <DayColumn />
+          <div className="timetable" style={style}>
             {DAYS.map((day) =>
               (<TimetableDayRow
                 key={day}
@@ -35,8 +45,8 @@ const Timetable = (props) => {
               />)
             )}
           </div>
+          <TimetableBackground />
         </div>
-        <TimetableBackground />
       </div>
     </div>
   );
