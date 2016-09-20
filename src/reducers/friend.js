@@ -8,7 +8,6 @@ const defaultState = {
 };
 
 export default function friend(state = defaultState, action) {
-  console.log(action);
   switch (action.type) {
     case `${FETCH_FRIENDS}_PENDING`: {
       return {

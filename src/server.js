@@ -146,7 +146,6 @@ app.route('/api/:year/:semester/team')
   const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
-  console.log(req.body);
   const name = req.body.name;
   TeamModel.create({
     createdBy: userId,
