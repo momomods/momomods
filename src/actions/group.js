@@ -4,6 +4,7 @@ import {
   EDIT_GROUP,
   CHANGE_GROUP,
 } from '../constants';
+import { request } from './helpers';
 
 /**
  * Fetch a user's groups for specified year and semester
