@@ -65,7 +65,7 @@ class GroupToolbarDialog extends Component {
   }
 
   handleSelectedUsersChange = (users) => {
-      this.setState({groupMembers: users});
+    this.setState({ groupMembers: users });
   }
 
   isCreateMode = () => {

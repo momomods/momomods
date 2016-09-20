@@ -48,11 +48,15 @@ class GroupMemberSearch extends Component {
   }
 
   handleSelectUser = (request, index) => {
-      // When user selects a list item
-    if (index > -1) {
-      this.state.selectedUsers.push(this.props.users[index]);
+    if (index === -1 && this.state.dataSource.length > 0) {
+      // hit enter in text field
+      this.state.selectedUsers.push(this.state.dataSource[0]);
       this.setState({searchText: ''});
-
+      this.props.onChange(this.state.selectedUsers);
+    } else if (index >= 0) {
+      // click on list item
+      this.state.selectedUsers.push(this.state.dataSource[index]);
+      this.setState({searchText: ''});
       this.props.onChange(this.state.selectedUsers);
     }
   }
