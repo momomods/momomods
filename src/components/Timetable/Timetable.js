@@ -15,6 +15,7 @@ import DayColumn from './DayColumn';
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const minColWidth = 100;
 const dayRowWidth = 16.6666666666666;
+const types = ['scroll', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll', 'resize', 'touchmove', 'touchend'];
 
 class Timetable extends Component {
   constructor(props) {
@@ -23,14 +24,17 @@ class Timetable extends Component {
       scrollTopOffset: 0
     };
   }
+
   componentDidMount() {
-    const types = ['scroll', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll', 'resize', 'touchmove', 'touchend'];
     types.forEach((type) => {
-      if (window.addEventListener) {
-        findDOMNode(this.refs.timetableWrapper).addEventListener(type, this.onScroll.bind(this), false);
-      } else {
-        findDOMNode(this.refs.timetableWrapper).attachEvent('on' + type, this.onScroll.bind(this), false);
-      }
+
+      findDOMNode(this.refs.timetableWrapper).addEventListener(type, this.onScroll.bind(this), false);
+    });
+  }
+
+  componentWillUnmount() {
+    types.forEach((type) => {
+      findDOMNode(this.refs.timetableWrapper).removeEventListener(type, this.onScroll.bind(this), false);
     });
   }
 
