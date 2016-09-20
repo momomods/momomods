@@ -51,6 +51,8 @@ class Base extends Component {
         <Header
           title="mods+"
           activeTab={this.props.activeTab}
+          isSemesterOne={this.props.isSemesterOne}
+          handleSwitchSemester={this.props.handleSwitchSemester}
         />
         <div>
           { this.props.children }

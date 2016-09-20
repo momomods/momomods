@@ -43,6 +43,7 @@ class App extends Component {
 
     this.state = {
       activeTab: '',
+      isSemesterOne: false,
     };
   }
 
@@ -65,7 +66,7 @@ class App extends Component {
     this.removeCss();
   }
 
-  getActiveTabFromPage(page) {
+  getActiveTabFromPage = (page) => {
     let activeTab = '';
     let displayName = null;
     if (page.type.ComposedComponent) {
@@ -90,6 +91,10 @@ class App extends Component {
     return activeTab;
   }
 
+  handleSwitchSemester = () => {
+      this.setState({isSemesterOne: !this.state.isSemesterOne});
+  }
+
   render() {
     if (this.props.error) {
       return this.props.children;
@@ -101,6 +106,8 @@ class App extends Component {
         <MuiThemeProvider>
           <Base
             activeTab={this.getActiveTabFromPage(this.props.children)}
+            isSemesterOne={this.state.isSemesterOne}
+            handleSwitchSemester={this.handleSwitchSemester}
           >
             {this.props.children}
           </Base>
