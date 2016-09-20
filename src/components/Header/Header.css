@@ -57,3 +57,14 @@
   font-size: 1.25em;
   margin: 0;
 }
+
+.semesterToggle {
+    font-weight: 500;
+    line-height: 48px;
+    font-size: 18px;
+    color: #2F5E67 !important;
+}
+
+.semesterToggle button span {
+    color: white !important;
+}

@@ -13,15 +13,6 @@ import s from './Header.css';
 class Header extends Component {
   render() {
     let rightIcon = null;
-    let semesterToggle = (
-        <div>
-            <p>SEM {this.props.isSemesterOne ? '1' : '2'}</p>
-            <FlatButton
-              label="Switch"
-              onTouchTap={this.props.handleSwitchSemester()}
-            />
-        </div>
-    );
 
     if (this.props.isLoggedIn) {
       rightIcon = (
@@ -39,14 +30,24 @@ class Header extends Component {
       );
     }
 
+    let semesterToggle = (
+        <div className={s.semesterToggle}>
+            SEM {this.props.isSemesterOne ? '1' : '2'}
+            <FlatButton
+              label="Switch"
+              onTouchTap={this.props.handleSwitchSemester}
+            />
+            {rightIcon}
+        </div>
+    );
+
     return (
       <div>
         <div style={{ position: 'fixed', width: '100%', zIndex: 10 }}>
           <AppBar
             title="mods+"
             showMenuIconButton={false}
-            children={semesterToggle}
-            iconElementRight={rightIcon}
+            iconElementRight={semesterToggle}
             zDepth={0}
           />
           <Navigation activeTab={this.props.activeTab || 'mods+'} />
