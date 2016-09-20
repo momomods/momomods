@@ -1,6 +1,5 @@
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import RaisedButton from 'material-ui/RaisedButton';
 import React, { Component, PropTypes } from 'react';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
@@ -102,8 +101,8 @@ class TimetableContainer extends Component {
         onClick={() => {
           if (this.props.activeLesson) {
             this.props.cancelChangeLesson();
-          }
-        }}>
+          }}}
+      >
         <Timetable
           lessons={timetableLessons}
           timetable={timetable}

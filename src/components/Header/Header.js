@@ -6,7 +6,6 @@ import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 
 import Navigation from '../Navigation';
-import Link from '../Link';
 import { navigate } from '../../actions/route';
 
 import s from './Header.css';
@@ -18,16 +17,16 @@ class Header extends Component {
       rightIcon = (
         <FlatButton
           label="Logout"
-          onTouchTap={() => this.props.navigate("/logout")}
+          onTouchTap={() => this.props.navigate('/logout')}
         />
-      )
+      );
     } else {
       rightIcon = (
         <FlatButton
           label="Login"
-          onTouchTap={() => this.props.navigate("/login")}
+          onTouchTap={() => this.props.navigate('/login')}
         />
-      )
+      );
     }
 
     return (
@@ -39,7 +38,7 @@ class Header extends Component {
             iconElementRight={rightIcon}
             zDepth={0}
           />
-          <Navigation activeTab={this.props.activeTab || "mods+"} />
+          <Navigation activeTab={this.props.activeTab || 'mods+'} />
         </div>
         <div style={{ height: '112px', width: '100%' }} />
       </div>
@@ -52,7 +51,8 @@ Header.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   email: PropTypes.string,
   id: PropTypes.number,
-}
+  navigate: PropTypes.func.isRequired,
+};
 
 const mapState = (state) => ({
   isLoggedIn: !!state.user.data.id,

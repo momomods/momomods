@@ -31,7 +31,9 @@ class Base extends Component {
     }
 
     if (!group.isInitialized) {
-      this.props.fetchGroups({ year, semester });
+      if (this.props.loggedIn) {
+        this.props.fetchGroups({ year, semester });
+      }
     }
 
     this.props.loadTheme();
@@ -42,19 +44,32 @@ class Base extends Component {
       <div>
         <Header
           title="mods+"
-          activeTab={this.props.activeTab} />
-          <div>
-            { this.props.children }
-          </div>
+          activeTab={this.props.activeTab}
+        />
+        <div>
+          { this.props.children }
+        </div>
         <Footer />
         <Sync />
       </div>
-    )
+    );
   }
 }
 
 Base.propTypes = {
   activeTab: PropTypes.string,
+  loggedIn: PropTypes.bool.isRequired,
+  year: PropTypes.string.isRequired,
+  semester: PropTypes.string.isRequired,
+  group: PropTypes.object.isRequired,
+  module: PropTypes.object.isRequired,
+  timetable: PropTypes.object.isRequired,
+  fetchTimetable: PropTypes.func.isRequired,
+  loadTimetable: PropTypes.func.isRequired,
+  fetchModules: PropTypes.func.isRequired,
+  fetchGroups: PropTypes.func.isRequired,
+  loadTheme: PropTypes.func.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 const mapState = (state) => {
@@ -68,7 +83,7 @@ const mapState = (state) => {
     group,
     module,
     timetable,
-  }
+  };
 };
 
 const mapDispatch = {

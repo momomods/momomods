@@ -1,4 +1,4 @@
-import { FETCH_GROUPS } from '../constants';
+import { CREATE_GROUP, FETCH_GROUPS, UPDATE_GROUP } from '../constants';
 
 // data is a list of objects with group data, looks like:
 // {
@@ -24,7 +24,7 @@ export default function group(state = defaultState, action) {
     case `${FETCH_GROUPS}_FULFILLED`:
       return {
         ...state,
-        data: [action.payload, ...state.data],
+        data: action.payload,
         isFetching: false,
         isInitialized: true,
         lastFetched: Date.now(),
@@ -37,6 +37,15 @@ export default function group(state = defaultState, action) {
         isInitialized: false,
         lastFetched: null,
       };
+    case `${CREATE_GROUP}_FULFILLED`:
+      return {
+        ...state,
+        data: [action.payload, ...state.data],
+      }
+    case `${UPDATE_GROUP}_FULFILLED`:
+      return {
+        ...state,
+      }
     default:
       return state;
   }

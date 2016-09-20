@@ -118,9 +118,9 @@ app.route('/api/:year/:semester/team')
       }],
     }],
   }).then((result) => {
-    let finalResult = [];
+    const finalResult = [];
     for (let i = 0; i < result.length; ++i) {
-      let members = [];
+      const members = [];
       for (let j = 0; j < result[i].team.users.length; ++j) {
         members.push({
           userId: result[i].team.users[j].userId,
@@ -145,7 +145,8 @@ app.route('/api/:year/:semester/team')
   const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
-  const name = req.body[0].teamName;
+  console.log(req.body);
+  const name = req.body.name;
   TeamModel.create({
     createdBy: userId,
     year,
@@ -156,7 +157,7 @@ app.route('/api/:year/:semester/team')
       userId,
       teamId: newTeam.dataValues.id,
       acceptInvitation: 1, // Creator of Team is automatically invited and accepted
-    }).then((newTeamUser) => {
+    }).then(() => {
       UserModel.find({
         where: {
           id: userId,
@@ -256,7 +257,8 @@ app.route('/api/team/:id')
 .post((req, res) => {
   const userId = req.user.id;
   const teamId = req.params.id;
-  const usersToAdd = req.body;
+  const newTeamName = req.body.name;
+  const usersToAdd = req.body.members;
   TeamModel.find({
     where: {
       id: teamId,
@@ -284,7 +286,7 @@ app.route('/api/team/:id')
       }
     }
     if (member) {
-      let addedMembers = [];
+      const addedMembers = [];
       const acceptInvitation = 0;
       UserModel.findAll({
         where: {
@@ -460,8 +462,7 @@ app.route('/api/:year/:semester/timetable')
       }],
     }],
   }).then((result) => {
-    result = result || {};
-    res.json(result);
+    res.json(result || {});
   });
 })
 .post((req, res) => {

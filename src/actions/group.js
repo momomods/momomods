@@ -1,10 +1,5 @@
-import {
-  FETCH_GROUPS,
-  ADD_GROUP,
-  EDIT_GROUP,
-  CHANGE_GROUP,
-} from '../constants';
-import { request } from './helpers';
+import { CREATE_GROUP, FETCH_GROUPS, UPDATE_GROUP } from '../constants';
+import { postRequest, request } from './helpers';
 
 /**
  * Fetch a user's groups for specified year and semester
@@ -15,60 +10,40 @@ import { request } from './helpers';
  */
 export function fetchGroups({ year, semester }) {
   const url = `/api/${year}/${semester}/team`;
+
   return {
     type: FETCH_GROUPS,
-    meta: {
-      year,
-      semester,
-    },
-    payload: {
-      promise: request(url),
-    },
+    meta: { year, semester },
+    payload: { promise: request(url) },
   };
 }
 
-export function addGroup({ year, semester, teamName}) {
+export function createGroup({ year, semester, name, members }) {
   const url = `/api/${year}/${semester}/team`;
   return {
-    type: ADD_GROUP,
-    meta: {
-      year,
-      semester,
-    },
+    type: CREATE_GROUP,
     payload: {
       promise: postRequest(url, {
-        body: JSON.stringify(teamName),
-      }),
+        body: JSON.stringify({
+          name: name,
+          members: members,
+        })
+      })
     },
   };
 }
 
-// TODO: Add/ delete friends?
-export function editGroup({ year, semester }) {
+export function updateGroup({ id, name, members }) {
+  const url = `/api/team/${id}`;
   return {
-    type: EDIT_GROUP,
+    type: UPDATE_GROUP,
     payload: {
-      promise: Promise.resolve({ year, semester, data: [] }),
+      promise: postRequest(url, {
+        body: JSON.stringify({
+          name: name,
+          members: members,
+        })
+      })
     },
   };
 }
-
-/**
- * Select the group to be displayed
- *
- * @param {string} year, in the format of "YYYY-YYYY"
- * @param {string} semester, "1", "2", etc.
- * @param {string} groupId, id of the group to be displayed
- */
-export function changeGroup({ year, semester, groupId}) {
-  return {
-    type: CHANGE_GROUP,
-    payload: {
-      year,
-      semester,
-      groupId,
-    },
-  };
-}
-
-export function dummy() {}

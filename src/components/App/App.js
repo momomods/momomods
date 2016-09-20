@@ -37,13 +37,13 @@ class App extends Component {
   };
 
   constructor(props) {
-      super(props);
+    super(props);
 
-      this.getActiveTabFromPage = this.getActiveTabFromPage.bind(this);
+    this.getActiveTabFromPage = this.getActiveTabFromPage.bind(this);
 
-      this.state = {
-          activeTab: '',
-      }
+    this.state = {
+      activeTab: '',
+    };
   }
 
   getChildContext() {
@@ -66,14 +66,14 @@ class App extends Component {
   }
 
   getActiveTabFromPage(page) {
-    var activeTab = '';
+    let activeTab = '';
     let displayName = null;
     if (page.type.ComposedComponent) {
       displayName = page.type.ComposedComponent.displayName;
     } else {
       displayName = page.type.displayName;
     }
-    switch(displayName) {
+    switch (displayName) {
       case 'TimetablePage':
         activeTab = 'Main';
         break;
@@ -83,6 +83,8 @@ class App extends Component {
       case 'Group':
         activeTab = 'Meet';
         break;
+      default:
+        activeTab = '';
     }
 
     return activeTab;
