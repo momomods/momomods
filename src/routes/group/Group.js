@@ -46,12 +46,8 @@ class Group extends Component {
     });
   }
 
-  handleGroupAdd() {
-
-  }
-
   handleDateChange(event, date) {
-      console.log('date was changed ' + date);
+    console.log('date was changed ' + date);
   }
 
   render() {
@@ -80,10 +76,13 @@ class Group extends Component {
           groupShown={this.state.groupShown || this.props.data[0]}
           groups={this.props.data}
           handleGroupChange={this.handleGroupChange}
-          handleGroupAdd={this.handleGroupAdd}
           handleDateChange={this.handleDateChange}
         />
-        {this.props.data.length > 0 ? <TimetableContainer /> : noGroupContainer }
+        {this.props.isFetching ? null : (
+          this.props.data.length > 0 ?
+          <TimetableContainer /> :
+          noGroupContainer
+        )}
       </div>
     );
   }

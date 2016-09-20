@@ -138,7 +138,6 @@ GroupToolbar.propTypes = {
   groupShown: PropTypes.object,
   groups: PropTypes.array,
   handleGroupChange: PropTypes.func.isRequired,
-  handleGroupAdd: PropTypes.func.isRequired,
   handleDateChange: PropTypes.func.isRequired,
   year: PropTypes.string.isRequired,
   semester: PropTypes.string.isRequired,
