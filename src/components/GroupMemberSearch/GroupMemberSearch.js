@@ -53,7 +53,6 @@ class GroupMemberSearch extends Component {
       if (index > -1) {
           this.state.selectedUsers.push(this.props.users[index]);
           this.setState({searchText: ''});
-          console.log(this.state.searchText);
 
           this.props.onChange(this.state.selectedUsers);
       }
@@ -66,7 +65,6 @@ class GroupMemberSearch extends Component {
   }
 
   render() {
-      console.log(this.props.initialSelectedUsers);
 
     const selectedUserChips = this.state.selectedUsers.map((user, i) => (
         <Chip

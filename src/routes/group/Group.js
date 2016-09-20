@@ -16,7 +16,6 @@ import TimetableContainer from '../../components/Timetable/TimetableContainer';
 
 import s from './Group.css';
 import { fetchGroups } from '../../actions/group';
-import dummyState from './data';
 
 const title = 'Groups';
 

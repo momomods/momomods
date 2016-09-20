@@ -74,5 +74,3 @@ export function fetchNusModsModuleDetail({ year, code }) {
     },
   };
 }
-
-export function dummy() {}
