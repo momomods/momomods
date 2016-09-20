@@ -13,7 +13,7 @@ import { lightGreen500 } from 'material-ui/styles/colors';
 
 import GroupToolbarDialog from '../GroupToolbarDialog/GroupToolbarDialog';
 import s from './GroupToolbar.css';
-import { createGroup, updateGroup } from '../../actions/group';
+import { createGroup, fetchGroups, updateGroup } from '../../actions/group';
 
 const title = 'Groups';
 
@@ -32,7 +32,7 @@ class GroupToolbar extends Component {
 
   handleTouchEdit = () => this.setState({
     isDialogOpen: true,
-    initialGroupName: this.props.groupShown.title,
+    initialGroupName: this.props.groupShown.teamName,
     initialGroupMembers: this.props.groupShown.members,
   })
 
@@ -50,12 +50,16 @@ class GroupToolbar extends Component {
 
   handleEditGroup = (id, name, members) => {
     this.props.updateGroup({ id, name, members });
+    this.setState({ isDialogOpen: false });
+    // lazy to create a new reducer, let's just fetch again
+    const { year, semester } = this.props;
+    this.props.fetchGroups({ year, semester });
   }
 
   handleDeleteGroup = () => {
       this.handleClose();
 
-      console.log('delete group ' + this.props.groupShown.title);
+      console.log('delete group ' + this.props.groupShown.teamName);
       // TODO dispatch to delete group?
   }
 
@@ -138,6 +142,7 @@ GroupToolbar.propTypes = {
   handleDateChange: PropTypes.func.isRequired,
   year: PropTypes.string.isRequired,
   semester: PropTypes.string.isRequired,
+  fetchGroups: PropTypes.func.isRequired,
 };
 
 const mapState = (state) => ({
@@ -147,6 +152,7 @@ const mapState = (state) => ({
 
 const mapDispatch = {
   createGroup,
+  fetchGroups,
   updateGroup,
 };
 

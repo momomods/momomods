@@ -258,7 +258,7 @@ app.route('/api/team/:id')
   const userId = req.user.id;
   const teamId = req.params.id;
   const newTeamName = req.body.name;
-  const usersToAdd = req.body.members;
+  const usersToAdd = (req.body.members && req.body.members.map(u => u.userId)) || [];
   TeamModel.find({
     where: {
       id: teamId,
@@ -275,22 +275,19 @@ app.route('/api/team/:id')
       as: 'creator',
     }],
   }).then((result) => {
-    let member = false;
-    for (let j = 0; j < result.users.length; ++j) {
-      if (userId === result.users[j].userId && result.users[j].acceptInvitation) {
-        member = true;
-      }
-      const index = usersToAdd.indexOf(result.users[j].userId.toString());
-      if (index > -1) {
-        usersToAdd.splice(index, 1);
-      }
+    if (result.name !== newTeamName) {
+      result.update({
+        name: newTeamName,
+      });
     }
-    if (member) {
+    const isMember = !!result.users.find(u => u.userId === userId && u.acceptInvitation);
+    const newMembers = usersToAdd.filter(uid => !result.users.find(u => u.userId === uid));
+    if (isMember) {
       const addedMembers = [];
       const acceptInvitation = 0;
       UserModel.findAll({
         where: {
-          id: usersToAdd,
+          id: newMembers,
         },
       }).then((allNewUsers) => {
         for (let j = 0; j < allNewUsers.length; ++j) {
@@ -332,11 +329,11 @@ app.route('/api/team/:id')
           teamName: result.name,
           addedMembers,
         });
-      });
+      }).catch(e => res.status(404).send(e));
     } else {
       res.json({});
     }
-  });
+  }).catch((e) => { console.log(e); res.status(404).send(e)});
 })
 .put((req, res) => {
   const userId = req.user.id;
