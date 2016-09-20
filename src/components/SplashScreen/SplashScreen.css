@@ -1,0 +1,18 @@
+.splashContainer {
+    width: 100%;
+    height: 100%;
+}
+
+.logoContainer {
+    margin: auto;
+    text-align: center;
+}
+
+.textContainer {
+    font-family: 'Raleway', sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 48px;
+    color: #69D2E7;
+    margin: auto;
+    text-align: center;
+}
