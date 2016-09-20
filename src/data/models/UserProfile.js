@@ -4,12 +4,8 @@ import Model from '../sequelize';
 const UserProfile = Model.define('UserProfile', {
 
   userId: {
-    type: DataType.UUID,
+    type: DataType.INTEGER,
     primaryKey: true,
-  },
-
-  displayName: {
-    type: DataType.STRING(100),
   },
 
   picture: {
@@ -22,10 +18,6 @@ const UserProfile = Model.define('UserProfile', {
 
   location: {
     type: DataType.STRING(100),
-  },
-
-  website: {
-    type: DataType.STRING(255),
   },
 
 });

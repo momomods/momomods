@@ -25,14 +25,13 @@ passport.use(new FacebookStrategy({
   clientID: config.facebook.id,
   clientSecret: config.facebook.secret,
   callbackURL: config.facebook.callbackUrl,
-  profileFields: ['name', 'email'],
+  profileFields: ['name', 'email', 'displayName'],
   passReqToCallback: true,
 }, (req, accessToken, refreshToken, profile, done) => {
   /* eslint-disable no-underscore-dangle */
   const loginName = 'facebook';
   // const claimType = 'urn:facebook:access_token';
   const fooBar = async () => {
-    // console.log(profile);
     if (req.user) {
       const userLogin = await UserLogin.findOne({
         attributes: ['name', 'key'],
@@ -52,7 +51,6 @@ passport.use(new FacebookStrategy({
             { name: loginName, key: profile.id },
           ],
           profile: {
-            displayName: profile.displayName,
             gender: profile._json.gender,
             picture: `https://graph.facebook.com/${profile.id}/picture?type=large`,
           },
@@ -100,7 +98,6 @@ passport.use(new FacebookStrategy({
               { name: loginName, key: profile.id },
             ],
             profile: {
-              displayName: profile.displayName,
               gender: profile._json.gender,
               picture: `https://graph.facebook.com/${profile.id}/picture?type=large`,
             },
