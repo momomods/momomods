@@ -10,68 +10,74 @@ import s from './ShareDialog.css';
 
 class ShareDialog extends Component {
 
-    state = {
-        isSnackbarOpen: false,
+  state = {
+    isSnackbarOpen: false,
+  }
+
+  handleRequestClose = () => {
+    this.setState({ isSnackbarOpen: false });
+  }
+
+  handleCopy = () => {
+    const copyTextarea = document.querySelector('#copytextarea');
+    copyTextarea.select();
+
+    try {
+      document.execCommand('copy');
+      // If successful, show notif and close dialog
+      this.setState({ isSnackbarOpen: true });
+      this.props.handleClose();
+    } catch (err) {
+      this.setState({ isSnackbarOpen: false });
+      this.props.handleClose();
     }
+  }
 
-    handleRequestClose = () => {
-        this.setState({isSnackbarOpen: false});
-    }
+  render() {
+    const actions = [
+      <FlatButton
+        label="Close"
+        primary
+        onTouchTap={this.props.handleClose}
+      />,
+    ];
 
-    handleCopy = () => {
-        var copyTextarea = document.querySelector('#copytextarea');
-        copyTextarea.select();
+    const waLink = `whatsapp://send?text=${this.props.text}`;
 
-        try {
-            var successful = document.execCommand('copy');
-            var msg = successful ? 'successful' : 'unsuccessful';
-            console.log('Copying text command was ' + msg);
-
-            // If successful, show notif and close dialog
-            this.setState({isSnackbarOpen: true});
-            this.props.handleClose();
-        } catch (err) {
-            console.log('Oops, unable to copy');
-        }
-    }
-
-    render() {
-        const actions = [
-          <FlatButton
-            label="Close"
-            primary={true}
-            onTouchTap={this.props.handleClose}
-          />,
-        ];
-
-        return (
-            <div>
-                <Dialog
-                  title="Share Free Times"
-                  actions={actions}
-                  modal={false}
-                  open={this.props.open}
-                  onRequestClose={this.props.handleClose}>
-                    <textarea className={s.copyTextArea} id="copytextarea">
-                        {this.props.text}
-                    </textarea><br />
-                    <RaisedButton label="Copy to Clipboard" onClick={this.handleCopy} primary/><br />
-                    <a href={'whatsapp://send?text=' + this.props.text} data-action="share/whatsapp/share">Share via Whatsapp</a>
-                </Dialog>
-                <Snackbar
-                  open={this.state.isSnackbarOpen}
-                  message="Copied to clipboard"
-                  autoHideDuration={4000}
-                  onRequestClose={this.handleRequestClose}
-                />
-            </div>
-        );
-    }
+    return (
+      <div>
+        <Dialog
+          title="Share Free Times"
+          actions={actions}
+          modal={false}
+          open={this.props.open}
+          onRequestClose={this.props.handleClose}
+        >
+          <textarea className={s.copyTextArea} id="copytextarea">
+            {this.props.text}
+          </textarea>
+          <br />
+          <RaisedButton label="Copy to Clipboard" onClick={this.handleCopy} primary />
+          <br />
+          <a href={waLink} data-action="share/whatsapp/share">
+            Share via Whatsapp
+          </a>
+        </Dialog>
+        <Snackbar
+          open={this.state.isSnackbarOpen}
+          message="Copied to clipboard"
+          autoHideDuration={4000}
+          onRequestClose={this.handleRequestClose}
+        />
+      </div>
+    );
+  }
 }
 
 ShareDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
 };
 
 export default withStyles(s)(ShareDialog);
