@@ -1,13 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { findDOMNode } from 'react-dom'
-import classnames from 'classnames';
+import { findDOMNode } from 'react-dom';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './timetable.scss';
 import { arrangeLessonsForWeek } from '../../utils/modules';
 import TimetableBackground from './TimetableBackground';
 import TimetableDayRow from './TimetableDayRow';
 import TimeRow from './TimeRow';
-import DayColumn from './DayColumn';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
@@ -15,52 +13,61 @@ import DayColumn from './DayColumn';
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const minColWidth = 100;
 const dayRowWidth = 16.6666666666666;
-const types = ['scroll', 'mousewheel', 'DOMMouseScroll', 'MozMousePixelScroll', 'resize', 'touchmove', 'touchend'];
+const types = [
+  'scroll',
+  'mousewheel',
+  'DOMMouseScroll',
+  'MozMousePixelScroll',
+  'resize',
+  'touchmove',
+  'touchend',
+];
 
 class Timetable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scrollTopOffset: 0
+      scrollTopOffset: 0,
     };
   }
 
   componentDidMount() {
     types.forEach((type) => {
-
-      findDOMNode(this.refs.timetableWrapper).addEventListener(type, this.onScroll.bind(this), false);
+      findDOMNode(this.refs.timetableWrapper)
+        .addEventListener(type, this.onScroll.bind(this), false);
     });
   }
 
   componentWillUnmount() {
     types.forEach((type) => {
-      findDOMNode(this.refs.timetableWrapper).removeEventListener(type, this.onScroll.bind(this), false);
+      findDOMNode(this.refs.timetableWrapper)
+        .removeEventListener(type, this.onScroll.bind(this), false);
     });
   }
 
-  onScroll(event) {
+  onScroll() {
     this.setState({
-      scrollTopOffset: (window && window.scrollY || 0)
+      scrollTopOffset: ((window && window.scrollY) || 0),
     });
   }
 
-  render () {
+  render() {
     const arrangedLessons = arrangeLessonsForWeek(this.props.lessons);
-    const numCols = DAYS.reduce((prev, curr) => {
-      return prev + (arrangedLessons[curr] ? arrangedLessons[curr].length : 1);
-    }, 0);
+    const numCols = DAYS.reduce((prev, curr) => (
+      prev + (arrangedLessons[curr] ? arrangedLessons[curr].length : 1)),
+      0);
     const width = typeof window !== 'undefined' ?
       window.innerWidth * 0.85 :
       0;
     const style = {};
     const minInnerContainerWidth = minColWidth * numCols;
     if (minInnerContainerWidth > width) {
-      style.minWidth = `${minInnerContainerWidth}px`
+      style.minWidth = `${minInnerContainerWidth}px`;
     }
 
     const headerStyle= {
       ...style,
-      marginTop: `${this.state.scrollTopOffset - 40}px`
+      marginTop: `${this.state.scrollTopOffset - 40}px`,
     };
 
     return (
@@ -76,9 +83,13 @@ class Timetable extends Component {
                 const dayLessonRows = arrangedLessons[day];
                 const size = dayLessonRows ? dayLessonRows.length : 1;
                 return (
-                  <div className="timetable-day" key={day} style={{
-                    width: `${dayRowWidth * size}%`
-                  }}>{day}</div>
+                  <div
+                    className="timetable-day"
+                    key={day}
+                    style={{ width: `${dayRowWidth * size}%` }}
+                  >
+                    {day}
+                  </div>
                 );
               })}
             </div>
@@ -95,7 +106,7 @@ class Timetable extends Component {
                     dayLessonRows={dayLessonRows}
                     onLessonChange={this.props.onLessonChange}
                   />
-                )
+                );
               })}
             </div>
             <TimetableBackground />
@@ -104,7 +115,7 @@ class Timetable extends Component {
       </div>
     );
   }
-};
+}
 
 Timetable.propTypes = {
   lessons: PropTypes.array,

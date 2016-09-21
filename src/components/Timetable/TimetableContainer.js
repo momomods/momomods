@@ -101,7 +101,8 @@ class TimetableContainer extends Component {
         onClick={() => {
           if (this.props.activeLesson) {
             this.props.cancelChangeLesson();
-          }}}
+          }
+        }}
       >
         <Timetable
           lessons={timetableLessons}
