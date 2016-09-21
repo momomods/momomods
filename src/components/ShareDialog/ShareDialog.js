@@ -3,12 +3,39 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 
 import s from './ShareDialog.css';
 
 class ShareDialog extends Component {
-    render() {
 
+    state = {
+        isSnackbarOpen: false,
+    }
+
+    handleRequestClose = () => {
+        this.setState({isSnackbarOpen: false});
+    }
+
+    handleCopy = () => {
+        var copyTextarea = document.querySelector('#copytextarea');
+        copyTextarea.select();
+
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+
+            // If successful, show notif and close dialog
+            this.setState({isSnackbarOpen: true});
+            this.props.handleClose();
+        } catch (err) {
+            console.log('Oops, unable to copy');
+        }
+    }
+
+    render() {
         const actions = [
           <FlatButton
             label="Close"
@@ -18,17 +45,25 @@ class ShareDialog extends Component {
         ];
 
         return (
-            <Dialog
-              title="Share Free Times"
-              actions={actions}
-              modal={false}
-              open={this.props.open}
-              onRequestClose={this.props.handleClose}
-              autoScrollBodyContent={true}>
-                <div>
-                    {this.props.text}
-                </div>
-            </Dialog>
+            <div>
+                <Dialog
+                  title="Share Free Times"
+                  actions={actions}
+                  modal={false}
+                  open={this.props.open}
+                  onRequestClose={this.props.handleClose}>
+                    <textarea className={s.copyTextArea} id="copytextarea">
+                        {this.props.text}
+                    </textarea><br />
+                    <RaisedButton label="Copy to Clipboard" onClick={this.handleCopy} primary/>
+                </Dialog>
+                <Snackbar
+                  open={this.state.isSnackbarOpen}
+                  message="Copied to clipboard"
+                  autoHideDuration={4000}
+                  onRequestClose={this.handleRequestClose}
+                />
+            </div>
         );
     }
 }

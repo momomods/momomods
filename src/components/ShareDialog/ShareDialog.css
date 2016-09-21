@@ -1,0 +1,7 @@
+.copyTextArea {
+    width: 90%;
+    margin: 0;
+    margin-top: 15px;
+    border: 1px solid rgb(224, 224, 224);
+    resize: none;
+}
