@@ -192,13 +192,19 @@ E.g. /team/id?date=2016-09-07
 + Response 200 (application/json)
 
         {
-            "Error": "Please specify a date query."
+            "error": "Please specify a date query."
         }
 
 + Response 200 (application/json)
 
         {
-            "Error": "Please specify a date query within the semester in which the group is formed."
+            "error": "Please specify a date query within the semester in which the group is formed."
+        }
+
++ Response 200 (application/json)
+
+        {
+            "holiday": "Recess Week"
         }
 
 + Response 200 (application/json)
