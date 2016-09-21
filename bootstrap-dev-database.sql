@@ -1,5 +1,5 @@
 -- Insert Users
-INSERT INTO User (name, email, emailConfirmed, createdAt, updatedAt) 
+INSERT INTO User (name, email, emailConfirmed, createdAt, updatedAt)
 VALUES ("Patrick Cho", "patcho168@gmail.com", 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert Timetables
@@ -15,9 +15,9 @@ null, null, '[{"ClassNo":"1","LessonType":"Lecture","WeekText":"Every Week","Day
 CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert TimetableModules
-INSERT INTO TimetableModule (timetableId, moduleId, lessonType, classNumber, createdAt, updatedAt) VALUES 
+INSERT INTO TimetableModule (timetableId, moduleId, lessonType, classNumber, createdAt, updatedAt) VALUES
 (1,1,"Lecture",1,CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO Team (name, year, semester, createdAt, updatedAt) VALUES ('group1', 2016, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO TeamUser (groupId, userId, createdAt, updatedAt) VALUES (1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+INSERT INTO TeamUser (teamId, userId, createdAt, updatedAt) VALUES (1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
