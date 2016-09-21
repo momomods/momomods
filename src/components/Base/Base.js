@@ -9,6 +9,8 @@ import { fetchGroups } from '../../actions/group';
 import { loadTheme } from '../../actions/theme';
 import { fetchFriends } from '../../actions/friend';
 
+import SplashScreen from '../SplashScreen';
+
 class Base extends Component {
   componentDidMount() {
     const {
@@ -45,20 +47,25 @@ class Base extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <Header
-          title="mods+"
-          activeTab={this.props.activeTab}
-          isSemesterOne={this.props.isSemesterOne}
-          handleSwitchSemester={this.props.handleSwitchSemester}
-        />
-        <div>
-          { this.props.children }
-        </div>
-        <Sync />
-      </div>
-    );
+    const loaded = this.props.timetable.isInitialized && this.props.module.isInitialized;
+
+    return loaded ?
+        (
+          <div>
+            <Header
+              title="mods+"
+              activeTab={this.props.activeTab}
+              isSemesterOne={this.props.isSemesterOne}
+              handleSwitchSemester={this.props.handleSwitchSemester}
+            />
+            <div>
+              { this.props.children }
+            </div>
+            <Sync />
+          </div>
+        )
+        :
+        <SplashScreen />
   }
 }
 
