@@ -19,7 +19,6 @@ const TimetableCell = (props) => {
     timetableCell = (
       <div
         className={classnames('timetable-module-cell', {
-          'is-cell-modifiable': lesson.isModifiable,
           'is-modifiable': lesson.isModifiable,
           'is-available': lesson.isAvailable,
           'is-active': lesson.isActive,

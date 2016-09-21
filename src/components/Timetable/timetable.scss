@@ -136,11 +136,9 @@ $timetable-background-z-index: -1;
     line-height: 0.85rem;
     padding-left: $timetable-cell-padding;
     padding-top: $timetable-cell-padding;
-    border-radius: 8px;
-    border-bottom: 3px solid;
-    overflow: hidden;
     text-align: left;
     z-index: $timetable-module-cell-z-index;
+    border-bottom: 2px solid;
 
     &.is-available {
       opacity: $timetable-cell-opacity;
@@ -151,6 +149,12 @@ $timetable-background-z-index: -1;
         animation-fill-mode: forwards;
         animation-name: grow;
       }
+    }
+
+    &.is-modifiable {
+      border-radius: 8px;
+      border-bottom: 3px solid;
+      overflow: hidden;
     }
 
     &.is-active {

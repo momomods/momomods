@@ -18,7 +18,7 @@ import {
 } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { timetableLessonsArray, isSameClass } from '../../utils/modules';
-import { lessonsForLessonType } from '../../utils/timetable';
+import { lessonsForLessonType, areOtherClassesAvailable } from '../../utils/timetable';
 import Timetable from './Timetable';
 import s from './timetable.scss';
 import ModuleTable from './ModuleTable';
@@ -96,6 +96,13 @@ class TimetableContainer extends Component {
       timetableLessons = [...timetableLessons, ...otherAvailableLessons];
     }
 
+    const timetableLessonsWithModifiableFlag = _.mapValues(timetableLessons, (lesson) => {
+        const moduleTimetable = JSON.parse(lesson.moduleDetail.timetable || null);
+        return {
+          ...lesson,
+          isModifiable: areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
+        };
+    });
     return (
       <div
         onClick={() => {
@@ -105,7 +112,7 @@ class TimetableContainer extends Component {
         }}
       >
         <Timetable
-          lessons={timetableLessons}
+          lessons={timetableLessonsWithModifiableFlag}
           timetable={timetable}
           onLessonChange={changeLessonHelper}
         />
