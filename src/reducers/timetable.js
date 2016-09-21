@@ -8,6 +8,7 @@ import {
   FETCH_TIMETABLE,
   LOAD_TIMETABLE,
 } from '../constants';
+import { lessonsForLessonType } from '../utils/timetable';
 
 /* data is a object mapping year, sem to timetable data
  * {
@@ -158,9 +159,25 @@ export default function timetable(state = defaultState, action) {
         }));
 
       // for each lesson type, push a class onto timetable
-      Object.keys(lessonTypeToX).forEach(k => (
-        data[year][semester].push(lessonTypeToX[k])
-      ));
+      Object.keys(lessonTypeToX).forEach(k => {
+        // one class can have multiple periods
+        const moduleTimetable = JSON.parse(module.timetable || null);
+        const lessons = lessonsForLessonType(moduleTimetable, lessonTypeToX[k].LessonType)
+          .map(lesson => (
+            // Inject module detail in
+            { ...lesson, moduleDetail: module, ModuleCode: module.code }
+          ));
+        const selectedLesson = lessons
+          .filter(lesson => {
+            // Get all classes from the same class group
+            return lesson.ModuleCode === lessonTypeToX[k].ModuleCode
+            && lesson.LessonType === lessonTypeToX[k].LessonType
+            && lesson.ClassNo === lessonTypeToX[k].ClassNo;
+          });
+
+        selectedLesson.forEach(m => data[year][semester].push(m));
+        // state.data[year][semester].push(lessonTypeToX[k])
+      });
       return {
         ...state,
         data,
@@ -196,10 +213,24 @@ export default function timetable(state = defaultState, action) {
         !(m.ModuleCode === state.activeLesson.ModuleCode
           && m.LessonType === state.activeLesson.LessonType)
       );
-      // remove isAvailable status and add in selected class
-      activeLesson.isAvailable = false;
-      data.push(activeLesson);
 
+      const moduleDetail = activeLesson.moduleDetail;
+      const ModuleCode = activeLesson.ModuleCode
+      const moduleTimetable = JSON.parse(activeLesson.moduleDetail.timetable || null);
+      const lessons = lessonsForLessonType(moduleTimetable, activeLesson.LessonType)
+        .map(lesson => (
+          // Inject module detail in
+          { ...lesson, moduleDetail, ModuleCode }
+        ));
+      const selectedLesson = lessons
+        .filter(lesson => {
+          // Get all classes from the same class group
+          return lesson.ModuleCode === activeLesson.ModuleCode
+          && lesson.LessonType === activeLesson.LessonType
+          && lesson.ClassNo === activeLesson.ClassNo;
+        });
+
+      selectedLesson.forEach(m => data.push(m));
       return {
         ...state,
         data: {
