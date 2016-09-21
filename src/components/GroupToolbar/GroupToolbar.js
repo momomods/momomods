@@ -82,11 +82,14 @@ class GroupToolbar extends Component {
     const listItems = groups.map((group, i) => (
       <MenuItem key={group.teamId} value={group.teamId} primaryText={group.teamName} />
     ));
-    const isGroupSelected = (typeof groupId !== 'undefined');
+    const isGroupSelected = (typeof groupId !== 'undefined' && groupId !== null);
 
     const users = (
       friend.data[year] &&
       friend.data[year][semester]) || [];
+
+    const minDate = new Date();
+    minDate.setHours(0, 0, 0, 0);
 
     return (
       <div>
@@ -122,6 +125,7 @@ class GroupToolbar extends Component {
               defaultDate={dateToday}
               onChange={handleDateChange}
               disabled={!isGroupSelected}
+              minDate={minDate}
             />
           </ToolbarGroup>
         </Toolbar>
