@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import Header from '../Header';
-import Footer from '../Footer';
 import Sync from '../Sync';
 import { fetchTimetable, loadTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
@@ -57,7 +56,6 @@ class Base extends Component {
         <div>
           { this.props.children }
         </div>
-        <Footer />
         <Sync />
       </div>
     );

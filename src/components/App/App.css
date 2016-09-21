@@ -189,13 +189,6 @@ textarea {
     padding-bottom: 110px;
 }
 
-.pageFooter {
-    position: relative;
-    width: 100%;
-    height: 62px;
-    bottom: 0;
-}
-
 button, html [type="button"], [type="reset"], [type="submit"] {
     -webkit-appearance: none !important;
     -moz-appearance:    none !important;
