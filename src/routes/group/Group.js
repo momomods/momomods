@@ -12,7 +12,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
 
 import GroupToolbar from '../../components/GroupToolbar/GroupToolbar';
-import TimetableContainer from '../../components/Timetable/TimetableContainer';
+import TimeShareContainer from '../../components/Timetable/TimeShareContainer';
 
 import s from './Group.css';
 import { fetchGroups } from '../../actions/group';
@@ -73,18 +73,21 @@ class Group extends Component {
         <img src="/group.png"/>
       </div>
     );
+    
+    const selected = this.state.groupShown || this.props.group.data[0];
+    console.log("selected", selected, selected.teamId);
 
     return (
       <div>
         <GroupToolbar
-          groupShown={this.state.groupShown || this.props.group.data[0]}
+          groupShown={selected}
           groups={this.props.group.data}
           handleGroupChange={this.handleGroupChange}
           handleDateChange={this.handleDateChange}
         />
         {this.props.group.isFetching || !this.props.group.isInitialized ? null : (
           this.props.group.data.length > 0 ?
-          <TimetableContainer /> :
+          <TimeShareContainer group={selected} /> :
           noGroupContainer
         )}
       </div>
