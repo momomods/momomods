@@ -50,22 +50,20 @@ class Base extends Component {
     const loaded = this.props.timetable.isInitialized && this.props.module.isInitialized;
 
     return loaded ?
-        (
-          <div>
-            <Header
-              title="mods+"
-              activeTab={this.props.activeTab}
-              isSemesterOne={this.props.isSemesterOne}
-              handleSwitchSemester={this.props.handleSwitchSemester}
-            />
-            <div>
-              { this.props.children }
-            </div>
-            <Sync />
-          </div>
-        )
-        :
-        <SplashScreen />
+      <div>
+        <Header
+          title="mods+"
+          activeTab={this.props.activeTab}
+          isSemesterOne={this.props.isSemesterOne}
+          handleSwitchSemester={this.props.handleSwitchSemester}
+        />
+        <div>
+          { this.props.children }
+        </div>
+        <Sync />
+      </div>
+      :
+      <SplashScreen />;
   }
 }
 
@@ -77,12 +75,16 @@ Base.propTypes = {
   group: PropTypes.object.isRequired,
   module: PropTypes.object.isRequired,
   timetable: PropTypes.object.isRequired,
+  friend: PropTypes.object.isRequired,
   fetchTimetable: PropTypes.func.isRequired,
   loadTimetable: PropTypes.func.isRequired,
   fetchModules: PropTypes.func.isRequired,
   fetchGroups: PropTypes.func.isRequired,
+  fetchFriends: PropTypes.func.isRequired,
   loadTheme: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
+  isSemesterOne: PropTypes.bool.isRequired,
+  handleSwitchSemester: PropTypes.func.isRequired,
 };
 
 const mapState = (state) => {

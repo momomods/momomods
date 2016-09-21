@@ -28,6 +28,7 @@ class TimeShareContainer extends Component {
 TimeShareContainer.propTypes = {
   colors: PropTypes.object,
   group: PropTypes.object,
+  timetable: PropTypes.object.isRequired,
 };
 
 const mapDispatch = {

@@ -6,6 +6,6 @@ const Loading = () => (
   <div style={{ textAlign: 'center', paddingTop: '56px' }}>
     <CircularProgress />
   </div>
-)
+);
 
 export default Loading;

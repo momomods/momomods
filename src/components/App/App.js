@@ -92,7 +92,7 @@ class App extends Component {
   }
 
   handleSwitchSemester = () => {
-      this.setState({isSemesterOne: !this.state.isSemesterOne});
+    this.setState({ isSemesterOne: !this.state.isSemesterOne });
   }
 
   render() {

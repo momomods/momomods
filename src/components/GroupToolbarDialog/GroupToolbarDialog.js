@@ -5,10 +5,9 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-import Divider from 'material-ui/Divider';
+import { red500, grey50 } from 'material-ui/styles/colors';
 
 import GroupMemberSearch from '../GroupMemberSearch';
-import { red500, grey50 } from 'material-ui/styles/colors';
 
 import s from './GroupToolbarDialog.css';
 
@@ -22,37 +21,35 @@ class GroupToolbarDialog extends Component {
   displayName = 'GroupToolbarDialog'
 
   state = {
-      isDeleteDialogOpen: false,
-      groupName: this.props.initialGroupName,
-      groupMembers: this.props.initialSelectedUsers,
+    isDeleteDialogOpen: false,
+    groupName: this.props.initialGroupName,
+    groupMembers: this.props.initialSelectedUsers,
   }
 
   componentWillReceiveProps(nextProps) {
-      this.setState({
-          groupName: nextProps.initialGroupName,
-          groupMembers: nextProps.initialSelectedUsers
-      });
+    this.setState({
+      groupName: nextProps.initialGroupName,
+      groupMembers: nextProps.initialSelectedUsers,
+    });
   }
 
   handleDeleteDialogOpen = () => {
-      this.setState({isDeleteDialogOpen: true});
+    this.setState({ isDeleteDialogOpen: true });
   }
 
   handleDeleteDialogClose = () => {
-      this.setState({isDeleteDialogOpen: false});
+    this.setState({ isDeleteDialogOpen: false });
   }
 
   handleNameChange = (event) => {
-      this.setState({groupName: event.target.value});
+    this.setState({ groupName: event.target.value });
   }
 
   handleSelectedUsersChange = (users) => {
     this.setState({ groupMembers: users });
   }
 
-  isCreateMode = () => {
-      return this.props.initialGroupName === '';
-  }
+  isCreateMode = () => (this.props.initialGroupName === '')
 
   render() {
     const {
@@ -85,21 +82,23 @@ class GroupToolbarDialog extends Component {
 
     // If dialog is in create mode
     if (this.isCreateMode()) {
-        actions.push(
-            <FlatButton
-                label="Create"
-                primary
-                onTouchTap={() => handleCreateGroup(this.state.groupName, this.state.groupMembers)}
-            />
-        );
+      actions.push(
+        <FlatButton
+          label="Create"
+          primary
+          onTouchTap={() => handleCreateGroup(
+            this.state.groupName, this.state.groupMembers)}
+        />
+    );
     } else {
-        actions.push(
-            <FlatButton
-                label="Edit"
-                primary
-                onTouchTap={() => handleEditGroup(this.props.groupId, this.state.groupName, this.state.groupMembers)}
-            />
-        );
+      actions.push(
+        <FlatButton
+          label="Edit"
+          primary
+          onTouchTap={() => handleEditGroup(
+            this.props.groupId, this.state.groupName, this.state.groupMembers)}
+        />
+      );
     }
 
     return (
@@ -112,30 +111,30 @@ class GroupToolbarDialog extends Component {
         autoScrollBodyContent
       >
         <div className={s.inputContainer}>
-            <p>Group Name</p>
-            <TextField
-              id="name"
-              hintText="Group Name"
-              value={this.state.groupName}
-              onChange={this.handleNameChange}
-              className={s.inputField}
-            />
+          <p>Group Name</p>
+          <TextField
+            id="name"
+            hintText="Group Name"
+            value={this.state.groupName}
+            onChange={this.handleNameChange}
+            className={s.inputField}
+          />
         </div>
         <div className={s.inputContainer}>
-            <p>Group Members</p>
-            <GroupMemberSearch
-              initialSelectedUsers={this.props.initialSelectedUsers}
-              users={this.props.users}
-              onChange={this.handleSelectedUsersChange}
-            />
+          <p>Group Members</p>
+          <GroupMemberSearch
+            initialSelectedUsers={this.props.initialSelectedUsers}
+            users={this.props.users}
+            onChange={this.handleSelectedUsersChange}
+          />
         </div>
         {this.isCreateMode() ? '' :
-        <div className={s.inputContainer}>
+          <div className={s.inputContainer}>
             <RaisedButton
-                label="Delete Group"
-                backgroundColor={red500}
-                labelColor={grey50}
-                onTouchTap={this.handleDeleteDialogOpen}
+              label="Delete Group"
+              backgroundColor={red500}
+              labelColor={grey50}
+              onTouchTap={this.handleDeleteDialogOpen}
             />
             <Dialog
               title="Confirm Delete?"
@@ -146,7 +145,7 @@ class GroupToolbarDialog extends Component {
             >
               Are you sure you want to delete {this.state.groupName}?
             </Dialog>
-        </div>
+          </div>
         }
       </Dialog>
     );
@@ -162,6 +161,7 @@ GroupToolbarDialog.propTypes = {
   initialGroupName: PropTypes.string,
   initialSelectedUsers: PropTypes.array,
   users: PropTypes.array,
+  groupId: PropTypes.number,
 };
 
 export default withStyles(s)(GroupToolbarDialog);
