@@ -190,7 +190,7 @@ app.route('/api/team/:id')
   const date = req.query.date;
   if (!date) {
     res.json({
-      Error: 'Please specify a date query.',
+      error: 'Please specify a date query.',
     })
   } else {
     SemtimeModel.find({
@@ -205,11 +205,11 @@ app.route('/api/team/:id')
     }).then((dateResult) => {
       if (!dateResult) {
         res.json({
-          Error: 'Please specify a date query within the semester in which the group is formed.',
+          error: 'Please specify a date query within the semester in which the group is formed.',
         });
       } else if (dateResult.weekType === 0) {
         res.json({
-          Holiday: dateResult.name,
+          holiday: dateResult.name,
         });
       } else {
         const dow = moment(date).format('dddd');
