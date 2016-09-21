@@ -82,7 +82,7 @@ class GroupToolbar extends Component {
     const listItems = groups.map((group, i) => (
       <MenuItem key={group.teamId} value={group.teamId} primaryText={group.teamName} />
     ));
-    const isGroupSelected = (typeof groupId !== 'undefined');
+    const isGroupSelected = (typeof groupId !== 'undefined' && groupId !== null);
 
     const users = (
       friend.data[year] &&
