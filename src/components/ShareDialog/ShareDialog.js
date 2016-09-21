@@ -55,7 +55,8 @@ class ShareDialog extends Component {
                     <textarea className={s.copyTextArea} id="copytextarea">
                         {this.props.text}
                     </textarea><br />
-                    <RaisedButton label="Copy to Clipboard" onClick={this.handleCopy} primary/>
+                    <RaisedButton label="Copy to Clipboard" onClick={this.handleCopy} primary/><br />
+                    <a href={'whatsapp://send?text=' + this.props.text} data-action="share/whatsapp/share">Share via Whatsapp</a>
                 </Dialog>
                 <Snackbar
                   open={this.state.isSnackbarOpen}
