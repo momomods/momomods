@@ -74,8 +74,7 @@ class Group extends Component {
       </div>
     );
     
-    const selected = this.state.groupShown || this.props.group.data[0];
-    console.log("selected", selected, selected.teamId);
+    const selected = this.state.groupShown || this.props.group.data[0] || {};
 
     return (
       <div>
