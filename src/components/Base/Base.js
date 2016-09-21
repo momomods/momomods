@@ -2,13 +2,14 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import Header from '../Header';
-import Footer from '../Footer';
 import Sync from '../Sync';
 import { fetchTimetable, loadTimetable } from '../../actions/timetable';
 import { fetchModules } from '../../actions/module';
 import { fetchGroups } from '../../actions/group';
 import { loadTheme } from '../../actions/theme';
 import { fetchFriends } from '../../actions/friend';
+
+import SplashScreen from '../SplashScreen';
 
 class Base extends Component {
   componentDidMount() {
@@ -46,7 +47,9 @@ class Base extends Component {
   }
 
   render() {
-    return (
+    const loaded = this.props.timetable.isInitialized && this.props.module.isInitialized;
+
+    return loaded ?
       <div>
         <Header
           title="mods+"
@@ -57,10 +60,10 @@ class Base extends Component {
         <div>
           { this.props.children }
         </div>
-        <Footer />
         <Sync />
       </div>
-    );
+      :
+      <SplashScreen />;
   }
 }
 
@@ -72,12 +75,16 @@ Base.propTypes = {
   group: PropTypes.object.isRequired,
   module: PropTypes.object.isRequired,
   timetable: PropTypes.object.isRequired,
+  friend: PropTypes.object.isRequired,
   fetchTimetable: PropTypes.func.isRequired,
   loadTimetable: PropTypes.func.isRequired,
   fetchModules: PropTypes.func.isRequired,
   fetchGroups: PropTypes.func.isRequired,
+  fetchFriends: PropTypes.func.isRequired,
   loadTheme: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired,
+  isSemesterOne: PropTypes.bool.isRequired,
+  handleSwitchSemester: PropTypes.func.isRequired,
 };
 
 const mapState = (state) => {

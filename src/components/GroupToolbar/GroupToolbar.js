@@ -2,20 +2,17 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup, ToolbarSeparator } from 'material-ui/Toolbar';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import IconButton from 'material-ui/IconButton';
 import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { lightGreen500 } from 'material-ui/styles/colors';
 
 import GroupToolbarDialog from '../GroupToolbarDialog/GroupToolbarDialog';
 import s from './GroupToolbar.css';
-import { createGroup, fetchGroups, updateGroup } from '../../actions/group';
-
-const title = 'Groups';
+import { createGroup, deleteGroup, updateGroup } from '../../actions/group';
 
 class GroupToolbar extends Component {
   state = {
@@ -36,31 +33,26 @@ class GroupToolbar extends Component {
     initialGroupMembers: this.props.groupShown.members,
   })
 
-  handleClose = () => this.setState({isDialogOpen: false})
+  handleClose = () => this.setState({ isDialogOpen: false })
 
-  handleCreateGroup = (name, members) =>  {
+  handleCreateGroup = (name, members) => {
     this.props.createGroup({
       year: this.props.year,
       semester: this.props.semester,
       name,
       members,
-    })
+    });
     this.setState({ isDialogOpen: false });
   }
 
   handleEditGroup = (id, name, members) => {
     this.props.updateGroup({ id, name, members });
     this.setState({ isDialogOpen: false });
-    // lazy to create a new reducer, let's just fetch again
-    const { year, semester } = this.props;
-    this.props.fetchGroups({ year, semester });
   }
 
-  handleDeleteGroup = () => {
-      this.handleClose();
-
-      console.log('delete group ' + this.props.groupShown.teamName);
-      // TODO dispatch to delete group?
+  handleDeleteGroup = ({ id }) => {
+    this.props.deleteGroup({ id });
+    this.handleClose();
   }
 
   render() {
@@ -76,22 +68,23 @@ class GroupToolbar extends Component {
     } = this.props;
 
     const groupId = (groupShown && groupShown.teamId) || null;
-    const groupName = (groupShown && groupShown.teamName) || null;
-    const groupMembers = (groupShown && groupShown.members) || [];
 
-    const listItems = groups.map((group, i) => (
+    const listItems = groups.map(group => (
       <MenuItem key={group.teamId} value={group.teamId} primaryText={group.teamName} />
     ));
-    const isGroupSelected = (typeof groupId !== 'undefined');
+    const isGroupSelected = (typeof groupId !== 'undefined' && groupId !== null);
 
     const users = (
       friend.data[year] &&
       friend.data[year][semester]) || [];
 
+    const minDate = new Date();
+    minDate.setHours(0, 0, 0, 0);
+
     return (
       <div>
         <Toolbar className={s.groupToolbar}>
-          <ToolbarGroup firstChild={true} className={s.groupToolbarGroup}>
+          <ToolbarGroup firstChild className={s.groupToolbarGroup}>
             <DropDownMenu
               className={s.groupToolbarDropdownMenu}
               value={groupId}
@@ -104,24 +97,27 @@ class GroupToolbar extends Component {
             <IconButton
               className={s.groupToolbarButton}
               onClick={this.handleTouchEdit}
-              disabled={!isGroupSelected}>
+              disabled={!isGroupSelected}
+            >
               <EditorModeEdit />
             </IconButton>
             <IconButton
               className={s.groupToolbarButton}
-              onClick={this.handleTouchCreate}>
+              onClick={this.handleTouchCreate}
+            >
               <ContentAdd />
             </IconButton>
           </ToolbarGroup>
           <ToolbarSeparator />
-          <ToolbarGroup lastChild={true} className={s.groupToolbarGroup}>
+          <ToolbarGroup lastChild className={s.groupToolbarGroup}>
             <DatePicker
               className={s.groupToolbarDatePicker}
               hintText="Meeting Date"
-              autoOk={true}
+              autoOk
               defaultDate={dateToday}
               onChange={handleDateChange}
               disabled={!isGroupSelected}
+              minDate={minDate}
             />
           </ToolbarGroup>
         </Toolbar>
@@ -129,7 +125,7 @@ class GroupToolbar extends Component {
         <GroupToolbarDialog
           users={users}
           open={this.state.isDialogOpen}
-          handleCreateGroup={this.handleCreateGroup.bind(this)}
+          handleCreateGroup={this.handleCreateGroup}
           handleEditGroup={this.handleEditGroup}
           handleDeleteGroup={this.handleDeleteGroup}
           handleClose={this.handleClose}
@@ -149,8 +145,13 @@ GroupToolbar.propTypes = {
   handleDateChange: PropTypes.func.isRequired,
   year: PropTypes.string.isRequired,
   semester: PropTypes.string.isRequired,
-  fetchGroups: PropTypes.func.isRequired,
   friend: PropTypes.object.isRequired,
+  updateGroup: PropTypes.func.isRequired,
+  createGroup: PropTypes.func.isRequired,
+  deleteGroup: PropTypes.func.isRequired,
+  dateToday: PropTypes.string,
+  groupName: PropTypes.string,
+  groupMembers: PropTypes.array,
 };
 
 const mapState = (state) => ({
@@ -161,7 +162,7 @@ const mapState = (state) => ({
 
 const mapDispatch = {
   createGroup,
-  fetchGroups,
+  deleteGroup,
   updateGroup,
 };
 

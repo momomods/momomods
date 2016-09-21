@@ -36,9 +36,9 @@ function getNewColor(currentColorIndices) {
 function colors(state, action) {
   switch (action.type) {
     case ADD_MODULE:
-      state[action.payload.module.code] = getNewColor(_.values(state));
       return {
         ...state,
+        [action.payload.module.code]: getNewColor(_.values(state)),
       };
     case REMOVE_MODULE:
       return _.omit(state, action.payload.code);

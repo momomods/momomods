@@ -30,15 +30,15 @@ class Header extends Component {
       );
     }
 
-    let semesterToggle = (
-        <div className={s.semesterToggle}>
-            SEM {this.props.isSemesterOne ? '1' : '2'}
-            <FlatButton
-              label="Switch"
-              onTouchTap={this.props.handleSwitchSemester}
-            />
-            {rightIcon}
-        </div>
+    const semesterToggle = (
+      <div className={s.semesterToggle}>
+        SEM {this.props.isSemesterOne ? '1' : '2'}
+        <FlatButton
+          label="Switch"
+          onTouchTap={this.props.handleSwitchSemester}
+        />
+        {rightIcon}
+      </div>
     );
 
     return (
@@ -64,6 +64,8 @@ Header.propTypes = {
   email: PropTypes.string,
   id: PropTypes.number,
   navigate: PropTypes.func.isRequired,
+  handleSwitchSemester: PropTypes.func.isRequired,
+  isSemesterOne: PropTypes.bool.isRequired,
 };
 
 const mapState = (state) => ({

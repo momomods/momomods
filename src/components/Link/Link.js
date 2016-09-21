@@ -27,6 +27,7 @@ class Link extends Component { // eslint-disable-line react/prefer-stateless-fun
 
     // actions
     navigate: PropTypes.func,
+    children: PropTypes.node,
   };
 
   static contextTypes = {
@@ -63,8 +64,12 @@ class Link extends Component { // eslint-disable-line react/prefer-stateless-fun
   };
 
   render() {
-    const { to, navigate: _, ...props } = this.props; // eslint-disable-line no-unused-vars
-    return <a href={this.context.createHref(to)} {...props} onClick={this.handleClick} />;
+    const { to, navigate: _, children, ...props } = this.props;
+    return (
+      <a href={this.context.createHref(to)} {...props} onClick={this.handleClick}>
+        {children}
+      </a>
+    );
   }
 
 }

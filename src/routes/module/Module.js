@@ -4,6 +4,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
 
 import ModuleList from '../../components/ModuleList/ModuleList';
+import Loading from '../../components/Loading/Loading';
 
 import s from './Module.css';
 import { fetchModules } from '../../actions/module';
@@ -17,6 +18,7 @@ class Module extends Component {
     addModuleOverride: PropTypes.func,
     fetchModules: PropTypes.func.isRequired,
     isInitialized: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     modules: PropTypes.array.isRequired,
     searchIndex: PropTypes.object.isRequired,
     semester: PropTypes.string.isRequired,
@@ -71,14 +73,21 @@ class Module extends Component {
             fullWidth
             hintText="Search for a module e.g. CS1010"
             onChange={this.handleUpdateInput}
+            ref={c => (this._input = c)}
           />
         </div>
-        <div style={{ height: '48px' }} />
-        <ModuleList
-          modules={this.getFilteredModules()}
-          addModule={this._addModule}
-          moduleCodesInTimetable={this.props.moduleCodesInTimetable}
-        />
+        <div style={{ height: '56px' }} />
+
+        {this.props.isFetching ?
+          <Loading />
+          :
+          <ModuleList
+            modules={this.getFilteredModules()}
+            addModule={this._addModule}
+            moduleCodesInTimetable={this.props.moduleCodesInTimetable}
+            handleOpen={() => this._input && this._input.blur}
+          />
+        }
       </div>
     );
   }

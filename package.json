@@ -165,7 +165,9 @@
       "react/jsx-filename-extension": 0,
       "react/jsx-quotes": 0,
       "react/require-extension": 0,
-      "react/prefer-stateless-function": 0
+      "react/prefer-stateless-function": 0,
+      "no-underscore-dangle": 0,
+      "no-unused-vars": ["error", {"varsIgnorePattern": "^_$"}]
     }
   },
   "stylelint": {

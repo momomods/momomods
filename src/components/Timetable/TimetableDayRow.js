@@ -7,7 +7,7 @@ import s from './timetable.scss';
 
 const TimetableDayRow = (props) => {
   const style = {
-    width: props.width
+    width: props.width,
   };
   return (
     <div className="timetable-day" style={style}>
@@ -18,16 +18,17 @@ const TimetableDayRow = (props) => {
             lessons={dayLessonRow}
             width={props.size}
             onLessonChange={props.onLessonChange}
-          />)) : <TimetableRow/>
+          />)) : <TimetableRow />
       }
     </div>
   );
-}
+};
 
 TimetableDayRow.propTypes = {
   day: PropTypes.string,
   dayLessonRows: PropTypes.array,
   onLessonChange: PropTypes.func,
+  width: PropTypes.string,
 };
 
 export default withStyles(s)(TimetableDayRow);

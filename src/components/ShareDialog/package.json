@@ -1,0 +1,6 @@
+{
+  "name": "ShareDialog",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./ShareDialog.js"
+}

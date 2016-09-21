@@ -22,7 +22,7 @@ class SearchOverlay extends Component {
               <NavigationClose color="black" />
             </IconButton>
           </div>
-          <div style={{ height: '48px' }} />
+          <div style={{ height: '56px' }} />
           <Module addModuleOverride={this.props.addModule} />
         </div>
         <div className={s.overlayBlock} onClick={this.props.hideSearch} />

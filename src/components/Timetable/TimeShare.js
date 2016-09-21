@@ -4,17 +4,14 @@ import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import s from './timetable.scss';
-import { arrangeLessonsForWeek } from '../../utils/modules';
+import { arrangeLessonsWithinDay } from '../../utils/modules';
 import TimetableBackground from './TimetableBackground';
 import TimetableDayRow from './TimetableDayRow';
 import TimeRow from './TimeRow';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
-// Ignore Sundays since there is no school
-const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const minColWidth = 100;
-const dayRowWidth = 16.6666666666666;
+const minColWidth = 20;
 const types = [
   'scroll',
   'mousewheel',
@@ -25,7 +22,8 @@ const types = [
   'touchend',
 ];
 
-class Timetable extends Component {
+class Timeshare extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -49,67 +47,44 @@ class Timetable extends Component {
 
   onScroll() {
     this.setState({
-      scrollTopOffset: ((window && window.scrollY) || 0),
+      scrollTopOffset: window.scrollY,
     });
   }
 
   render() {
-    const arrangedLessons = arrangeLessonsForWeek(this.props.lessons);
-    const numCols = DAYS.reduce((prev, curr) => (
-      prev + (arrangedLessons[curr] ? arrangedLessons[curr].length : 1)),
-      0);
-    const width = typeof window !== 'undefined' ?
-      window.innerWidth * 0.85 :
-      0;
+    const { group } = this.props;
+    const numCols = group.members.length || 0;
+    const width = window.innerWidth * 0.85;
     const style = {};
     const minInnerContainerWidth = minColWidth * numCols;
     if (minInnerContainerWidth > width) {
       style.minWidth = `${minInnerContainerWidth}px`;
+    } else {
+      style.width = '90%';
     }
 
     const headerStyle = {
-      ...style,
       marginTop: `${this.state.scrollTopOffset - 40}px`,
     };
 
     return (
       <div className="timetable-container theme-default">
-        <div>
-          { this.props.timetable.isFetching }
-        </div>
         <TimeRow />
         <div className="timetable-inner-container" ref="timetableContainer">
           <div className="timetable-inner-wrapper" style={style} ref="timetableWrapper">
             <div className="timetable timetable-header" style={headerStyle}>
-              {DAYS.map((day) => {
-                const dayLessonRows = arrangedLessons[day];
-                const size = dayLessonRows ? dayLessonRows.length : 1;
-                return (
-                  <div
-                    className="timetable-day"
-                    key={day}
-                    style={{ width: `${dayRowWidth * size}%` }}
-                  >
-                    {day}
-                  </div>
-                );
-              })}
+              {group.members.map((member) => (
+                <div className="timetable-day" key={member.name}>{member.name}</div>
+              ))}
             </div>
             <div className="timetable" style={style}>
-              {DAYS.map((day) => {
-                const dayLessonRows = arrangedLessons[day];
-                const size = dayLessonRows ? dayLessonRows.length : 1;
-                return (
-                  <TimetableDayRow
-                    key={day}
-                    width={`${dayRowWidth * size}%`}
-                    size={size}
-                    day={day.substring(0, 3)}
-                    dayLessonRows={dayLessonRows}
-                    onLessonChange={this.props.onLessonChange}
-                  />
-                );
-              })}
+              { group.members.map((member) => (
+                <TimetableDayRow
+                  key={member.name}
+                  day={member.name}
+                  dayLessonRows={arrangeLessonsWithinDay(member.timetable)}
+                />))
+              }
             </div>
             <TimetableBackground />
           </div>
@@ -119,10 +94,11 @@ class Timetable extends Component {
   }
 }
 
-Timetable.propTypes = {
+Timeshare.propTypes = {
   lessons: PropTypes.array,
   timetable: PropTypes.object,
   onLessonChange: PropTypes.func,
+  group: PropTypes.object,
 };
 
-export default withStyles(s)(Timetable);
+export default withStyles(s)(Timeshare);

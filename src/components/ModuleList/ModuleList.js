@@ -21,8 +21,15 @@ class ModuleList extends Component {
     startIndex: 0,
   }
 
-  handleOpen = (module) => {
-    this.setState({ isDialogOpen: true, selectedModule: module });
+  componentWillReceiveProps = () => {
+    // when we receive new modules, reset the start index to 0 to show page 1
+    this.setState({ startIndex: 0 });
+  }
+
+  _handleOpen = (module) => {
+    if (this.props.handleOpen) this.props.handleOpen(module);
+    setTimeout(() => (
+      this.setState({ isDialogOpen: true, selectedModule: module })), 500);
   }
 
   handleClose = () => {
@@ -53,9 +60,9 @@ class ModuleList extends Component {
     this.setState({ startIndex: startIndex - 10 });
   }
 
-  isModuleInTimetable = (module) => {
-    return module.code && this.props.moduleCodesInTimetable.includes(module.code);
-  }
+  isModuleInTimetable = (module) => (
+    module.code && this.props.moduleCodesInTimetable.includes(module.code)
+  )
 
   renderListItem = (module) => {
     const inTimetable = this.isModuleInTimetable(module);
@@ -75,14 +82,9 @@ class ModuleList extends Component {
         primaryText={module.code}
         secondaryText={module.title}
         rightIconButton={icon}
-        onTouchTap={() => this.handleOpen(module)}
+        onTouchTap={() => this._handleOpen(module)}
       />
     );
-  }
-
-  componentWillReceiveProps = (nextProps) => {
-    // when we receive new modules, reset the start index to 0 to show page 1
-    this.setState({ startIndex: 0 });
   }
 
   render() {
@@ -126,6 +128,7 @@ ModuleList.propTypes = {
   modules: PropTypes.array.isRequired,
   addModule: PropTypes.func.isRequired,
   moduleCodesInTimetable: PropTypes.array.isRequired,
+  handleOpen: PropTypes.func.isRequired,
 };
 
 export default withStyles(s)(ModuleList);

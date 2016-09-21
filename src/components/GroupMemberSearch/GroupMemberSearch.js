@@ -32,7 +32,7 @@ class GroupMemberSearch extends Component {
   };
 
   notSelected = (user) => (
-    !this.state.selectedUsers.find(u => u.userId == user.id))
+    !this.state.selectedUsers.find(u => u.userId === user.id))
 
   nameMatches = (searchText, user) => (
     user.name.toLowerCase().includes(searchText.toLowerCase()))
@@ -42,7 +42,7 @@ class GroupMemberSearch extends Component {
       this.notSelected(u) && this.nameMatches(searchText, u)));
 
     this.setState({
-      searchText: searchText,
+      searchText,
       dataSource: filteredSource,
     });
   }
@@ -51,12 +51,12 @@ class GroupMemberSearch extends Component {
     if (index === -1 && this.state.dataSource.length > 0) {
       // hit enter in text field
       this.state.selectedUsers.push(this.state.dataSource[0]);
-      this.setState({searchText: ''});
+      this.setState({ searchText: '' });
       this.props.onChange(this.state.selectedUsers);
     } else if (index >= 0) {
       // click on list item
       this.state.selectedUsers.push(this.state.dataSource[index]);
-      this.setState({searchText: ''});
+      this.setState({ searchText: '' });
       this.props.onChange(this.state.selectedUsers);
     }
   }
@@ -74,13 +74,13 @@ class GroupMemberSearch extends Component {
     };
 
     const selectedUserChips = this.state.selectedUsers.map((user, i) => (
-        <Chip
-          key={i}
-          onRequestDelete={() => this.handleRemoveUser(i)}
-          style={this.styles.chip}
-        >
-          {user.name}
-        </Chip>
+      <Chip
+        key={i}
+        onRequestDelete={() => this.handleRemoveUser(i)}
+        style={this.styles.chip}
+      >
+        {user.name}
+      </Chip>
     ));
 
     return (
@@ -96,7 +96,7 @@ class GroupMemberSearch extends Component {
           onNewRequest={this.handleSelectUser}
           onUpdateInput={this.handleUpdateDataSource}
           floatingLabelText="Find friends"
-          fullWidth={true}
+          fullWidth
           dataSourceConfig={dataSourceConfig}
           openOnFocus
         />
