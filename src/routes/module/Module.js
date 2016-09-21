@@ -71,6 +71,7 @@ class Module extends Component {
             fullWidth
             hintText="Search for a module e.g. CS1010"
             onChange={this.handleUpdateInput}
+            ref={c => this._input = c}
           />
         </div>
         <div style={{ height: '48px' }} />
@@ -78,6 +79,7 @@ class Module extends Component {
           modules={this.getFilteredModules()}
           addModule={this._addModule}
           moduleCodesInTimetable={this.props.moduleCodesInTimetable}
+          handleOpen={() => this._input && this._input.blur}
         />
       </div>
     );
