@@ -31,8 +31,12 @@ TimeShareContainer.propTypes = {
   timetable: PropTypes.object.isRequired,
 };
 
+const mapState = (state) => ({
+  timetable: state.timetable,
+});
+
 const mapDispatch = {
   fetchGroup,
 };
 
-export default connect(null, mapDispatch)(withStyles(s)(TimeShareContainer));
+export default connect(mapState, mapDispatch)(withStyles(s)(TimeShareContainer));

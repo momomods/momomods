@@ -259,7 +259,7 @@ app.route('/api/team/:id')
   const userId = req.user.id;
   const teamId = req.params.id;
   const newTeamName = req.body.name;
-  const usersToAdd = (req.body.members && req.body.members.map(u => u.userId)) || [];
+  const usersToAdd = (req.body.members && req.body.members.map(u => u.userId || u.id)) || [];
   TeamModel.find({
     where: {
       id: teamId,
