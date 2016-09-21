@@ -18,6 +18,7 @@ class Module extends Component {
     addModuleOverride: PropTypes.func,
     fetchModules: PropTypes.func.isRequired,
     isInitialized: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     modules: PropTypes.array.isRequired,
     searchIndex: PropTypes.object.isRequired,
     semester: PropTypes.string.isRequired,
@@ -72,7 +73,7 @@ class Module extends Component {
             fullWidth
             hintText="Search for a module e.g. CS1010"
             onChange={this.handleUpdateInput}
-            ref={c => this._input = c}
+            ref={c => (this._input = c)}
           />
         </div>
         <div style={{ height: '56px' }} />

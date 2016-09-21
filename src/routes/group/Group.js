@@ -28,6 +28,7 @@ class Group extends Component {
     isLoggedIn: PropTypes.bool.isRequired,
     semester: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
+    fetchGroups: PropTypes.func.isRequired,
   }
 
   static contextTypes = {
@@ -35,11 +36,11 @@ class Group extends Component {
   }
 
   state = {
-    groupShown: null
+    groupShown: null,
   }
 
   componentDidMount() {
-    const { year, semester, isLoggedIn, group, friend } = this.props;
+    const { year, semester, isLoggedIn, group } = this.props;
     if (!group.isInitialized && isLoggedIn) {
       this.props.fetchGroups({ year, semester });
     }
@@ -47,22 +48,22 @@ class Group extends Component {
 
   handleGroupChange = (event, key, groupId) => {
     this.setState({
-      groupShown: this.props.group.data.find(d => d.teamId === groupId)
+      groupShown: this.props.group.data.find(d => d.teamId === groupId),
     });
   }
 
   handleDateChange(event, date) {
-    console.log('date was changed ' + date);
+    return { event, date };
   }
 
   render() {
     if (!this.props.isLoggedIn) {
       return (
         <div className={s.notLoggedInContainer}>
-            <div className={s.logoContainer}>
-                <img src="/facebook.png" />
-            </div>
-            <div className={s.textContainer}>
+          <div className={s.logoContainer}>
+            <img src="/facebook.png" alt="facebook logo" />
+          </div>
+          <div className={s.textContainer}>
             <span>Please </span>
             <Link to="/login">
               login
@@ -70,18 +71,26 @@ class Group extends Component {
             <span> to compare your timetable!</span>
           </div>
         </div>
-      )
+      );
     }
     this.context.setTitle(title);
 
     const noGroupContainer = (
       <div className={s.noGroupContainer}>
         <p>You do not have any groups. Create one!</p>
-        <img src="/group.png"/>
+        <img src="/group.png" alt="group" />
       </div>
     );
-    
+
     const selected = this.state.groupShown || this.props.group.data[0] || {};
+    let timeshare = null;
+    if (!this.props.group.isFetching && this.props.group.isInitialized) {
+      if (this.props.group.data.length > 0) {
+        timeshare = <TimeShareContainer group={selected} />;
+      } else {
+        timeshare = noGroupContainer;
+      }
+    }
 
     return (
       <div>
@@ -91,29 +100,23 @@ class Group extends Component {
           handleGroupChange={this.handleGroupChange}
           handleDateChange={this.handleDateChange}
         />
-        {this.props.group.isFetching || !this.props.group.isInitialized ? null : (
-          this.props.group.data.length > 0 ?
-          <TimeShareContainer group={selected} /> :
-          noGroupContainer
-        )}
+        {timeshare}
       </div>
     );
   }
 }
 
-const mapState = (state) => {
-  return {
-    year: state.selection.year,
-    semester: state.selection.semester,
-    isLoggedIn: !!state.user.data.id,
-    group: state.group,
-    friend: state.friend,
-  }
-}
+const mapState = (state) => ({
+  year: state.selection.year,
+  semester: state.selection.semester,
+  isLoggedIn: !!state.user.data.id,
+  group: state.group,
+  friend: state.friend,
+});
 
-const mapDispatch = (dispatch) => ({
+const mapDispatch = {
   fetchGroups,
   fetchFriends,
-});
+};
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Group));
