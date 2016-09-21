@@ -1,3 +1,5 @@
+/* eslint-disable react/no-string-refs, react/no-find-dom-node */
+
 import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
@@ -65,7 +67,7 @@ class Timetable extends Component {
       style.minWidth = `${minInnerContainerWidth}px`;
     }
 
-    const headerStyle= {
+    const headerStyle = {
       ...style,
       marginTop: `${this.state.scrollTopOffset - 40}px`,
     };
