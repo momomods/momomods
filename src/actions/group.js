@@ -1,4 +1,4 @@
-import { CREATE_GROUP, FETCH_GROUPS, UPDATE_GROUP } from '../constants';
+import { CREATE_GROUP, DELETE_GROUP, FETCH_GROUPS, UPDATE_GROUP } from '../constants';
 import { postRequest, request } from './helpers';
 
 /**
@@ -37,12 +37,26 @@ export function updateGroup({ id, name, members }) {
   const url = `/api/team/${id}`;
   return {
     type: UPDATE_GROUP,
+    meta: { id, name, members },
     payload: {
       promise: postRequest(url, {
         body: JSON.stringify({
           name,
           members,
         }),
+      }),
+    },
+  };
+}
+
+export function deleteGroup({ id }) {
+  const url = `/api/team/${id}`;
+  return {
+    type: DELETE_GROUP,
+    meta: { id },
+    payload: {
+      promise: request(url, {
+        method: 'delete',
       }),
     },
   };

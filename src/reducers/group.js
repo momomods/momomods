@@ -1,4 +1,4 @@
-import { CREATE_GROUP, FETCH_GROUPS, UPDATE_GROUP } from '../constants';
+import { CREATE_GROUP, DELETE_GROUP, FETCH_GROUPS, UPDATE_GROUP } from '../constants';
 
 // data is a list of objects with group data, looks like:
 // {
@@ -45,6 +45,20 @@ export default function group(state = defaultState, action) {
     case `${UPDATE_GROUP}_FULFILLED`:
       return {
         ...state,
+        data: state.data.map(t => t.teamId === action.meta.id ?
+          {
+            teamId: action.meta.id,
+            teamName: action.meta.name,
+            members: action.meta.members,
+          }
+          :
+          t
+        ),
+      };
+    case `${DELETE_GROUP}_FULFILLED`:
+      return {
+        ...state,
+        data: state.data.filter(t => t.teamId !== action.meta.id),
       };
     default:
       return state;

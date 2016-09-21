@@ -51,6 +51,11 @@ class GroupToolbarDialog extends Component {
 
   isCreateMode = () => (this.props.initialGroupName === '')
 
+  handleDeleteButtonTapped = () => {
+    this.props.handleDeleteGroup({ id: this.props.groupId });
+    this.handleDeleteDialogClose();
+  }
+
   render() {
     const {
       handleCreateGroup,
@@ -76,7 +81,7 @@ class GroupToolbarDialog extends Component {
       <FlatButton
         label="Delete"
         secondary
-        onTouchTap={this.props.handleDeleteGroup}
+        onTouchTap={this.handleDeleteButtonTapped}
       />,
     ];
 

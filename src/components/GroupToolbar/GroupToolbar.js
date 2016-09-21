@@ -12,7 +12,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import GroupToolbarDialog from '../GroupToolbarDialog/GroupToolbarDialog';
 import s from './GroupToolbar.css';
-import { createGroup, fetchGroups, updateGroup } from '../../actions/group';
+import { createGroup, deleteGroup, fetchGroups, updateGroup } from '../../actions/group';
 
 class GroupToolbar extends Component {
   state = {
@@ -53,7 +53,8 @@ class GroupToolbar extends Component {
     this.props.fetchGroups({ year, semester });
   }
 
-  handleDeleteGroup = () => {
+  handleDeleteGroup = ({ id }) => {
+    this.props.deleteGroup({ id });
     this.handleClose();
   }
 
@@ -151,6 +152,7 @@ GroupToolbar.propTypes = {
   friend: PropTypes.object.isRequired,
   updateGroup: PropTypes.func.isRequired,
   createGroup: PropTypes.func.isRequired,
+  deleteGroup: PropTypes.func.isRequired,
   dateToday: PropTypes.string,
   groupName: PropTypes.string,
   groupMembers: PropTypes.array,
@@ -164,6 +166,7 @@ const mapState = (state) => ({
 
 const mapDispatch = {
   createGroup,
+  deleteGroup,
   fetchGroups,
   updateGroup,
 };
