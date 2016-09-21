@@ -88,6 +88,9 @@ class GroupToolbar extends Component {
       friend.data[year] &&
       friend.data[year][semester]) || [];
 
+    const minDate = new Date();
+    minDate.setHours(0, 0, 0, 0);
+
     return (
       <div>
         <Toolbar className={s.groupToolbar}>
@@ -122,6 +125,7 @@ class GroupToolbar extends Component {
               defaultDate={dateToday}
               onChange={handleDateChange}
               disabled={!isGroupSelected}
+              minDate={minDate}
             />
           </ToolbarGroup>
         </Toolbar>
