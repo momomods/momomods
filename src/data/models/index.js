@@ -16,6 +16,7 @@ import TimetableModule from './TimetableModule';
 import Module from './Module';
 import Team from './Team';
 import TeamUser from './TeamUser';
+import Semtime from './Semtime';
 
 User.hasMany(TeamUser, {
   foreignKey: 'userId',
@@ -134,4 +135,5 @@ function sync(...args) {
 }
 
 export default { sync };
-export { User, UserLogin, UserProfile, Timetable, TimetableModule, Module, Team, TeamUser };
+export { User, UserLogin, UserProfile, Timetable, 
+  TimetableModule, Module, Team, TeamUser, Semtime };

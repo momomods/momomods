@@ -19,6 +19,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/server';
 import UniversalRouter from 'universal-router';
 import PrettyError from 'pretty-error';
+import moment from 'moment';
 import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
@@ -40,6 +41,7 @@ import models, {
   Module as ModuleModel,
   TeamUser as TeamUserModel,
   Team as TeamModel,
+  Semtime as SemtimeModel,
 } from './data/models';
 
 const app = express();
@@ -185,74 +187,120 @@ app.route('/api/team/:id')
 .get((req, res) => {
   const userId = req.user.id;
   const teamId = req.params.id;
-  TeamModel.find({
-    where: {
-      id: teamId,
-    },
-  }).then((oneTeam) => {
-    TeamModel.find({
+  const date = req.query.date;
+  if (!date) {
+    res.json({
+      Error: 'Please specify a date query.',
+    })
+  } else {
+    SemtimeModel.find({
       where: {
-        id: teamId,
+        startDate: {
+          $lte: date,
+        },
+        endDate: {
+          $gte: date,
+        },
       },
-      include: [{
-        model: TeamUserModel,
-        as: 'users',
-        include: [{
-          model: UserModel,
-          as: 'user',
-          include: [{
-            model: TimetableModel,
-            as: 'timetables',
-            where: {
-              year: oneTeam.year,
-              semester: oneTeam.semester,
-            },
-            include: [{
-              model: TimetableModuleModel,
-              as: 'timetableModules',
-              include: [{
-                model: ModuleModel,
-                as: 'module',
-              }],
-            }],
-          }],
-        }],
-      }, {
-        model: UserModel,
-        as: 'creator',
-      }],
-    }).then((result) => {
-      // Shows even if invitation has not been accepted
-      let show = false;
-      let members = [];
-      for (let j = 0; j < result.users.length; ++j) {
-        if (userId === result.users[j].userId && result.users[j].acceptInvitation) {
-          show = true;
-        }
-        members.push({
-          userId: result.users[j].userId,
-          name: result.users[j].user.name,
-          acceptInvitation: result.users[j].acceptInvitation,
-          timetable: result.users[j].acceptInvitation ? result.users[j].user.timetables[0].timetableModules : [],
-        });
-      }
-      if (show) {
+    }).then((dateResult) => {
+      if (!dateResult) {
         res.json({
-          createdBy: {
-            userId: result.creator.id,
-            name: result.creator.name,
-          },
-          year: result.year,
-          semester: result.semester,
-          teamId: result.id,
-          teamName: result.name,
-          members,
+          Error: 'Please specify a date query within the semester in which the group is formed.',
+        });
+      } else if (dateResult.weekType === 0) {
+        res.json({
+          Holiday: dateResult.name,
         });
       } else {
-        res.json({});
+        const dow = moment(date).format('dddd');
+        TeamModel.find({
+          where: {
+            id: teamId,
+          },
+        }).then((oneTeam) => {
+          TeamModel.find({
+            where: {
+              id: teamId,
+            },
+            include: [{
+              model: TeamUserModel,
+              as: 'users',
+              include: [{
+                model: UserModel,
+                as: 'user',
+                include: [{
+                  model: TimetableModel,
+                  as: 'timetables',
+                  where: {
+                    year: oneTeam.year,
+                    semester: oneTeam.semester,
+                  },
+                  include: [{
+                    model: TimetableModuleModel,
+                    as: 'timetableModules',
+                    include: [{
+                      model: ModuleModel,
+                      as: 'module',
+                    }],
+                  }],
+                }],
+              }],
+            }, {
+              model: UserModel,
+              as: 'creator',
+            }],
+          }).then((result) => {
+            // Shows even if invitation has not been accepted
+            let show = false;
+            let members = [];
+            for (let j = 0; j < result.users.length; ++j) {
+              if (userId === result.users[j].userId && result.users[j].acceptInvitation) {
+                show = true;
+              }
+              const oneTimetable = result.users[j].user.timetables[0].timetableModules;
+              let finalTimetable = [];
+              for (let k = 0; k < oneTimetable.length; ++k) {
+                const lessonType = oneTimetable[k].lessonType.toString();
+                const classNumber = oneTimetable[k].classNumber.toString();
+                const oneModuleTimetable = JSON.parse(oneTimetable[k].module.timetable);
+                for (let m = 0; m < oneModuleTimetable.length; ++m) {
+                  if (oneModuleTimetable[m].ClassNo === classNumber 
+                    && oneModuleTimetable[m].LessonType === lessonType 
+                    && oneModuleTimetable[m].DayText === dow 
+                    && ( (oneModuleTimetable[m].WeekText === 'Every Week' && dateResult.weekType !== 0) || (oneModuleTimetable[m].WeekText === 'Odd Week' && dateResult.weekType === 1) || (oneModuleTimetable[m].WeekText === 'Even Week' && dateResult.weekType === 2) )) {
+                      oneTimetable[k].module.timetable = oneModuleTimetable[m];
+                      finalTimetable.push(oneTimetable[k]);
+                    break;
+                  }
+                }
+              }
+              members.push({
+                userId: result.users[j].userId,
+                name: result.users[j].user.name,
+                acceptInvitation: result.users[j].acceptInvitation,
+                timetable: result.users[j].acceptInvitation ? finalTimetable : [],
+              });
+            }
+            if (show) {
+              res.json({
+                createdBy: {
+                  userId: result.creator.id,
+                  name: result.creator.name,
+                },
+                year: result.year,
+                semester: result.semester,
+                teamId: result.id,
+                teamName: result.name,
+                members,
+              });
+            } else {
+              res.json({});
+            }
+          });
+        });
       }
     });
-  });
+  }
 })
 .post((req, res) => {
   const userId = req.user.id;
