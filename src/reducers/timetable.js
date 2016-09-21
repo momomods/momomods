@@ -83,7 +83,7 @@ export default function timetable(state = defaultState, action) {
         && state.lastLoaded[year][semester]);
       // if local version is newer than the backend, we use the local state
       if (lastLoaded && updatedAt < lastLoaded) {
-        return state
+        return state;
       }
 
       // otherwise we update state with the backend version
@@ -139,11 +139,12 @@ export default function timetable(state = defaultState, action) {
       // if the user entered the app via the /module route,
       // because we only fetch timetable (and initialize timetable state)
       // when user enters app via /
-      state.data[year] = state.data[year] || {};
-      state.data[year][semester] = state.data[year][semester] || [];
+      const data = {};
+      data[year] = state.data[year] || {};
+      data[year][semester] = state.data[year][semester] || [];
 
       // if module is already in timetable, don't add it
-      if (timetableHasModule(state.data[year][semester], module)) return state;
+      if (timetableHasModule(data[year][semester], module)) return state;
 
       const lessonTypeToX = {};
       // each lesson type can have potentially many class no,
@@ -158,11 +159,11 @@ export default function timetable(state = defaultState, action) {
 
       // for each lesson type, push a class onto timetable
       Object.keys(lessonTypeToX).forEach(k => (
-        state.data[year][semester].push(lessonTypeToX[k])
+        data[year][semester].push(lessonTypeToX[k])
       ));
       return {
         ...state,
-        data: state.data,
+        data,
       };
     }
     case `${REMOVE_MODULE}`: {
@@ -191,17 +192,22 @@ export default function timetable(state = defaultState, action) {
       } = action.payload;
 
       // remove old class
-      state.data[year][semester] = state.data[year][semester].filter(m =>
+      const data = state.data[year][semester].filter(m =>
         !(m.ModuleCode === state.activeLesson.ModuleCode
           && m.LessonType === state.activeLesson.LessonType)
       );
       // remove isAvailable status and add in selected class
       activeLesson.isAvailable = false;
-      state.data[year][semester].push(activeLesson);
+      data.push(activeLesson);
 
       return {
         ...state,
-        data: state.data,
+        data: {
+          ...state.data,
+          [year]: {
+            [semester]: data,
+          },
+        },
         activeLesson: null,
       };
     }

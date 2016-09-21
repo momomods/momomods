@@ -224,7 +224,7 @@ app.route('/api/team/:id')
     }).then((result) => {
       // Shows even if invitation has not been accepted
       let show = false;
-      let members = [];
+      const members = [];
       for (let j = 0; j < result.users.length; ++j) {
         if (userId === result.users[j].userId && result.users[j].acceptInvitation) {
           show = true;
@@ -233,7 +233,8 @@ app.route('/api/team/:id')
           userId: result.users[j].userId,
           name: result.users[j].user.name,
           acceptInvitation: result.users[j].acceptInvitation,
-          timetable: result.users[j].acceptInvitation ? result.users[j].user.timetables[0].timetableModules : [],
+          timetable: (result.users[j].acceptInvitation ?
+            result.users[j].user.timetables[0].timetableModules : []),
         });
       }
       if (show) {
@@ -309,8 +310,8 @@ app.route('/api/team/:id')
                 userId: allNewUsers[j].id,
                 year: result.year,
                 semester: result.semester,
-              })
-            };
+              });
+            }
           });
           addedMembers.push({
             userId: allNewUsers[j].id,
@@ -333,7 +334,10 @@ app.route('/api/team/:id')
     } else {
       res.json({});
     }
-  }).catch((e) => { console.log(e); res.status(404).send(e)});
+  }).catch((e) => {
+    console.log(e); // eslint-disable-line no-console
+    res.status(404).send(e);
+  });
 })
 .put((req, res) => {
   const userId = req.user.id;
@@ -393,7 +397,7 @@ function updateTimetable(timetableId, year, semester, allNewMods) {
       as: 'module',
     },
   }).then(tts => {
-    tts.map(tm => {
+    tts.forEach(tm => {
       if (!allNewMods.map(m => m.ModuleCode).includes(tm.code)) {
         tm.destroy();
       }
@@ -507,7 +511,7 @@ app.route('/api/:year/:semester/friends')
       as: 'timetableModules',
     }],
   }).then((result) => {
-    let myMods = [];
+    const myMods = [];
     for (let i = 0; i < result.timetableModules.length; ++i) {
       myMods.push(result.timetableModules[i].moduleId);
     }
@@ -525,7 +529,7 @@ app.route('/api/:year/:semester/friends')
         }],
       }],
     }).then((allFriends) => {
-      let myFriends = [];
+      const myFriends = [];
       for (let i = 0; i < allFriends.length; ++i) {
         for (let j = 0; j < allFriends[i].timetableModules.length; ++j) {
           if (allFriends[i].timetableModules[j].timetable.userId !== userId) {
@@ -540,7 +544,7 @@ app.route('/api/:year/:semester/friends')
         },
       }).then((myFriendsNames) => {
         res.json(myFriendsNames);
-      })
+      });
     });
   });
 });

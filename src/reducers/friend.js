@@ -13,11 +13,10 @@ export default function friend(state = defaultState, action) {
       return {
         ...state,
         isFetching: true,
-      }
+      };
     }
     case `${FETCH_FRIENDS}_FULFILLED`: {
       const { year, semester } = action.meta;
-      const friends = action.payload;
 
       return {
         ...state,

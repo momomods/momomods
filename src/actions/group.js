@@ -25,10 +25,10 @@ export function createGroup({ year, semester, name, members }) {
     payload: {
       promise: postRequest(url, {
         body: JSON.stringify({
-          name: name,
-          members: members,
-        })
-      })
+          name,
+          members,
+        }),
+      }),
     },
   };
 }
@@ -40,10 +40,10 @@ export function updateGroup({ id, name, members }) {
     payload: {
       promise: postRequest(url, {
         body: JSON.stringify({
-          name: name,
-          members: members,
-        })
-      })
+          name,
+          members,
+        }),
+      }),
     },
   };
 }

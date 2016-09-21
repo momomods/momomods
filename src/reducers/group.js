@@ -41,11 +41,11 @@ export default function group(state = defaultState, action) {
       return {
         ...state,
         data: [action.payload, ...state.data],
-      }
+      };
     case `${UPDATE_GROUP}_FULFILLED`:
       return {
         ...state,
-      }
+      };
     default:
       return state;
   }
