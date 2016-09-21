@@ -12,6 +12,7 @@ import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { connect } from 'react-redux';
 
 import GroupToolbar from '../../components/GroupToolbar/GroupToolbar';
+import Link from '../../components/Link/Link';
 import TimeShareContainer from '../../components/Timetable/TimeShareContainer';
 
 import s from './Group.css';
@@ -61,7 +62,13 @@ class Group extends Component {
             <div className={s.logoContainer}>
                 <img src="/facebook.png" />
             </div>
-            <div className={s.textContainer}>Please login to compare your timetable!</div>
+            <div className={s.textContainer}>
+            <span>Please </span>
+            <Link to="/login">
+              login
+            </Link>
+            <span> to compare your timetable!</span>
+          </div>
         </div>
       )
     }

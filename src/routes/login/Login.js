@@ -19,7 +19,7 @@ function Login(props, context) {
     <div className={s.root}>
       <div className={s.container}>
         <h1>{title}</h1>
-        <p className={s.lead}>Log in with your username or company email address.</p>
+        <p className={s.lead}>Log in to save your timetable and compare your timetable with friends.</p>
         <div className={s.formGroup}>
           <a className={s.facebook} href="/login/facebook">
             <svg
