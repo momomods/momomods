@@ -12,7 +12,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 
 import GroupToolbarDialog from '../GroupToolbarDialog/GroupToolbarDialog';
 import s from './GroupToolbar.css';
-import { createGroup, deleteGroup, fetchGroups, updateGroup } from '../../actions/group';
+import { createGroup, deleteGroup, updateGroup } from '../../actions/group';
 
 class GroupToolbar extends Component {
   state = {
@@ -48,9 +48,6 @@ class GroupToolbar extends Component {
   handleEditGroup = (id, name, members) => {
     this.props.updateGroup({ id, name, members });
     this.setState({ isDialogOpen: false });
-    // lazy to create a new reducer, let's just fetch again
-    const { year, semester } = this.props;
-    this.props.fetchGroups({ year, semester });
   }
 
   handleDeleteGroup = ({ id }) => {
@@ -148,7 +145,6 @@ GroupToolbar.propTypes = {
   handleDateChange: PropTypes.func.isRequired,
   year: PropTypes.string.isRequired,
   semester: PropTypes.string.isRequired,
-  fetchGroups: PropTypes.func.isRequired,
   friend: PropTypes.object.isRequired,
   updateGroup: PropTypes.func.isRequired,
   createGroup: PropTypes.func.isRequired,
@@ -167,7 +163,6 @@ const mapState = (state) => ({
 const mapDispatch = {
   createGroup,
   deleteGroup,
-  fetchGroups,
   updateGroup,
 };
 
