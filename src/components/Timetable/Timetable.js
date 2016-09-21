@@ -40,7 +40,7 @@ class Timetable extends Component {
 
   onScroll(event) {
     this.setState({
-      scrollTopOffset: window.scrollY
+      scrollTopOffset: (window && window.scrollY || 0)
     });
   }
 
@@ -49,7 +49,9 @@ class Timetable extends Component {
     const numCols = DAYS.reduce((prev, curr) => {
       return prev + (arrangedLessons[curr] ? arrangedLessons[curr].length : 1);
     }, 0);
-    const width = window.innerWidth * 0.85;
+    const width = typeof window !== 'undefined' ?
+      window.innerWidth * 0.85 :
+      0;
     const style = {};
     const minInnerContainerWidth = minColWidth * numCols;
     if (minInnerContainerWidth > width) {

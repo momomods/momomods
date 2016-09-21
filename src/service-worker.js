@@ -1,6 +1,4 @@
 /* eslint-disable */
-// TODO: do we need to manually clear cache when we upgrade cacheName?
-var cacheName = 'modsplus-1';
 importScripts('/sw-toolbox.js');
 
 // toolbox.options.debug = true;
