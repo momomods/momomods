@@ -10,23 +10,23 @@ MoMoMods helps you plan your timetable with friends!
 ### Get Timetable for year and sem [GET]
 
 + Response 200 (application/json)
-        
+
         {
             "id": 1,
-            "userId: 1,
-            year: "2016-2017",
-            semester: 1,
-            createdAt: "2016-09-12T08:51:25.000Z",
-            updatedAt: "2016-09-12T08:51:25.000Z",
+            "userId": 1,
+            "year": "2016-2017",
+            "semester": 1,
+            "createdAt": "2016-09-12T08:51:25.000Z",
+            "updatedAt": "2016-09-12T08:51:25.000Z",
             "last_synced": "2016-09-08T00:09:35+00:00",
             "timetableModules": [
                 {
-                    id: 1,
-                    timetableId: 1,
-                    moduleId: 1,
-                    lessonType: "Lecture",
-                    classNumber: "1",
-                    module:{
+                    "id": 1,
+                    "timetableId": 1,
+                    "moduleId": 1,
+                    "lessonType": "Lecture",
+                    "classNumber": "1",
+                    "module": {
                         "module_code": "CS1010",
                         "lesson_type": "sectional",
                         "class_number": "1"
@@ -43,67 +43,69 @@ The response is the complete timetable for year and sem with the module added.
 + Request (application/json)
 
         [
-          {
-            "ClassNo": "V01",
-            "LessonType": "Tutorial",
-            "WeekText": "Every Week",
-            "DayText": "Thursday",
-            "StartTime": "1400",
-            "EndTime": "1500",
-            "Venue": "BIZ2-0303",
-            "ModuleCode": "ACC1002",
-            "ModuleTitle": "Financial Accounting",
-            "moduleDetail": {
-              "id": 3364,
-              "year": "2016-2017",
-              "semester": 1,
-              "code": "ACC1002",
-              "title": "Financial Accounting",
-              "description": "The course provides an introduction to financial accounting.",
-              "department": "Accounting",
-              "credit": 4,
-              "workload": "2-2-0-3-4",
-              "prerequisite": null,
-              "preclusion": "Students who have passed FNA1002 are not allowed to take ACC1002.",
-              "examDate": "2016-11-26T05:00:00.000Z",
-              "timetable": "[{\"ClassNo\":\"V15\",\"LessonType\":\"Tutorial\",\"WeekText\":\"Every Week\",\"DayText\":\"Friday\",\"StartTime\":\"1300\",\"EndTime\":\"1400\",\"Venue\":\"BIZ2-0228\"}]",
-              "createdAt": "2016-09-12T08:51:52.204Z",
-              "updatedAt": "2016-09-12T08:51:52.209Z"
-            }
-          },
-          {
-            "ClassNo": "V2",
-            "LessonType": "Lecture",
-            "WeekText": "Every Week",
-            "DayText": "Wednesday",
-            "StartTime": "1000",
-            "EndTime": "1200",
-            "Venue": "LT17",
-            "moduleDetail": {
-              "id": 3364,
-              "year": "2016-2017",
-              "semester": 1,
-              "code": "ACC1002",
-              "title": "Financial Accounting",
-              "description": "The course provides an introduction to financial accounting.",
-              "department": "Accounting",
-              "credit": 4,
-              "workload": "2-2-0-3-4",
-              "prerequisite": null,
-              "preclusion": "Students who have passed FNA1002 are not allowed to take ACC1002.",
-              "examDate": "2016-11-26T05:00:00.000Z",
-              "timetable": "[{\"ClassNo\":\"V15\",\"LessonType\":\"Tutorial\",\"WeekText\":\"Every Week\",\"DayText\":\"Friday\",\"StartTime\":\"1300\",\"EndTime\":\"1400\",\"Venue\":\"BIZ2-0228\"}]",
-              "createdAt": "2016-09-12T08:51:52.204Z",
-              "updatedAt": "2016-09-12T08:51:52.209Z"
+            {
+                "ClassNo": "V01",
+                "LessonType": "Tutorial",
+                "WeekText": "Every Week",
+                "DayText": "Thursday",
+                "StartTime": "1400",
+                "EndTime": "1500",
+                "Venue": "BIZ2-0303",
+                "ModuleCode": "ACC1002",
+                "ModuleTitle": "Financial Accounting",
+                "moduleDetail": {
+                    "id": 3364,
+                    "year": "2016-2017",
+                    "semester": 1,
+                    "code": "ACC1002",
+                    "title": "Financial Accounting",
+                    "description": "The course provides an introduction to financial accounting.",
+                    "department": "Accounting",
+                    "credit": 4,
+                    "workload": "2-2-0-3-4",
+                    "prerequisite": null,
+                    "preclusion": "Students who have passed FNA1002 are not allowed to take ACC1002.",
+                    "examDate": "2016-11-26T05:00:00.000Z",
+                    "timetable": "[{\"ClassNo\":\"V15\",\"LessonType\":\"Tutorial\",\"WeekText\":\"Every Week\",\"DayText\":\"Friday\",\"StartTime\":\"1300\",\"EndTime\":\"1400\",\"Venue\":\"BIZ2-0228\"}]",
+                    "createdAt": "2016-09-12T08:51:52.204Z",
+                    "updatedAt": "2016-09-12T08:51:52.209Z"
+                }
             },
-            "ModuleCode": "ACC1002",
-            "isAvailable": false
-          }
+            {
+                "ClassNo": "V2",
+                "LessonType": "Lecture",
+                "WeekText": "Every Week",
+                "DayText": "Wednesday",
+                "StartTime": "1000",
+                "EndTime": "1200",
+                "Venue": "LT17",
+                "ModuleCode": "ACC1002",
+                "moduleDetail": {
+                    "id": 3364,
+                    "year": "2016-2017",
+                    "semester": 1,
+                    "code": "ACC1002",
+                    "title": "Financial Accounting",
+                    "description": "The course provides an introduction to financial accounting.",
+                    "department": "Accounting",
+                    "credit": 4,
+                    "workload": "2-2-0-3-4",
+                    "prerequisite": null,
+                    "preclusion": "Students who have passed FNA1002 are not allowed to take ACC1002.",
+                    "examDate": "2016-11-26T05:00:00.000Z",
+                    "timetable": "[{\"ClassNo\":\"V15\",\"LessonType\":\"Tutorial\",\"WeekText\":\"Every Week\",\"DayText\":\"Friday\",\"StartTime\":\"1300\",\"EndTime\":\"1400\",\"Venue\":\"BIZ2-0228\"}]",
+                    "createdAt": "2016-09-12T08:51:52.204Z",
+                    "updatedAt": "2016-09-12T08:51:52.209Z"
+                },
+                "isAvailable": false
+            }
         ]
 
 + Response 201 (application/json)
 
-            {}
+        {
+        
+        }
         
 ## Team Collection [/{year}/{sem}/team]
 
@@ -164,7 +166,7 @@ The response is the complete timetable for year and sem with the module added.
             }
         ]
 
-+ Response 200 (application/json)
++ Response 201 (application/json)
 
         {
             "createdBy": {
@@ -187,7 +189,7 @@ The response is the complete timetable for year and sem with the module added.
 ### Get team info [GET]
 
 This request needs a date query.
-E.g. /team/1?date=2016-09-07
+E.g. /team/1?date=2016-09-17
 
 Note: date format must be yyyy-mm-dd 
 
@@ -316,7 +318,7 @@ Returns all team members as well as all members' timetable information.
 
         [ "1", "2" ]
 
-+ Response 200 (application/json)
++ Response 201 (application/json)
 
         {
             "createdBy": {
