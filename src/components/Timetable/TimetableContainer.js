@@ -96,12 +96,9 @@ class TimetableContainer extends Component {
       timetableLessons = [...timetableLessons, ...otherAvailableLessons];
     }
 
-    const timetableLessonsWithModifiableFlag = _.mapValues(timetableLessons, (lesson) => {
+    timetableLessons.forEach((lesson) => {
         const moduleTimetable = JSON.parse(lesson.moduleDetail.timetable || null);
-        return {
-          ...lesson,
-          isModifiable: areOtherClassesAvailable(moduleTimetable, lesson.LessonType),
-        };
+        lesson.isModifiable = areOtherClassesAvailable(moduleTimetable, lesson.LessonType)
     });
     return (
       <div
@@ -112,7 +109,7 @@ class TimetableContainer extends Component {
         }}
       >
         <Timetable
-          lessons={timetableLessonsWithModifiableFlag}
+          lessons={timetableLessons}
           timetable={timetable}
           onLessonChange={changeLessonHelper}
         />
