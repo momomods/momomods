@@ -49,6 +49,8 @@ class GroupToolbarDialog extends Component {
     this.setState({ groupMembers: users });
   }
 
+  isCreateInfoValid = () => (this.state.groupMembers.length > 0)
+
   isCreateMode = () => (this.props.initialGroupName === '')
 
   handleDeleteButtonTapped = () => {
@@ -91,6 +93,7 @@ class GroupToolbarDialog extends Component {
         <FlatButton
           label="Create"
           primary
+          disabled={!this.isCreateInfoValid()}
           onTouchTap={() => handleCreateGroup(
             this.state.groupName, this.state.groupMembers)}
         />
