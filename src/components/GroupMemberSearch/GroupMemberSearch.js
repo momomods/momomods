@@ -45,17 +45,21 @@ class GroupMemberSearch extends Component {
   }
 
   handleSelectUser = (request, index) => {
+    var selectedUser;
     if (index === -1 && this.state.dataSource.length > 0) {
       // hit enter in text field
-      this.state.selectedUsers.push(this.state.dataSource[0]);
-      this.setState({ searchText: '' });
-      this.props.onChange(this.state.selectedUsers);
+      selectedUser = this.state.dataSource[0];
+
     } else if (index >= 0) {
       // click on list item
-      this.state.selectedUsers.push(this.state.dataSource[index]);
-      this.setState({ searchText: '' });
-      this.props.onChange(this.state.selectedUsers);
+      selectedUser = this.state.dataSource[index];
     }
+
+    // Set flag on selectedUser
+    selectedUser.isNew = true;
+    this.state.selectedUsers.push(selectedUser);
+    this.setState({ searchText: '' });
+    this.props.onChange(this.state.selectedUsers);
   }
 
   handleRemoveUser = (index) => {
@@ -70,15 +74,29 @@ class GroupMemberSearch extends Component {
       value: 'id',
     };
 
-    const selectedUserChips = this.state.selectedUsers.map((user, i) => (
-      <Chip
-        key={i}
-        onRequestDelete={() => this.handleRemoveUser(i)}
-        style={this.styles.chip}
-      >
-        {user.name}
-      </Chip>
-    ));
+    const selectedUserChips = this.state.selectedUsers.map(function(user, i) {
+        // Only allow delete if user is newly added
+        if (user.isNew) {
+            return (
+                <Chip
+                  key={i}
+                  onRequestDelete={() => this.handleRemoveUser(i)}
+                  style={this.styles.chip}
+                >
+                  {user.name}
+                </Chip>
+            );
+        } else {
+            return (
+                <Chip
+                  key={i}
+                  style={this.styles.chip}
+                >
+                  {user.name}
+                </Chip>
+            );
+        }
+    });
 
     return (
       <div>
@@ -92,7 +110,7 @@ class GroupMemberSearch extends Component {
           dataSource={this.state.dataSource}
           onNewRequest={this.handleSelectUser}
           onUpdateInput={this.handleUpdateDataSource}
-          floatingLabelText="Find friends"
+          floatingLabelText="Add friends"
           fullWidth
           dataSourceConfig={dataSourceConfig}
           openOnFocus

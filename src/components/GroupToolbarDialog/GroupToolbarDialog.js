@@ -68,7 +68,7 @@ class GroupToolbarDialog extends Component {
 
     const actions = [
       <FlatButton
-        label="Close"
+        label="Cancel"
         onTouchTap={() => handleClose(module)}
       />,
     ];
@@ -79,7 +79,7 @@ class GroupToolbarDialog extends Component {
         onTouchTap={this.handleDeleteDialogClose}
       />,
       <FlatButton
-        label="Delete"
+        label="Leave"
         secondary
         onTouchTap={this.handleDeleteButtonTapped}
       />,
@@ -98,7 +98,7 @@ class GroupToolbarDialog extends Component {
     } else {
       actions.push(
         <FlatButton
-          label="Edit"
+          label="Save"
           primary
           onTouchTap={() => handleEditGroup(
             this.props.groupId, this.state.groupName, this.state.groupMembers)}
@@ -136,19 +136,19 @@ class GroupToolbarDialog extends Component {
         {this.isCreateMode() ? '' :
           <div className={s.inputContainer}>
             <RaisedButton
-              label="Delete Group"
+              label="Leave Group"
               backgroundColor={red500}
               labelColor={grey50}
               onTouchTap={this.handleDeleteDialogOpen}
             />
             <Dialog
-              title="Confirm Delete?"
+              title="Leave This Group?"
               actions={deleteActions}
               modal={false}
               open={this.state.isDeleteDialogOpen}
               onRequestClose={this.handleDeleteDialogClose}
             >
-              Are you sure you want to delete {this.state.groupName}?
+              Are you sure you want to leave {this.state.groupName}?
             </Dialog>
           </div>
         }
