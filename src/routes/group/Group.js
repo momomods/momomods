@@ -240,7 +240,7 @@ class Group extends Component {
         };
     /* eslint-enable */
 
-    var timeShareContainer = noGroupContainer;
+    var timeShareContainer = null;
     if (!this.props.group.isFetching && this.props.group.isInitialized) {
       if (this.props.group.data.length > 0 && !this.props.timeshare.isFetching) {
         if (this.props.timeshare.data.holiday) {
@@ -250,6 +250,8 @@ class Group extends Component {
           timeShareContainer = <TimeShareContainer group={groupData} />;
         }
       }
+    } else {
+      timeShareContainer = noGroupContainer;
     }
 
     return (
