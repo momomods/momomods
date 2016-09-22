@@ -690,41 +690,51 @@ app.route('/api/:year/:semester/friends')
       as: 'timetableModules',
     }],
   }).then((result) => {
-    const myMods = [];
-    for (let i = 0; i < result.timetableModules.length; ++i) {
-      myMods.push(result.timetableModules[i].moduleId);
-    }
-    ModuleModel.findAll({
-      attributes: ['id'],
-      where: {
-        id: myMods,
-      },
-      include: [{
-        model: TimetableModuleModel,
-        as: 'timetableModules',
+    if (!result) {
+      TimetableModel.create({
+        userId,
+        year,
+        semester,
+      }).then((newTimetable) => {
+        res.json({});
+      });
+    } else {
+      const myMods = [];
+      for (let i = 0; i < result.timetableModules.length; ++i) {
+        myMods.push(result.timetableModules[i].moduleId);
+      }
+      ModuleModel.findAll({
+        attributes: ['id'],
+        where: {
+          id: myMods,
+        },
         include: [{
-          model: TimetableModel,
-          as: 'timetable',
+          model: TimetableModuleModel,
+          as: 'timetableModules',
+          include: [{
+            model: TimetableModel,
+            as: 'timetable',
+          }],
         }],
-      }],
-    }).then((allFriends) => {
-      const myFriends = [];
-      for (let i = 0; i < allFriends.length; ++i) {
-        for (let j = 0; j < allFriends[i].timetableModules.length; ++j) {
-          if (allFriends[i].timetableModules[j].timetable.userId !== userId) {
-            myFriends.push(allFriends[i].timetableModules[j].timetable.userId);
+      }).then((allFriends) => {
+        const myFriends = [];
+        for (let i = 0; i < allFriends.length; ++i) {
+          for (let j = 0; j < allFriends[i].timetableModules.length; ++j) {
+            if (allFriends[i].timetableModules[j].timetable.userId !== userId) {
+              myFriends.push(allFriends[i].timetableModules[j].timetable.userId);
+            }
           }
         }
-      }
-      UserModel.findAll({
-        attributes: ['id', 'name'],
-        where: {
-          id: myFriends,
-        },
-      }).then((myFriendsNames) => {
-        res.json(myFriendsNames);
+        UserModel.findAll({
+          attributes: ['id', 'name'],
+          where: {
+            id: myFriends,
+          },
+        }).then((myFriendsNames) => {
+          res.json(myFriendsNames);
+        });
       });
-    });
+    }
   });
 });
 
