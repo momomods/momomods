@@ -58,6 +58,14 @@ class Group extends Component {
     }
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.group.data.length != nextProps.group.data.length) {
+      this.setState({
+        groupShown: nextProps.group.data[0] || {},
+      });
+    }
+  }
+
   formatDate(date) {
     return '' + date.getFullYear() + '-' + ('00' + (date.getMonth() + 1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2); // eslint-disable-line prefer-template, max-len
   }
