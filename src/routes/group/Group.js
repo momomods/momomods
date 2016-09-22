@@ -102,6 +102,13 @@ class Group extends Component {
       </div>
     );
 
+    const holidayContainer = (
+      <div className={s.holidayContainer}>
+        <p>It's school break!</p>
+        <img src="/vacation.png" alt="school break" />
+      </div>
+    );
+
     /* eslint-disable */
     const dummydata = {
             "createdBy": {
@@ -236,8 +243,12 @@ class Group extends Component {
     var timeShareContainer = noGroupContainer;
     if (!this.props.group.isFetching && this.props.group.isInitialized) {
       if (this.props.group.data.length > 0 && !this.props.timeshare.isFetching) {
-        const groupData = this.props.timeshare.data || {};
-        timeShareContainer = <TimeShareContainer group={groupData} />;
+        if (this.props.timeshare.data.holiday) {
+          timeShareContainer = holidayContainer;
+        } else {
+          const groupData = this.props.timeshare.data || {};
+          timeShareContainer = <TimeShareContainer group={groupData} />;
+        }
       }
     }
 
