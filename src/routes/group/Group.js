@@ -248,9 +248,9 @@ class Group extends Component {
           const groupData = this.props.timeshare.data || {};
           timeShareContainer = <TimeShareContainer group={groupData} />;
         }
+      } else {
+        timeShareContainer = noGroupContainer;
       }
-    } else {
-      timeShareContainer = noGroupContainer;
     }
 
     return (
