@@ -29,7 +29,7 @@ class GroupMemberSearch extends Component {
   };
 
   notSelected = (user) => (
-    !this.state.selectedUsers.find(u => u.userId === user.id))
+    !this.state.selectedUsers.find(u => u.userId === user.id || u.id === user.id))
 
   nameMatches = (searchText, user) => (
     user.name.toLowerCase().includes(searchText.toLowerCase()))
