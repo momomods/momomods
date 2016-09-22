@@ -53,7 +53,6 @@ class Timeshare extends Component {
 
   render() {
     const { group } = this.props;
-    console.log('members', group.members);
     const members = group.members || [];
     const numCols = members.length || 0;
     const width = window.innerWidth * 0.85;
