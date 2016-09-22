@@ -6,7 +6,7 @@ Plan modules and meetings with your friends easily with [mods+](https://modspl.u
 
 # Group members
 
-- Li Jia'En Nicholette (A0114535M): frontend, design, team
+- Li Jia'En Nicholette (A0114535M): frontend, timetable
 - Ng Zhi An (A0099903R): pm, sync, offline
 - Patrick Cho Chung Ting (A0065571A): backend, database, auth
-- Tan Jia Min Michelle (A0112828H): frontend, timetable
+- Tan Jia Min Michelle (A0112828H): frontend, design, team
