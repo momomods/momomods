@@ -96,7 +96,7 @@ class GroupMemberSearch extends Component {
                 </Chip>
             );
         }
-    });
+    }, this);
 
     return (
       <div>
