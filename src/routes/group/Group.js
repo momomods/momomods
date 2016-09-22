@@ -83,10 +83,104 @@ class Group extends Component {
     );
 
     const selected = this.state.groupShown || this.props.group.data[0] || {};
+    const dummydata = {
+            "createdBy": {
+                "userId": "3",
+                "name": "Zhi An"
+            },
+            "teamId": "{id}",
+            "teamName": "3216 final project",
+            "year": "2016-2017",
+            "semester": "1",
+            "members": [
+                {
+                    "userId": "1", 
+                    "name": "Niko",
+                    "acceptInvitation": 1,
+                    "timetable": [
+                        {
+                            "id": 2,
+                            "timetableId": 1,
+                            "moduleId": 514,
+                            "lessonType": "sectional",
+                            "classNumber": 1,
+                            "createdAt": "2016-09-12T08:26:51.449Z",
+                            "updatedAt": "2016-09-12T08:26:51.449Z",
+                            "module": {
+                                "id": 514,
+                                "year": "2016-2017",
+                                "semester": 1,
+                                "code": "CS1010",
+                                "title": "Programming Methodology",
+                                "description": "This is CS1010.",
+                                "department": "Computer Science",
+                                "credit": 4,
+                                "workload": "2-1-1-3-3",
+                                "prerequisite": null,
+                                "preclusion": "CG1101, CS1010E",
+                                "examDate": "2016-11-23T01:00:00.000Z",
+                                "timetable": {
+                                    "ClassNo": "B3",
+                                    "LessonType": "Laboratory",
+                                    "WeekText": "Odd Week",
+                                    "DayText": "Wednesday",
+                                    "StartTime": "1400",
+                                    "EndTime": "1700",
+                                    "Venue": "S12-0402"
+                                },
+                                "createdAt": "2016-09-12T08:33:46.506Z",
+                                "updatedAt": "2016-09-12T08:33:46.507Z"
+                            }
+                        },
+                        {
+                            "id": 3,
+                            "timetableId": 1,
+                            "moduleId": 522,
+                            "lessonType": "sectional",
+                            "classNumber": 1,
+                            "createdAt": "2016-09-12T08:26:51.450Z",
+                            "updatedAt": "2016-09-12T08:26:51.450Z",
+                            "module": {
+                                "id": 522,
+                                "year": "2016-2017",
+                                "semester": 1,
+                                "code": "CS1231",
+                                "title": "Discrete Structures",
+                                "description": "This is CS1231",
+                                "department": "Computer Science",
+                                "credit": 4,
+                                "workload": "3-1-0-3-3",
+                                "prerequisite": "A-level Mathematics or H2 Mathematics or MA1301 or MA1301FC or MA1301X",
+                                "preclusion": "MA1100",
+                                "examDate": "2016-11-23T09:00:00.000Z",
+                                "timetable": {
+                                    "ClassNo": "4",
+                                    "LessonType": "Tutorial",
+                                    "WeekText": "Every Week",
+                                    "DayText": "Wednesday",
+                                    "StartTime": "1100",
+                                    "EndTime": "1200",
+                                    "Venue": "COM1-0209"
+                                },
+                                "createdAt": "2016-09-12T08:33:46.542Z",
+                                "updatedAt": "2016-09-12T08:33:46.542Z"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "userId": "3", 
+                    "name": "Zhi An",
+                    "acceptInvitation": 0,
+                    "timetable": [
+                    ]
+                }
+            ]
+        };
     let timeshare = null;
     if (!this.props.group.isFetching && this.props.group.isInitialized) {
       if (this.props.group.data.length > 0) {
-        timeshare = <TimeShareContainer group={selected} />;
+        timeshare = <TimeShareContainer group={dummydata} />;
       } else {
         timeshare = noGroupContainer;
       }
