@@ -20,14 +20,17 @@ const TimetableCell = (props) => {
       <div
         className={classnames('timetable-module-cell', {
           'is-modifiable': lesson.isModifiable,
+          'is-not-modifiable': !lesson.isModifiable,
           'is-available': lesson.isAvailable,
           'is-active': lesson.isActive,
           [`color-${colorIndex}`]: true,
         })}
 
         onClick={() => {
-          event.stopPropagation();
-          props.onLessonChange(lesson);
+          if (lesson.isModifiable) {
+            event.stopPropagation();
+            props.onLessonChange(lesson);
+          }
         }}
       >
         <div className="cell-module-code">{lesson.ModuleCode}</div>

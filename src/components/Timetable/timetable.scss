@@ -154,6 +154,11 @@ $timetable-background-z-index: -1;
       overflow: hidden;
     }
 
+    &.is-not-modifiable {
+      pointer-events: none;
+      cursor: default;
+    }
+
     &.is-active {
       &:hover {
         opacity: 1;
