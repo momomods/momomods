@@ -8,7 +8,7 @@ import s from './timetable.scss';
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
 class TimeShareContainer extends Component {
-  state = {};
+  state = { isSharing: true };
 
   render() {
     const {
@@ -20,6 +20,7 @@ class TimeShareContainer extends Component {
       <Timeshare
         timetable={timetable}
         group={group}
+        isSharing={this.state.isSharing}
       />
     );
   }

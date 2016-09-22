@@ -107,6 +107,7 @@ class Timetable extends Component {
                     day={day.substring(0, 3)}
                     dayLessonRows={dayLessonRows}
                     onLessonChange={this.props.onLessonChange}
+                    isSharing={this.props.isSharing}
                   />
                 );
               })}
@@ -123,6 +124,7 @@ Timetable.propTypes = {
   lessons: PropTypes.array,
   timetable: PropTypes.object,
   onLessonChange: PropTypes.func,
+  isSharing: PropTypes.bool,
 };
 
 export default withStyles(s)(Timetable);

@@ -15,7 +15,7 @@ const TimetableCell = (props) => {
   const heightStyle = props.width ? { height: `${props.width * 2.777777777777}%` } : null;
 
   if (lesson) {
-    const colorIndex = props.colors[lesson.ModuleCode];
+    const colorIndex = props.isSharing ? lesson.colorIndex : props.colors[lesson.ModuleCode];
     timetableCell = (
       <div
         className={classnames('timetable-module-cell', {
@@ -62,6 +62,7 @@ TimetableCell.propTypes = {
   time: PropTypes.string,
   onLessonChange: PropTypes.func,
   colors: PropTypes.object.isRequired,
+  isSharing: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({

@@ -18,6 +18,7 @@ const TimetableDayRow = (props) => {
             lessons={dayLessonRow}
             width={props.size}
             onLessonChange={props.onLessonChange}
+            isSharing={props.isSharing}
           />)) : <TimetableRow />
       }
     </div>
@@ -29,6 +30,7 @@ TimetableDayRow.propTypes = {
   dayLessonRows: PropTypes.array,
   onLessonChange: PropTypes.func,
   width: PropTypes.string,
+  isSharing: PropTypes.bool,
 };
 
 export default withStyles(s)(TimetableDayRow);

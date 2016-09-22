@@ -29,6 +29,7 @@ import SearchOverlay from '../../components/SearchOverlay/';
 class TimetableContainer extends Component {
   state = {
     showSearch: false,
+    isSharing: false,
   }
 
   showSearch= () => this.setState({ showSearch: true })
@@ -112,6 +113,7 @@ class TimetableContainer extends Component {
           lessons={timetableLessons}
           timetable={timetable}
           onLessonChange={changeLessonHelper}
+          isSharing={this.state.isSharing}
         />
         <ModuleTable
           modules={moduleTableModules}

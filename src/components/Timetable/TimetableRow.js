@@ -10,7 +10,7 @@ import s from './timetable.scss';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
-const generateCells = (lessons, onLessonChange) => {
+const generateCells = (lessons, onLessonChange, isSharing) => {
   const lessonsGroupedByStartTime = _(lessons).groupBy('StartTime').mapValues((value) => (
     value[0]
   )).value();
@@ -31,6 +31,7 @@ const generateCells = (lessons, onLessonChange) => {
           width={width}
           lesson={lesson}
           onLessonChange={onLessonChange}
+          isSharing={isSharing}
         />);
       i += (width - 1);
     } else {
@@ -42,7 +43,7 @@ const generateCells = (lessons, onLessonChange) => {
 
 const TimetableRow = (props) => (
   <div className="timetable-day-row" style={{ width: `${100 / props.width}%` }}>
-    {generateCells(props.lessons, props.onLessonChange)}
+    {generateCells(props.lessons, props.onLessonChange, props.isSharing)}
   </div>
 );
 
@@ -51,6 +52,7 @@ TimetableRow.propTypes = {
   day: PropTypes.string,
   lessons: PropTypes.array,
   onLessonChange: PropTypes.func,
+  isSharing: PropTypes.bool,
 };
 
 export default withStyles(s)(TimetableRow);

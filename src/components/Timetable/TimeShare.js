@@ -1,5 +1,5 @@
 /* eslint-disable react/no-string-refs, react/no-find-dom-node */
-
+import _ from 'lodash';
 import React, { Component, PropTypes } from 'react';
 import { findDOMNode } from 'react-dom';
 import withStyles from 'isomorphic-style-loader/lib/withStyles';
@@ -71,6 +71,20 @@ class Timeshare extends Component {
       width: `100%`,
     }
 
+    // Massage member's lessons to fit what we need
+    var i = 0;
+    group.members.forEach((member) => {
+      member.parsedLessons = [];
+      member.timetable.forEach((lesson) => {
+        const parsedLesson = _.merge(lesson.module, lesson.module.timetable);
+        parsedLesson.colorIndex = i % 8;
+        member.parsedLessons.push(parsedLesson);
+      })
+      i += 1; //increment color index
+    });
+
+    console.log('parsed members', this.props.isSharing);
+
     return (
       <div className="timetable-container theme-default">
         <TimeRow />
@@ -86,7 +100,8 @@ class Timeshare extends Component {
                 <TimetableDayRow
                   key={member.name}
                   day={member.name}
-                  dayLessonRows={arrangeLessonsWithinDay(member.timetable)}
+                  dayLessonRows={arrangeLessonsWithinDay(member.parsedLessons)}
+                  isSharing={this.props.isSharing}
                 />))
               }
             </div>
@@ -103,6 +118,7 @@ Timeshare.propTypes = {
   timetable: PropTypes.object,
   onLessonChange: PropTypes.func,
   group: PropTypes.object,
+  isSharing: PropTypes.bool,
 };
 
 export default withStyles(s)(Timeshare);
