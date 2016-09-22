@@ -67,6 +67,10 @@ class Timeshare extends Component {
       marginTop: `${this.state.scrollTopOffset - 40}px`,
     };
 
+    const timetableStyle = {
+      width: `100%`,
+    }
+
     return (
       <div className="timetable-container theme-default">
         <TimeRow />
@@ -77,7 +81,7 @@ class Timeshare extends Component {
                 <div className="timetable-day" key={member.name}>{member.name}</div>
               ))}
             </div>
-            <div className="timetable" style={style}>
+            <div className="timetable" style={{timetableStyle}}>
               { group.members.map((member) => (
                 <TimetableDayRow
                   key={member.name}

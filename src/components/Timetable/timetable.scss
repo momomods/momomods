@@ -14,7 +14,6 @@ $breakpoint: map-get($grid-breakpoints, 'md');
 
 $timetable-background: #fff;
 $timetable-row-height: 60px;
-$timetable-width: 850px;
 $timetable-height: 1080px;
 $timetable-min-width: $breakpoint;
 $timetable-border: 1px solid #ccc;
@@ -69,6 +68,7 @@ $timetable-background-z-index: -1;
   display: flex;
   flex-direction: row;
   height: $timetable-height;
+  width: 100%;
 
   &.timetable-header {
     background-color: #fff;
@@ -101,6 +101,7 @@ $timetable-background-z-index: -1;
     .timetable-day,
     .timetable-day-row {
       height: 100%;
+      width: 100%;
     }
 
     .timetable-cell-alt {
@@ -112,6 +113,7 @@ $timetable-background-z-index: -1;
     float: left;
     display: inline-block;
     height: 100%;
+    width: 100%;
 
     &:not(:last-child) {
       border-right: $timetable-border;
