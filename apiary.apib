@@ -107,7 +107,7 @@ The response is the complete timetable for year and sem with the module added.
         
 ## Team Collection [/{year}/{sem}/team]
 
-### List teams I belong to [GET]
+### List all teams I belong to [GET]
 
 + Response 200 (application/json)
 
@@ -187,7 +187,13 @@ The response is the complete timetable for year and sem with the module added.
 ### Get team info [GET]
 
 This request needs a date query.
-E.g. /team/id?date=2016-09-07
+E.g. /team/1?date=2016-09-07
+
+Note: date format must be yyyy-mm-dd 
+
+If no date query is entered or date is not within the team's semester, an error is returned.
+
+Returns all team members as well as all members' timetable information.
 
 + Response 400 (application/json)
 
@@ -363,7 +369,7 @@ E.g. /team/id?date=2016-09-07
 
 ## Friends [/{year}/{sem}/friends]
 
-### Get connected friends [GET]
+### Get users who take same modules [GET]
 
 + Response 200 (application/json)
 
