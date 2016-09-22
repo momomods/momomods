@@ -59,7 +59,6 @@ class GroupToolbar extends Component {
     const {
       groups,
       handleGroupChange,
-      dateToday,
       handleDateChange,
       groupShown,
       friend,
@@ -114,7 +113,7 @@ class GroupToolbar extends Component {
               className={s.groupToolbarDatePicker}
               hintText="Meeting Date"
               autoOk
-              defaultDate={dateToday}
+              defaultDate={new Date()}
               onChange={handleDateChange}
               disabled={!isGroupSelected}
               minDate={minDate}
@@ -149,7 +148,6 @@ GroupToolbar.propTypes = {
   updateGroup: PropTypes.func.isRequired,
   createGroup: PropTypes.func.isRequired,
   deleteGroup: PropTypes.func.isRequired,
-  dateToday: PropTypes.string,
   groupName: PropTypes.string,
   groupMembers: PropTypes.array,
 };
