@@ -374,7 +374,7 @@ app.route('/api/team/:id')
                       finalTimetable.push(oneTimetable[k]);
                       let startTime = oneModuleTimetable[m].StartTime;
                       const endTime = oneModuleTimetable[m].EndTime;
-                      while (endTime !== '2359' && startTime !== endTime) {
+                      while (startTime !== '2359' && startTime !== endTime) {
                         const index = freeTime.indexOf(startTime);
                         if (index > -1) {
                           freeTime.splice(index, 1);
