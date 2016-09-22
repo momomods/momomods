@@ -80,6 +80,9 @@ class GroupToolbar extends Component {
     const minDate = new Date();
     minDate.setHours(0, 0, 0, 0);
 
+    const maxDate = new Date(2017, 0, 8);
+    maxDate.setHours(0, 0, 0, 0);
+
     return (
       <div>
         <Toolbar className={s.groupToolbar}>
@@ -117,6 +120,7 @@ class GroupToolbar extends Component {
               onChange={handleDateChange}
               disabled={!isGroupSelected}
               minDate={minDate}
+              maxDate={maxDate}
             />
           </ToolbarGroup>
         </Toolbar>
