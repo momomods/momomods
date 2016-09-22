@@ -695,7 +695,7 @@ app.route('/api/:year/:semester/friends')
         userId,
         year,
         semester,
-      }).then((newTimetable) => {
+      }).then(() => {
         res.json({});
       });
     } else {
