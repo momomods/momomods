@@ -173,6 +173,40 @@ class Group extends Component {
                     "name": "Zhi An",
                     "acceptInvitation": 0,
                     "timetable": [
+                        {
+                            "id": 3,
+                            "timetableId": 1,
+                            "moduleId": 522,
+                            "lessonType": "sectional",
+                            "classNumber": 1,
+                            "createdAt": "2016-09-12T08:26:51.450Z",
+                            "updatedAt": "2016-09-12T08:26:51.450Z",
+                            "module": {
+                                "id": 522,
+                                "year": "2016-2017",
+                                "semester": 1,
+                                "code": "CS1231",
+                                "title": "Discrete Structures",
+                                "description": "This is CS1231",
+                                "department": "Computer Science",
+                                "credit": 4,
+                                "workload": "3-1-0-3-3",
+                                "prerequisite": "A-level Mathematics or H2 Mathematics or MA1301 or MA1301FC or MA1301X",
+                                "preclusion": "MA1100",
+                                "examDate": "2016-11-23T09:00:00.000Z",
+                                "timetable": {
+                                    "ClassNo": "4",
+                                    "LessonType": "Tutorial",
+                                    "WeekText": "Every Week",
+                                    "DayText": "Wednesday",
+                                    "StartTime": "1100",
+                                    "EndTime": "1200",
+                                    "Venue": "COM1-0209"
+                                },
+                                "createdAt": "2016-09-12T08:33:46.542Z",
+                                "updatedAt": "2016-09-12T08:33:46.542Z"
+                            }
+                        }
                     ]
                 }
             ]
