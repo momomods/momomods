@@ -41,6 +41,7 @@ class Group extends Component {
     groupShown: null,
     groupId: null,
     date: this.formatDate(new Date()),
+    freeTimeText: 'Please replace this with sth else soon',
   }
 
   componentWillMount() {
@@ -120,7 +121,7 @@ class Group extends Component {
             "semester": "1",
             "members": [
                 {
-                    "userId": "1", 
+                    "userId": "1",
                     "name": "Niko",
                     "acceptInvitation": 1,
                     "timetable": [
@@ -195,7 +196,7 @@ class Group extends Component {
                     ]
                 },
                 {
-                    "userId": "3", 
+                    "userId": "3",
                     "name": "Zhi An",
                     "acceptInvitation": 0,
                     "timetable": [
@@ -246,7 +247,7 @@ class Group extends Component {
           timeShareContainer = holidayContainer;
         } else {
           const groupData = this.props.timeshare.data || {};
-          timeShareContainer = <TimeShareContainer group={groupData} />;
+          timeShareContainer = <TimeShareContainer group={groupData} freeTimeText={this.state.freeTimeText}/>;
         }
       } else {
         timeShareContainer = noGroupContainer;

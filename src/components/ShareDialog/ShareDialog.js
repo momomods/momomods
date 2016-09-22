@@ -59,9 +59,15 @@ class ShareDialog extends Component {
           <br />
           <RaisedButton label="Copy to Clipboard" onClick={this.handleCopy} primary />
           <br />
-          <a href={waLink} data-action="share/whatsapp/share">
-            Share via Whatsapp
-          </a>
+          <div className={s.whatsappBtnContainer}>
+            <div className={s.whatsappBtnInnerContainer}>
+              <div className={s.whatsappBtnHighlight}>
+                  <a href={waLink} data-action="share/whatsapp/share" className={s.whatsappBtn}>
+                    Share via Whatsapp
+                  </a>
+              </div>
+            </div>
+          </div>
         </Dialog>
         <Snackbar
           open={this.state.isSnackbarOpen}
