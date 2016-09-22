@@ -189,6 +189,7 @@ app.route('/api/team/:id')
   const teamId = req.params.id;
   const date = req.query.date;
   if (!date) {
+    res.status(400);
     res.json({
       error: 'Please specify a date query.',
     });
@@ -204,6 +205,7 @@ app.route('/api/team/:id')
       },
     }).then((dateResult) => {
       if (!dateResult) {
+        res.status(400);
         res.json({
           error: 'Please specify a date query within the semester in which the group is formed.',
         });
