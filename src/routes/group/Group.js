@@ -58,7 +58,7 @@ class Group extends Component {
   }
 
   formatDate(date) {
-    return date.getFullYear() + '-' +  ('00' + (date.getMonth() + 1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2);
+    return '' + date.getFullYear() + '-' + ('00' + (date.getMonth() + 1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2); // eslint-disable-line prefer-template, max-len
   }
 
   handleGroupChange = (event, key, groupId) => {
@@ -69,9 +69,8 @@ class Group extends Component {
 
   handleDateChange = (event, date) => {
     this.state.date = this.formatDate(date);
-    console.log(this.state);
     if (this.state.groupId) {
-        this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
+      this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
     }
     return { event, date };
   }
@@ -240,7 +239,7 @@ class Group extends Component {
         };
     /* eslint-enable */
 
-    var timeShareContainer = null;
+    let timeShareContainer = null;
     if (!this.props.group.isFetching && this.props.group.isInitialized) {
       if (this.props.group.data.length > 0 && !this.props.timeshare.isFetching) {
         if (this.props.timeshare.data.holiday) {
@@ -267,6 +266,10 @@ class Group extends Component {
     );
   }
 }
+
+Group.propTypes = {
+  timeshare: PropTypes.object,
+};
 
 const mapState = (state) => ({
   year: state.selection.year,
