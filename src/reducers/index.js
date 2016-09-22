@@ -11,6 +11,7 @@ import entities from './entities/index';
 import selection from './selection';
 import theme from './theme';
 import friend from './friend';
+import timeshare from './timeshare';
 
 // export default combineReducers({
 //   group,
@@ -35,6 +36,6 @@ export default function (state = {}, action) {
     selection: selection(state.selection, action),
     theme: theme(state.theme, action),
     friend: friend(state.friend, action),
-    // routing: routerReducer(state.routing, action),
+    timeshare: timeshare(state.timeshare, action),
   };
 }

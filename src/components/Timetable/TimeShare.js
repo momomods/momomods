@@ -53,7 +53,9 @@ class Timeshare extends Component {
 
   render() {
     const { group } = this.props;
-    const numCols = group.members.length || 0;
+    console.log('members', group.members);
+    const members = group.members || [];
+    const numCols = members.length || 0;
     const width = window.innerWidth * 0.85;
     const style = {};
     const minInnerContainerWidth = minColWidth * numCols;
@@ -73,7 +75,7 @@ class Timeshare extends Component {
 
     // Massage member's lessons to fit what we need
     let i = 0;
-    group.members.forEach((member) => {
+    members.forEach((member) => {
       member.parsedLessons = []; // eslint-disable-line no-param-reassign
       member.timetable.forEach((lesson) => {
         const parsedLesson = _.merge(lesson.module, lesson.module.timetable);
@@ -89,12 +91,12 @@ class Timeshare extends Component {
         <div className="timetable-inner-container" ref="timetableContainer">
           <div className="timetable-inner-wrapper" style={style} ref="timetableWrapper">
             <div className="timetable timetable-header" style={headerStyle}>
-              {group.members.map((member) => (
+              {members.map((member) => (
                 <div className="timetable-day" key={member.name}>{member.name}</div>
               ))}
             </div>
             <div className="timetable" style={{ timetableStyle }}>
-              { group.members.map((member) => (
+              { members.map((member) => (
                 <TimetableDayRow
                   key={member.name}
                   day={member.name}

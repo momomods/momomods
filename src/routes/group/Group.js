@@ -18,6 +18,7 @@ import TimeShareContainer from '../../components/Timetable/TimeShareContainer';
 import s from './Group.css';
 import { fetchGroups } from '../../actions/group';
 import { fetchFriends } from '../../actions/friend';
+import { fetchGroupTimetable } from '../../actions/timeshare';
 
 const title = 'Groups';
 
@@ -29,6 +30,7 @@ class Group extends Component {
     semester: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
     fetchGroups: PropTypes.func.isRequired,
+    fetchGroupTimetable: PropTypes.func.isRequired,
   }
 
   static contextTypes = {
@@ -37,6 +39,15 @@ class Group extends Component {
 
   state = {
     groupShown: null,
+    groupId: null,
+    date: this.formatDate(new Date()),
+  }
+
+  componentWillMount() {
+    // Initialize timesharing table
+    this.state.groupShown = this.props.group.data[0] || {};
+    this.state.groupId = this.state.groupShown.teamId;
+    this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
   }
 
   componentDidMount() {
@@ -46,13 +57,22 @@ class Group extends Component {
     }
   }
 
-  handleGroupChange = (event, key, groupId) => {
-    this.setState({
-      groupShown: this.props.group.data.find(d => d.teamId === groupId),
-    });
+  formatDate(date) {
+    return date.getFullYear() + '-' +  ('00' + (date.getMonth() + 1)).slice(-2) + '-' + date.getDate();
   }
 
-  handleDateChange(event, date) {
+  handleGroupChange = (event, key, groupId) => {
+    this.state.groupShown = this.props.group.data.find(d => d.teamId === groupId);
+    this.state.groupId = groupId;
+    this.props.fetchGroupTimetable({ groupId, date: this.state.date });
+  }
+
+  handleDateChange = (event, date) => {
+    this.state.date = this.formatDate(date);
+    console.log(this.state);
+    if (this.state.groupId) {
+        this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
+    }
     return { event, date };
   }
 
@@ -82,7 +102,6 @@ class Group extends Component {
       </div>
     );
 
-    const selected = this.state.groupShown || this.props.group.data[0] || {};
     /* eslint-disable */
     const dummydata = {
             "createdBy": {
@@ -213,24 +232,24 @@ class Group extends Component {
             ]
         };
     /* eslint-enable */
-    let timeshare = null;
+
+    var timeShareContainer = noGroupContainer;
     if (!this.props.group.isFetching && this.props.group.isInitialized) {
-      if (this.props.group.data.length > 0) {
-        timeshare = <TimeShareContainer group={dummydata} />;
-      } else {
-        timeshare = noGroupContainer;
+      if (this.props.group.data.length > 0 && !this.props.timeshare.isFetching) {
+        const groupData = this.props.timeshare.data || {};
+        timeShareContainer = <TimeShareContainer group={groupData} />;
       }
     }
 
     return (
       <div>
         <GroupToolbar
-          groupShown={selected}
+          groupShown={this.state.groupShown}
           groups={this.props.group.data}
           handleGroupChange={this.handleGroupChange}
           handleDateChange={this.handleDateChange}
         />
-        {timeshare}
+        {timeShareContainer}
       </div>
     );
   }
@@ -242,11 +261,13 @@ const mapState = (state) => ({
   isLoggedIn: !!state.user.data.id,
   group: state.group,
   friend: state.friend,
+  timeshare: state.timeshare,
 });
 
 const mapDispatch = {
   fetchGroups,
   fetchFriends,
+  fetchGroupTimetable,
 };
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Group));
