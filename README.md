@@ -1,8 +1,6 @@
 # mods+
 
-<a href="https://modspl.us">
-    <img src="/src/public/icon-256x256.png" height="256" width="256"/>
-</a>
+[![icon-256x256.png](https://bitbucket.org/repo/5LjoEx/images/2527176641-icon-256x256.png)](https://modspl.us)
 
 Plan modules and meetings with your friends easily with [mods+](https://modspl.us).
 
