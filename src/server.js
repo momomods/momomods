@@ -165,6 +165,7 @@ app.route('/api/:year/:semester/team')
           id: userId,
         },
       }).then((creator) => {
+        res.status(201);
         res.json({
           createdBy: {
             userId,
@@ -374,6 +375,7 @@ app.route('/api/team/:id')
             acceptInvitation,
           });
         }
+        res.status(201);
         res.json({
           createdBy: {
             userId: result.creator.id,
@@ -540,11 +542,13 @@ app.route('/api/:year/:semester/timetable')
         semester,
       }).then((newTimetable) => {
         updateTimetable(newTimetable.dataValues.id, year, semester, allNewMods);
+        res.status(201);
         res.json({});
       });
     } else {
       console.log(myTimetable.dataValues.id); // eslint-disable-line no-console
       updateTimetable(myTimetable.dataValues.id, year, semester, allNewMods);
+      res.status(201);
       res.json({});
     }
   });
@@ -603,6 +607,7 @@ app.route('/api/:year/:semester/friends')
     });
   });
 });
+
 //
 // Register API middleware
 // -----------------------------------------------------------------------------
