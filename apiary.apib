@@ -9,6 +9,8 @@ MoMoMods helps you plan your timetable with friends!
 
 ### Get Timetable for year and sem [GET]
 
+Timetable with all its modules and the modules' information is returned in the response.
+
 + Response 200 (application/json)
 
         {
@@ -111,6 +113,8 @@ The response is the complete timetable for year and sem with the module added.
 
 ### List all teams I belong to [GET]
 
+Lists all teams that includes user as a member. All members of each team are also returned in the response.
+
 + Response 200 (application/json)
 
         [
@@ -157,6 +161,8 @@ The response is the complete timetable for year and sem with the module added.
         ]
 
 ### Create a new team [POST]
+
+Creates a new team. Creator of team is automatically added as a member who has accepted the invitation to be part of the team.
 
 + Request (application/json)
 
@@ -313,6 +319,12 @@ Returns all team members as well as all members' timetable information.
         }
 
 ### Invite new users to team [POST]
+
+Invite users to a team. Only works if inviter is already a member of the team who has accepted the invitation to be part of the team.
+
+Request needs an array of userIds. 
+
+Response includes only the added members with acceptInvitation set as 0. Response does not include all previous members of the team.
 
 + Request (application/json)
 
