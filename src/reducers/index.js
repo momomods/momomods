@@ -1,4 +1,3 @@
-// import { combineReducers } from 'redux';
 import group from './group';
 import module from './module';
 import runtime from './runtime';
@@ -12,16 +11,6 @@ import selection from './selection';
 import theme from './theme';
 import friend from './friend';
 import timeshare from './timeshare';
-
-// export default combineReducers({
-//   group,
-//   module,
-//   runtime,
-//   timetable,
-//   user,
-//   entities,
-//   requests,
-// });
 
 export default function (state = {}, action) {
   return {
