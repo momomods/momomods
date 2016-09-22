@@ -1,6 +1,6 @@
 # mods+
 
-[![icon-256x256.png](https://bitbucket.org/repo/5LjoEx/images/2527176641-icon-256x256.png)](https://modspl.us)
+[![icon-256x256.png](/src/public/icon-256x256.png)](https://modspl.us)
 
 Plan modules and meetings with your friends easily with [mods+](https://modspl.us).
 
