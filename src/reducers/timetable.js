@@ -168,12 +168,12 @@ export default function timetable(state = defaultState, action) {
             { ...lesson, moduleDetail: module, ModuleCode: module.code }
           ));
         const selectedLesson = lessons
-          .filter(lesson => {
+          .filter(lesson => (
             // Get all classes from the same class group
-            return lesson.ModuleCode === lessonTypeToX[k].ModuleCode
+            lesson.ModuleCode === lessonTypeToX[k].ModuleCode
             && lesson.LessonType === lessonTypeToX[k].LessonType
-            && lesson.ClassNo === lessonTypeToX[k].ClassNo;
-          });
+            && lesson.ClassNo === lessonTypeToX[k].ClassNo
+          ));
 
         selectedLesson.forEach(m => data[year][semester].push(m));
         // state.data[year][semester].push(lessonTypeToX[k])
@@ -215,7 +215,7 @@ export default function timetable(state = defaultState, action) {
       );
 
       const moduleDetail = activeLesson.moduleDetail;
-      const ModuleCode = activeLesson.ModuleCode
+      const ModuleCode = activeLesson.ModuleCode;
       const moduleTimetable = JSON.parse(activeLesson.moduleDetail.timetable || null);
       const lessons = lessonsForLessonType(moduleTimetable, activeLesson.LessonType)
         .map(lesson => (
@@ -223,12 +223,12 @@ export default function timetable(state = defaultState, action) {
           { ...lesson, moduleDetail, ModuleCode }
         ));
       const selectedLesson = lessons
-        .filter(lesson => {
+        .filter(lesson => (
           // Get all classes from the same class group
-          return lesson.ModuleCode === activeLesson.ModuleCode
+          lesson.ModuleCode === activeLesson.ModuleCode
           && lesson.LessonType === activeLesson.LessonType
-          && lesson.ClassNo === activeLesson.ClassNo;
-        });
+          && lesson.ClassNo === activeLesson.ClassNo
+        ));
 
       selectedLesson.forEach(m => data.push(m));
       return {

@@ -1,10 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-
-import s from './ModuleListDialog.css';
 
 /*
  * This is a Dialog that shows module information.
@@ -78,4 +75,4 @@ ModuleListDialog.propTypes = {
   open: PropTypes.bool.isRequired,
 };
 
-export default withStyles(s)(ModuleListDialog);
+export default ModuleListDialog;

@@ -1,10 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import AutoComplete from 'material-ui/AutoComplete';
 import Chip from 'material-ui/Chip';
-
-import s from './GroupMemberSearch.css';
 
 /*
  * This is a TextField that shows selected friends and a Menu
@@ -111,4 +108,4 @@ GroupMemberSearch.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default withStyles(s)(GroupMemberSearch);
+export default GroupMemberSearch;

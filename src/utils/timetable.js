@@ -34,5 +34,7 @@ export function areOtherClassesAvailable(lessons, lessonType) {
     // No such LessonType.
     return false;
   }
-  return Object.keys(_.groupBy(lessonTypeGroups[lessonType], (lesson) => lesson.ClassNo)).length > 1;
+  return Object.keys(_.groupBy(
+    lessonTypeGroups[lessonType],
+    (lesson) => lesson.ClassNo)).length > 1;
 }

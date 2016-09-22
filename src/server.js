@@ -191,7 +191,7 @@ app.route('/api/team/:id')
   if (!date) {
     res.json({
       error: 'Please specify a date query.',
-    })
+    });
   } else {
     SemtimeModel.find({
       where: {
@@ -252,24 +252,30 @@ app.route('/api/team/:id')
           }).then((result) => {
             // Shows even if invitation has not been accepted
             let show = false;
-            let members = [];
+            const members = [];
             for (let j = 0; j < result.users.length; ++j) {
               if (userId === result.users[j].userId && result.users[j].acceptInvitation) {
                 show = true;
               }
               const oneTimetable = result.users[j].user.timetables[0].timetableModules;
-              let finalTimetable = [];
+              const finalTimetable = [];
               for (let k = 0; k < oneTimetable.length; ++k) {
                 const lessonType = oneTimetable[k].lessonType.toString();
                 const classNumber = oneTimetable[k].classNumber.toString();
                 const oneModuleTimetable = JSON.parse(oneTimetable[k].module.timetable);
                 for (let m = 0; m < oneModuleTimetable.length; ++m) {
-                  if (oneModuleTimetable[m].ClassNo === classNumber 
-                    && oneModuleTimetable[m].LessonType === lessonType 
-                    && oneModuleTimetable[m].DayText === dow 
-                    && ( (oneModuleTimetable[m].WeekText === 'Every Week' && dateResult.weekType !== 0) || (oneModuleTimetable[m].WeekText === 'Odd Week' && dateResult.weekType === 1) || (oneModuleTimetable[m].WeekText === 'Even Week' && dateResult.weekType === 2) )) {
-                      oneTimetable[k].module.timetable = oneModuleTimetable[m];
-                      finalTimetable.push(oneTimetable[k]);
+                  if (oneModuleTimetable[m].ClassNo === classNumber
+                    && oneModuleTimetable[m].LessonType === lessonType
+                    && oneModuleTimetable[m].DayText === dow
+                    && (
+                      (oneModuleTimetable[m].WeekText === 'Every Week'
+                        && dateResult.weekType !== 0)
+                      || (oneModuleTimetable[m].WeekText === 'Odd Week'
+                        && dateResult.weekType === 1)
+                      || (oneModuleTimetable[m].WeekText === 'Even Week'
+                        && dateResult.weekType === 2))) {
+                    oneTimetable[k].module.timetable = oneModuleTimetable[m];
+                    finalTimetable.push(oneTimetable[k]);
                     break;
                   }
                 }

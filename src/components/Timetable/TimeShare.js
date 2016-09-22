@@ -68,22 +68,20 @@ class Timeshare extends Component {
     };
 
     const timetableStyle = {
-      width: `100%`,
-    }
+      width: '100%',
+    };
 
     // Massage member's lessons to fit what we need
-    var i = 0;
+    let i = 0;
     group.members.forEach((member) => {
-      member.parsedLessons = [];
+      member.parsedLessons = []; // eslint-disable-line no-param-reassign
       member.timetable.forEach((lesson) => {
         const parsedLesson = _.merge(lesson.module, lesson.module.timetable);
         parsedLesson.colorIndex = i % 8;
         member.parsedLessons.push(parsedLesson);
-      })
-      i += 1; //increment color index
+      });
+      i += 1; // increment color index
     });
-
-    console.log('parsed members', this.props.isSharing);
 
     return (
       <div className="timetable-container theme-default">
@@ -95,7 +93,7 @@ class Timeshare extends Component {
                 <div className="timetable-day" key={member.name}>{member.name}</div>
               ))}
             </div>
-            <div className="timetable" style={{timetableStyle}}>
+            <div className="timetable" style={{ timetableStyle }}>
               { group.members.map((member) => (
                 <TimetableDayRow
                   key={member.name}

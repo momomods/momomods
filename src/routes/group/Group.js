@@ -83,6 +83,7 @@ class Group extends Component {
     );
 
     const selected = this.state.groupShown || this.props.group.data[0] || {};
+    /* eslint-disable */
     const dummydata = {
             "createdBy": {
                 "userId": "3",
@@ -211,6 +212,7 @@ class Group extends Component {
                 }
             ]
         };
+    /* eslint-enable */
     let timeshare = null;
     if (!this.props.group.isFetching && this.props.group.isInitialized) {
       if (this.props.group.data.length > 0) {

@@ -36,7 +36,7 @@ const TimetableCell = (props) => {
           <span className="cell-module-class">{' '}[{lesson.ClassNo}]</span>
         </div>
         <div><span className="cell-module-venue">{lesson.Venue}</span></div>
-        { (lesson.WeekText === 'Every Week') ? null : 
+        { (lesson.WeekText === 'Every Week') ? null :
           <span className="cell-module-week">{' '}[{lesson.WeekText}]</span>
         }
       </div>);

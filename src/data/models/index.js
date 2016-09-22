@@ -135,5 +135,5 @@ function sync(...args) {
 }
 
 export default { sync };
-export { User, UserLogin, UserProfile, Timetable, 
+export { User, UserLogin, UserProfile, Timetable,
   TimetableModule, Module, Team, TeamUser, Semtime };

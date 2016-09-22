@@ -98,8 +98,9 @@ class TimetableContainer extends Component {
     }
 
     timetableLessons.forEach((lesson) => {
-        const moduleTimetable = JSON.parse(lesson.moduleDetail.timetable || null);
-        lesson.isModifiable = areOtherClassesAvailable(moduleTimetable, lesson.LessonType)
+      const moduleTimetable = JSON.parse(lesson.moduleDetail.timetable || null);
+      lesson.isModifiable = areOtherClassesAvailable( // eslint-disable-line no-param-reassign
+        moduleTimetable, lesson.LessonType);
     });
     return (
       <div
