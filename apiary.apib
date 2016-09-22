@@ -189,13 +189,13 @@ The response is the complete timetable for year and sem with the module added.
 This request needs a date query.
 E.g. /team/id?date=2016-09-07
 
-+ Response 200 (application/json)
++ Response 400 (application/json)
 
         {
             "error": "Please specify a date query."
         }
 
-+ Response 200 (application/json)
++ Response 400 (application/json)
 
         {
             "error": "Please specify a date query within the semester in which the group is formed."
