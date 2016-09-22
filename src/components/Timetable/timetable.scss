@@ -9,9 +9,7 @@
 ::-webkit-scrollbar {
   display: none;
 }
-
 $breakpoint: map-get($grid-breakpoints, 'md');
-
 $timetable-background: #fff;
 $timetable-row-height: 60px;
 $timetable-height: 1080px;
@@ -20,10 +18,8 @@ $timetable-border: 1px solid #ccc;
 $timetable-cell-padding: 3px;
 $timetable-cell-opacity: 0.5;
 $timetable-header-height: 40px;
-
 $time-col-width: 15%;
 $timetable-width: 100% - $time-col-width;
-
 $timetable-header-z-index: 3;
 $timetable-module-cell-z-index: 2;
 $timetable-background-z-index: -1;
@@ -76,7 +72,7 @@ $timetable-background-z-index: -1;
     margin-top: -$timetable-header-height;
     position: absolute;
     z-index: $timetable-header-z-index;
-    box-shadow: 0 10px 28px rgba(0,0,0,.1), 0 3px 3px rgba(0,0,0,.22);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .1), 0 3px 3px rgba(0, 0, 0, .22);
     width: 100%;
 
     .timetable-day {
@@ -105,7 +101,7 @@ $timetable-background-z-index: -1;
     }
 
     .timetable-cell-alt {
-      background-color: #E4F1FE;
+      background-color: #e4f1fe;
     }
   }
 
@@ -129,7 +125,6 @@ $timetable-background-z-index: -1;
 
   .timetable-module-cell {
     $smaller-text: 0.6rem;
-
     cursor: pointer;
     float: left;
     font-size: $font-size-xs;
@@ -160,7 +155,6 @@ $timetable-background-z-index: -1;
     }
 
     &.is-active {
-
       &:hover {
         opacity: 1;
         animation-duration: 0.1s;

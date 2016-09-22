@@ -181,16 +181,19 @@ textarea {
 }
 
 .pageContainer {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto 0 auto;
-    overflow-y: scroll;
-    padding-bottom: 110px;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto 0 auto;
+  overflow-y: scroll;
+  padding-bottom: 110px;
 }
 
-button, html [type="button"], [type="reset"], [type="submit"] {
-    -webkit-appearance: none !important;
-    -moz-appearance:    none !important;
-    appearance:         none !important;
+button,
+html [type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
 }

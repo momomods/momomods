@@ -59,12 +59,12 @@
 }
 
 .semesterToggle {
-    font-weight: 500;
-    line-height: 48px;
-    font-size: 18px;
-    color: #2F5E67 !important;
+  font-weight: 500;
+  line-height: 48px;
+  font-size: 18px;
+  color: #2f5e67 !important;
 }
 
 .semesterToggle button span {
-    color: white !important;
+  color: white !important;
 }

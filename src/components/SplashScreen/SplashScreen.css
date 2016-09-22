@@ -1,19 +1,19 @@
 .splashContainer {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .logoContainer {
-    text-align: center;
+  text-align: center;
 }
 
 .textContainer {
-    font-family: 'Raleway', sans-serif !important;
-    font-weight: 700 !important;
-    font-size: 48px;
-    color: #69D2E7;
-    text-align: center;
+  font-family: 'Raleway', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 48px;
+  color: #69d2e7;
+  text-align: center;
 }

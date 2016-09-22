@@ -20,28 +20,30 @@
   max-width: var(--max-content-width);
 }
 
-.notLoggedInContainer, .noGroupContainer {
-    width: 100%;
-    height: 100%;
-    padding-top: 100px;
-    padding-bottom: 100px;
-    text-align: center;
+.notLoggedInContainer,
+.noGroupContainer {
+  width: 100%;
+  height: 100%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  text-align: center;
 }
 
 .textContainer {
-    margin: auto;
-    text-align: center;
+  margin: auto;
+  text-align: center;
 }
 
 .logoContainer {
-    margin: auto;
-    text-align: center;
+  margin: auto;
+  text-align: center;
 }
 
-.logoContainer img, .noGroupContainer img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    text-align: center;
-    margin-bottom: 20px;
+.logoContainer img,
+.noGroupContainer img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  text-align: center;
+  margin-bottom: 20px;
 }
