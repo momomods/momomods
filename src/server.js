@@ -224,6 +224,8 @@ app.route('/api/team/:id')
           TeamModel.find({
             where: {
               id: teamId,
+              year: dateResult.year,
+              semester: dateResult.semester,
             },
             include: [{
               model: TeamUserModel,
@@ -253,57 +255,64 @@ app.route('/api/team/:id')
               as: 'creator',
             }],
           }).then((result) => {
-            // Shows even if invitation has not been accepted
-            let show = false;
-            const members = [];
-            for (let j = 0; j < result.users.length; ++j) {
-              if (userId === result.users[j].userId && result.users[j].acceptInvitation) {
-                show = true;
-              }
-              const oneTimetable = result.users[j].user.timetables[0].timetableModules;
-              const finalTimetable = [];
-              for (let k = 0; k < oneTimetable.length; ++k) {
-                const lessonType = oneTimetable[k].lessonType.toString();
-                const classNumber = oneTimetable[k].classNumber.toString();
-                const oneModuleTimetable = JSON.parse(oneTimetable[k].module.timetable);
-                for (let m = 0; m < oneModuleTimetable.length; ++m) {
-                  if (oneModuleTimetable[m].ClassNo === classNumber
-                    && oneModuleTimetable[m].LessonType === lessonType
-                    && oneModuleTimetable[m].DayText === dow
-                    && (
-                      (oneModuleTimetable[m].WeekText === 'Every Week'
-                        && dateResult.weekType !== 0)
-                      || (oneModuleTimetable[m].WeekText === 'Odd Week'
-                        && dateResult.weekType === 1)
-                      || (oneModuleTimetable[m].WeekText === 'Even Week'
-                        && dateResult.weekType === 2))) {
-                    oneTimetable[k].module.timetable = oneModuleTimetable[m];
-                    finalTimetable.push(oneTimetable[k]);
-                    break;
-                  }
-                }
-              }
-              members.push({
-                userId: result.users[j].userId,
-                name: result.users[j].user.name,
-                acceptInvitation: result.users[j].acceptInvitation,
-                timetable: result.users[j].acceptInvitation ? finalTimetable : [],
-              });
-            }
-            if (show) {
+            if (!result) {
+              res.status(400);
               res.json({
-                createdBy: {
-                  userId: result.creator.id,
-                  name: result.creator.name,
-                },
-                year: result.year,
-                semester: result.semester,
-                teamId: result.id,
-                teamName: result.name,
-                members,
+                error: 'Please specify a date query within the semester in which the group is formed.',
               });
             } else {
-              res.json({});
+              // Shows even if invitation has not been accepted
+              let show = false;
+              const members = [];
+              for (let j = 0; j < result.users.length; ++j) {
+                if (userId === result.users[j].userId && result.users[j].acceptInvitation) {
+                  show = true;
+                }
+                const oneTimetable = result.users[j].user.timetables[0].timetableModules;
+                const finalTimetable = [];
+                for (let k = 0; k < oneTimetable.length; ++k) {
+                  const lessonType = oneTimetable[k].lessonType.toString();
+                  const classNumber = oneTimetable[k].classNumber.toString();
+                  const oneModuleTimetable = JSON.parse(oneTimetable[k].module.timetable);
+                  for (let m = 0; m < oneModuleTimetable.length; ++m) {
+                    if (oneModuleTimetable[m].ClassNo === classNumber
+                      && oneModuleTimetable[m].LessonType === lessonType
+                      && oneModuleTimetable[m].DayText === dow
+                      && (
+                        (oneModuleTimetable[m].WeekText === 'Every Week'
+                          && dateResult.weekType !== 0)
+                        || (oneModuleTimetable[m].WeekText === 'Odd Week'
+                          && dateResult.weekType === 1)
+                        || (oneModuleTimetable[m].WeekText === 'Even Week'
+                          && dateResult.weekType === 2))) {
+                      oneTimetable[k].module.timetable = oneModuleTimetable[m];
+                      finalTimetable.push(oneTimetable[k]);
+                      break;
+                    }
+                  }
+                }
+                members.push({
+                  userId: result.users[j].userId,
+                  name: result.users[j].user.name,
+                  acceptInvitation: result.users[j].acceptInvitation,
+                  timetable: result.users[j].acceptInvitation ? finalTimetable : [],
+                });
+              }
+              if (show) {
+                res.json({
+                  createdBy: {
+                    userId: result.creator.id,
+                    name: result.creator.name,
+                  },
+                  year: result.year,
+                  semester: result.semester,
+                  teamId: result.id,
+                  teamName: result.name,
+                  members,
+                });
+              } else {
+                res.json({});
+              }
             }
           });
         });
@@ -341,7 +350,7 @@ app.route('/api/team/:id')
     const newMembers = usersToAdd.filter(uid => !result.users.find(u => u.userId === uid));
     if (isMember) {
       const addedMembers = [];
-      const acceptInvitation = 0;
+      const acceptInvitation = 1; // TODO: THIS SHOULD BE CHANGED TO 0 ONCE INVITATION IS IMPLEMENTED
       UserModel.findAll({
         where: {
           id: newMembers,
