@@ -80,6 +80,7 @@ class Timeshare extends Component {
       member.timetable.forEach((lesson) => {
         const parsedLesson = _.merge(lesson.module, lesson.module.timetable);
         parsedLesson.colorIndex = i % 8;
+        parsedLesson.ModuleCode = parsedLesson.code;
         member.parsedLessons.push(parsedLesson);
       });
       i += 1; // increment color index
