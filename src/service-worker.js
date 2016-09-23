@@ -1,7 +1,7 @@
 // /* eslint-disable */
 importScripts('/sw-toolbox.js');
 
-toolbox.options.debug = true;
+// toolbox.options.debug = true;
 toolbox.precache([
   '/manifest.json',
   '/group.png',
