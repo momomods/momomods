@@ -41,7 +41,6 @@ class Group extends Component {
   state = {
     groupShown: null,
     groupId: null,
-    date: this.formatDate(new Date()),
     freeTimeText: 'Please replace this with sth else soon',
   }
 
@@ -50,7 +49,10 @@ class Group extends Component {
     this.state.groupShown = this.props.group.data[0] || {};
     this.state.groupId = this.state.groupShown.teamId;
     if (this.state.groupId && this.state.date) {
-      this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
+      this.props.fetchGroupTimetable({
+        groupId: this.state.groupId,
+        date: this.formatDate(this.props.date),
+      });
     }
   }
 
@@ -76,17 +78,23 @@ class Group extends Component {
   handleGroupChange = (event, key, groupId) => {
     this.state.groupShown = this.props.group.data.find(d => d.teamId === groupId);
     this.state.groupId = groupId;
-    this.props.fetchGroupTimetable({ groupId, date: this.state.date });
+    this.props.fetchGroupTimetable({
+      groupId,
+      date: this.formatDate(this.props.date),
+    });
   }
 
   handleDateChange = (event, date) => {
-    // this.state.date = this.formatDate(date);
+    console.log(date);
     this.props.changeDate({ date });
     this.setState({
       date: this.formatDate(date),
     }, () => {
       if (this.state.groupId) {
-        this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
+        this.props.fetchGroupTimetable({
+          groupId: this.state.groupId,
+          date: this.formatDate(this.props.date),
+        });
       }
     });
     return { event, date };
