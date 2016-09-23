@@ -78,6 +78,7 @@ $timetable-background-z-index: -1;
     .timetable-day {
       text-align: center;
       padding-top: 10px;
+      overflow: hidden;
     }
   }
 
