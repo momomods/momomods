@@ -18,21 +18,6 @@ export function fetchGroups({ year, semester }) {
   };
 }
 
-export function createGroup({ year, semester, name, members }) {
-  const url = `/api/${year}/${semester}/team`;
-  return {
-    type: CREATE_GROUP,
-    payload: {
-      promise: postRequest(url, {
-        body: JSON.stringify({
-          name,
-          members,
-        }),
-      }),
-    },
-  };
-}
-
 export function updateGroup({ id, name, members }) {
   const url = `/api/team/${id}`;
   return {
@@ -47,6 +32,30 @@ export function updateGroup({ id, name, members }) {
       }),
     },
   };
+}
+
+export function createGroup({ year, semester, name, members }) {
+  const url = `/api/${year}/${semester}/team`;
+  return dispatch => (
+    dispatch({
+      type: CREATE_GROUP,
+      payload: {
+        promise: postRequest(url, {
+          body: JSON.stringify({
+            name,
+            members,
+          }),
+        }),
+      },
+    }).then(({ value }) => (
+      // using the teamId from creating the group, update the group with the name and members
+      dispatch(updateGroup({
+        id: value.teamId,
+        name,
+        members,
+      }))
+    ))
+  );
 }
 
 export function deleteGroup({ id }) {

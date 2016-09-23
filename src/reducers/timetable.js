@@ -141,8 +141,11 @@ export default function timetable(state = defaultState, action) {
       // because we only fetch timetable (and initialize timetable state)
       // when user enters app via /
       const data = {};
-      data[year] = state.data[year] || {};
-      data[year][semester] = state.data[year][semester] || [];
+      if (state.data[year]) {
+        data[year] = state.data[year];
+      } else {
+        data[year] = {[semester]: []};
+      }
 
       // if module is already in timetable, don't add it
       if (timetableHasModule(data[year][semester], module)) return state;

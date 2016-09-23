@@ -184,6 +184,85 @@ app.route('/api/:year/:semester/team')
   });
 });
 
+function addOneTime(oldTime) {
+  switch (oldTime) {
+    case '0600':
+      return '0630';
+    case '0630':
+      return '0700';
+    case '0700':
+      return '0730';
+    case '0730':
+      return '0800';
+    case '0800':
+      return '0830';
+    case '0830':
+      return '0900';
+    case '0900':
+      return '0930';
+    case '0930':
+      return '1000';
+    case '1000':
+      return '1030';
+    case '1030':
+      return '1100';
+    case '1100':
+      return '1130';
+    case '1130':
+      return '1200';
+    case '1200':
+      return '1230';
+    case '1230':
+      return '1300';
+    case '1300':
+      return '1330';
+    case '1330':
+      return '1400';
+    case '1400':
+      return '1430';
+    case '1430':
+      return '1500';
+    case '1500':
+      return '1530';
+    case '1530':
+      return '1600';
+    case '1600':
+      return '1630';
+    case '1630':
+      return '1700';
+    case '1700':
+      return '1730';
+    case '1730':
+      return '1800';
+    case '1800':
+      return '1830';
+    case '1830':
+      return '1900';
+    case '1900':
+      return '1930';
+    case '1930':
+      return '2000';
+    case '2000':
+      return '2030';
+    case '2030':
+      return '2100';
+    case '2100':
+      return '2130';
+    case '2130':
+      return '2200';
+    case '2200':
+      return '2230';
+    case '2230':
+      return '2300';
+    case '2300':
+      return '2330';
+    case '2330':
+      return '2359';
+    default:
+      return '0600';
+  }
+}
+
 app.route('/api/team/:id')
 .get((req, res) => {
   const userId = req.user.id;
@@ -258,10 +337,16 @@ app.route('/api/team/:id')
             if (!result) {
               res.status(400);
               res.json({
-                error: 'Please specify a date query within the semester in which the group is formed.',
+                error: 'Please specify a date query within ' +
+                'the semester in which the group is formed.',
               });
             } else {
               // Shows even if invitation has not been accepted
+              const freeTime = ['0600', '0630', '0700', '0730', '0800', '0830',
+              '0900', '0930', '1000', '1030', '1100', '1130', '1200', '1230',
+              '1300', '1330', '1400', '1430', '1500', '1530', '1600', '1630',
+              '1700', '1730', '1800', '1830', '1900', '1930', '2000', '2030',
+              '2100', '2130', '2200', '2230', '2300', '2330'];
               let show = false;
               const members = [];
               for (let j = 0; j < result.users.length; ++j) {
@@ -287,6 +372,15 @@ app.route('/api/team/:id')
                           && dateResult.weekType === 2))) {
                       oneTimetable[k].module.timetable = oneModuleTimetable[m];
                       finalTimetable.push(oneTimetable[k]);
+                      let startTime = oneModuleTimetable[m].StartTime;
+                      const endTime = oneModuleTimetable[m].EndTime;
+                      while (startTime !== '2359' && startTime !== endTime) {
+                        const index = freeTime.indexOf(startTime);
+                        if (index > -1) {
+                          freeTime.splice(index, 1);
+                        }
+                        startTime = addOneTime(startTime);
+                      }
                       break;
                     }
                   }
@@ -299,7 +393,23 @@ app.route('/api/team/:id')
                 });
               }
               if (show) {
+                let freeTimeMessage = 'Free Time Slots: ';
+                let startTimeSlot = true;
+                for (let k = 0; k < freeTime.length; ++k) {
+                  if (startTimeSlot) {
+                    startTimeSlot = false;
+                    freeTimeMessage += freeTime[k];
+                    freeTimeMessage += ' to ';
+                  } else if (addOneTime(freeTime[k - 1]) !== freeTime[k]) {
+                    freeTimeMessage += addOneTime(freeTime[k - 1]);
+                    freeTimeMessage += ' | ';
+                    freeTimeMessage += freeTime[k];
+                    freeTimeMessage += ' to ';
+                  }
+                }
+                freeTimeMessage += addOneTime(freeTime[freeTime.length - 1]);
                 res.json({
+                  freeTimeMessage,
                   createdBy: {
                     userId: result.creator.id,
                     name: result.creator.name,
@@ -350,7 +460,8 @@ app.route('/api/team/:id')
     const newMembers = usersToAdd.filter(uid => !result.users.find(u => u.userId === uid));
     if (isMember) {
       const addedMembers = [];
-      const acceptInvitation = 1; // TODO: THIS SHOULD BE CHANGED TO 0 ONCE INVITATION IS IMPLEMENTED
+      // TODO: THIS SHOULD BE CHANGED TO 0 ONCE INVITATION IS IMPLEMENTED
+      const acceptInvitation = 1;
       UserModel.findAll({
         where: {
           id: newMembers,
@@ -579,41 +690,51 @@ app.route('/api/:year/:semester/friends')
       as: 'timetableModules',
     }],
   }).then((result) => {
-    const myMods = [];
-    for (let i = 0; i < result.timetableModules.length; ++i) {
-      myMods.push(result.timetableModules[i].moduleId);
-    }
-    ModuleModel.findAll({
-      attributes: ['id'],
-      where: {
-        id: myMods,
-      },
-      include: [{
-        model: TimetableModuleModel,
-        as: 'timetableModules',
+    if (!result) {
+      TimetableModel.create({
+        userId,
+        year,
+        semester,
+      }).then(() => {
+        res.json({});
+      });
+    } else {
+      const myMods = [];
+      for (let i = 0; i < result.timetableModules.length; ++i) {
+        myMods.push(result.timetableModules[i].moduleId);
+      }
+      ModuleModel.findAll({
+        attributes: ['id'],
+        where: {
+          id: myMods,
+        },
         include: [{
-          model: TimetableModel,
-          as: 'timetable',
+          model: TimetableModuleModel,
+          as: 'timetableModules',
+          include: [{
+            model: TimetableModel,
+            as: 'timetable',
+          }],
         }],
-      }],
-    }).then((allFriends) => {
-      const myFriends = [];
-      for (let i = 0; i < allFriends.length; ++i) {
-        for (let j = 0; j < allFriends[i].timetableModules.length; ++j) {
-          if (allFriends[i].timetableModules[j].timetable.userId !== userId) {
-            myFriends.push(allFriends[i].timetableModules[j].timetable.userId);
+      }).then((allFriends) => {
+        const myFriends = [];
+        for (let i = 0; i < allFriends.length; ++i) {
+          for (let j = 0; j < allFriends[i].timetableModules.length; ++j) {
+            if (allFriends[i].timetableModules[j].timetable.userId !== userId) {
+              myFriends.push(allFriends[i].timetableModules[j].timetable.userId);
+            }
           }
         }
-      }
-      UserModel.findAll({
-        attributes: ['id', 'name'],
-        where: {
-          id: myFriends,
-        },
-      }).then((myFriendsNames) => {
-        res.json(myFriendsNames);
+        UserModel.findAll({
+          attributes: ['id', 'name'],
+          where: {
+            id: myFriends,
+          },
+        }).then((myFriendsNames) => {
+          res.json(myFriendsNames);
+        });
       });
-    });
+    }
   });
 });
 
