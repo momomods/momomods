@@ -272,7 +272,7 @@ class Group extends Component {
         } else {
           const groupData = this.props.timeshare.data || {};
           const freeTimeText = (groupData && groupData.freeTimeMessage) ? groupData.freeTimeMessage : ''; 
-          timeShareContainer = <TimeShareContainer group={groupData} freeTimeText={this.state.freeTimeText}/>;
+          timeShareContainer = <TimeShareContainer group={groupData} freeTimeText={freeTimeText}/>;
         }
       } else {
         timeShareContainer = noGroupContainer;
