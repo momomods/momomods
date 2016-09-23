@@ -6,6 +6,7 @@ toolbox.precache([
   '/manifest.json',
   '/group.png',
   '/facebook.png',
+  '/vacation.png',
   '/logo_colour_300.png',
 ]);
 
@@ -18,6 +19,7 @@ toolbox.router.get(/assets\/main.[0-9a-zA-Z]+.js$/, toolbox.cacheFirst);
 // // https://modspl.us/assets/main.058f4d622a6fb2e6a846.js
 toolbox.router.get('/group.png', toolbox.cacheFirst);
 toolbox.router.get('/facebook.png', toolbox.cacheFirst);
+toolbox.router.get('/vacation.png', toolbox.cacheFirst);
 toolbox.router.get('/logo_colour_300.png', toolbox.cacheFirst);
 
 toolbox.router.get('/manifest.json', toolbox.networkFirst);
