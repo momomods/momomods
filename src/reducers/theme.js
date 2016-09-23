@@ -3,6 +3,9 @@ import {
   ADD_MODULE,
   REMOVE_MODULE,
 
+  LOAD_TIMETABLE,
+  FETCH_TIMETABLE,
+
   LOAD_THEME,
 } from '../constants';
 
@@ -47,6 +50,38 @@ function colors(state, action) {
   }
 }
 
+const maybeAddNewColorForModuleCode = (state, newState) => (moduleCode) => (
+  newState[moduleCode] = state[moduleCode] || getNewColor(_.values(state))
+)
+
+function loadTimetableColor(state, action) {
+  const newState = {};
+  const addColor = maybeAddNewColorForModuleCode(state, newState);
+  const timetableModules = action.payload.timetable || [];
+  timetableModules
+    .map(tm => tm.ModuleCode)
+    .forEach(addColor)
+
+  return {
+    ...state,
+    ...newState,
+  }
+}
+
+function fetchTimetableColor(state, action) {
+  const newState = {};
+  const addColor = maybeAddNewColorForModuleCode(state, newState);
+  const timetableModules = action.payload.timetableModules || [];
+  timetableModules
+    .map(tm => tm.module && tm.module.code)
+    .forEach(addColor)
+
+  return {
+    ...state,
+    ...newState,
+  }
+}
+
 function theme(state = defaultThemeState, action) {
   switch (action.type) {
     case ADD_MODULE:
@@ -55,6 +90,16 @@ function theme(state = defaultThemeState, action) {
         ...state,
         colors: colors(state.colors, action),
       };
+    case `${FETCH_TIMETABLE}_FULFILLED`:
+      return {
+        ...state,
+        colors: fetchTimetableColor(state.colors, action)
+      }
+    case `${LOAD_TIMETABLE}_FULFILLED`:
+      return {
+        ...state,
+        colors: loadTimetableColor(state.colors, action)
+      }
     case `${LOAD_THEME}_FULFILLED`:
       return {
         ...state,
