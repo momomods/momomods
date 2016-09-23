@@ -71,7 +71,8 @@ class Group extends Component {
     }
   }
 
-  formatDate(date) {
+  formatDate(rawDate) {
+    const date = new Date(rawDate);
     return '' + date.getFullYear() + '-' + ('00' + (date.getMonth() + 1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2); // eslint-disable-line prefer-template, max-len
   }
 
