@@ -11,7 +11,8 @@ import TimeRow from './TimeRow';
 
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
-const minColWidth = 20;
+const minColWidth = 100;
+const dayRowWidth = 16.6666666666666;
 const types = [
   'scroll',
   'mousewheel',
@@ -91,18 +92,36 @@ class Timeshare extends Component {
         <div className="timetable-inner-container" ref="timetableContainer">
           <div className="timetable-inner-wrapper" style={style} ref="timetableWrapper">
             <div className="timetable timetable-header" style={headerStyle}>
-              {members.map((member) => (
-                <div className="timetable-day" key={member.name}>{member.name}</div>
-              ))}
+              {members.map((member) => {
+                const dayLessonRows = arrangeLessonsWithinDay(member.parsedLessons);
+                const size = dayLessonRows ? dayLessonRows.length : 1;
+                return (
+                  <div
+                    className="timetable-day"
+                    key={member.name}
+                    style={{ width: `${dayRowWidth * size}%` }}
+                  >
+                    {member.name}
+                  </div>
+                );
+              })}
             </div>
             <div className="timetable" style={{ timetableStyle }}>
-              { members.map((member) => (
-                <TimetableDayRow
-                  key={member.name}
-                  day={member.name}
-                  dayLessonRows={arrangeLessonsWithinDay(member.parsedLessons)}
-                  isSharing={this.props.isSharing}
-                />))
+              { members.map((member) => {
+                const dayLessonRows = arrangeLessonsWithinDay(member.parsedLessons);
+                const size = dayLessonRows ? dayLessonRows.length : 1;
+                return (
+                  <TimetableDayRow
+                    key={member.name}
+                    width={`${dayRowWidth * size}%`}
+                    size={size}
+                    day={member.name}
+                    dayLessonRows={dayLessonRows}
+                    onLessonChange={this.props.onLessonChange}
+                    isSharing={this.props.isSharing}
+                  />
+                );
+              })
               }
             </div>
             <TimetableBackground />
