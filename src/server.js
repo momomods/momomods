@@ -679,63 +679,88 @@ app.route('/api/:year/:semester/friends')
   const userId = req.user.id;
   const year = req.params.year;
   const semester = req.params.semester;
-  TimetableModel.find({
+  TimetableModel.findAll({
     where: {
-      userId,
+      userId: {
+        $ne: userId,
+      },
       year,
       semester,
     },
     include: [{
-      model: TimetableModuleModel,
-      as: 'timetableModules',
-    }],
+      model: UserModel,
+      as: 'user',
+    }]
   }).then((result) => {
-    if (!result) {
-      TimetableModel.create({
-        userId,
-        year,
-        semester,
-      }).then(() => {
-        res.json({});
-      });
-    } else {
-      const myMods = [];
-      for (let i = 0; i < result.timetableModules.length; ++i) {
-        myMods.push(result.timetableModules[i].moduleId);
-      }
-      ModuleModel.findAll({
-        attributes: ['id'],
-        where: {
-          id: myMods,
-        },
-        include: [{
-          model: TimetableModuleModel,
-          as: 'timetableModules',
-          include: [{
-            model: TimetableModel,
-            as: 'timetable',
-          }],
-        }],
-      }).then((allFriends) => {
-        const myFriends = [];
-        for (let i = 0; i < allFriends.length; ++i) {
-          for (let j = 0; j < allFriends[i].timetableModules.length; ++j) {
-            if (allFriends[i].timetableModules[j].timetable.userId !== userId) {
-              myFriends.push(allFriends[i].timetableModules[j].timetable.userId);
-            }
-          }
-        }
-        UserModel.findAll({
-          attributes: ['id', 'name'],
-          where: {
-            id: myFriends,
-          },
-        }).then((myFriendsNames) => {
-          res.json(myFriendsNames);
+    const myFriends = [];
+    for (let i = 0; i < result.length; ++i) {
+      if (result[i].user) {
+        myFriends.push({
+          name: result[i].user.name,
+          id: result[i].user.id,
         });
-      });
+      }
     }
-  });
+    res.json(myFriends);
+  })
+  // Uncomment to implement find friends who take same module(s)
+  // TimetableModel.find({
+  //   where: {
+  //     userId,
+  //     year,
+  //     semester,
+  //   },
+  //   include: [{
+  //     model: TimetableModuleModel,
+  //     as: 'timetableModules',
+  //   }],
+  // }).then((result) => {
+  //   if (!result) {
+  //     TimetableModel.create({
+  //       userId,
+  //       year,
+  //       semester,
+  //     }).then(() => {
+  //       res.json({});
+  //     });
+  //   } else {
+  //     const myMods = [];
+  //     for (let i = 0; i < result.timetableModules.length; ++i) {
+  //       myMods.push(result.timetableModules[i].moduleId);
+  //     }
+  //     ModuleModel.findAll({
+  //       attributes: ['id'],
+  //       where: {
+  //         id: myMods,
+  //       },
+  //       include: [{
+  //         model: TimetableModuleModel,
+  //         as: 'timetableModules',
+  //         include: [{
+  //           model: TimetableModel,
+  //           as: 'timetable',
+  //         }],
+  //       }],
+  //     }).then((allFriends) => {
+  //       const myFriends = [];
+  //       for (let i = 0; i < allFriends.length; ++i) {
+  //         for (let j = 0; j < allFriends[i].timetableModules.length; ++j) {
+  //           if (allFriends[i].timetableModules[j].timetable.userId !== userId) {
+  //             myFriends.push(allFriends[i].timetableModules[j].timetable.userId);
+  //           }
+  //         }
+  //       }
+  //       UserModel.findAll({
+  //         attributes: ['id', 'name'],
+  //         where: {
+  //           id: myFriends,
+  //         },
+  //       }).then((myFriendsNames) => {
+  //         res.json(myFriendsNames);
+  //       });
+  //     });
+  //   }
+  // });
 });
 
 //
