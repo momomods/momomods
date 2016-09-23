@@ -292,6 +292,7 @@ app.route('/api/team/:id')
       } else if (dateResult.weekType === 0) {
         res.json({
           holiday: dateResult.name,
+          freeTimeMessage: date + ': It is a holiday! Lots of free time!',
         });
       } else {
         const dow = moment(date).format('dddd');
@@ -393,7 +394,7 @@ app.route('/api/team/:id')
                 });
               }
               if (show) {
-                let freeTimeMessage = 'Free Time Slots: ';
+                let freeTimeMessage = date + ': Free Time Slots: ';
                 let startTimeSlot = true;
                 for (let k = 0; k < freeTime.length; ++k) {
                   if (startTimeSlot) {
