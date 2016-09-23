@@ -12,7 +12,6 @@ import TimeRow from './TimeRow';
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
 const minColWidth = 100;
-const dayRowWidth = 16.6666666666666;
 const types = [
   'scroll',
   'mousewheel',
@@ -57,12 +56,13 @@ class Timeshare extends Component {
     const members = group.members || [];
     const numCols = members.length || 0;
     const width = window.innerWidth * 0.85;
+    const dayRowWidth = (numCols) ? 100 / numCols : 100;
     const style = {};
     const minInnerContainerWidth = minColWidth * numCols;
     if (minInnerContainerWidth > width) {
       style.minWidth = `${minInnerContainerWidth}px`;
     } else {
-      style.width = '90%';
+      style.width = `90%`;
     }
 
     const headerStyle = {
@@ -72,6 +72,14 @@ class Timeshare extends Component {
     const timetableStyle = {
       width: '100%',
     };
+
+    const nameLabelStyle = {
+      textOverflow: `ellipsis`,
+      whiteSpace: `nowrap`,
+      overflow: `hidden`,
+      height: `20px`,
+      width: `100%`
+    }
 
     // Massage member's lessons to fit what we need
     let i = 0;
@@ -101,7 +109,7 @@ class Timeshare extends Component {
                     key={member.name}
                     style={{ width: `${dayRowWidth * size}%` }}
                   >
-                    {member.name}
+                    <p style={ nameLabelStyle }>{member.name}</p>
                   </div>
                 );
               })}

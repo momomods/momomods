@@ -166,10 +166,13 @@ export default function timetable(state = defaultState, action) {
         // one class can have multiple periods
         const moduleTimetable = JSON.parse(module.timetable || null);
         const lessons = lessonsForLessonType(moduleTimetable, lessonTypeToX[k].LessonType)
-          .map(lesson => (
+          .map(lesson => ({
+            ...lesson,
             // Inject module detail in
-            { ...lesson, moduleDetail: module, ModuleCode: module.code }
-          ));
+            moduleDetail: module,
+            ModuleCode: module.code,
+            ModuleTitle: module.title,
+          }));
         const selectedLesson = lessons
           .filter(lesson => (
             // Get all classes from the same class group
