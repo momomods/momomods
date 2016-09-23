@@ -41,7 +41,6 @@ class Group extends Component {
   state = {
     groupShown: null,
     groupId: null,
-    freeTimeText: 'Please replace this with sth else soon',
   }
 
   componentWillMount() {
@@ -272,6 +271,7 @@ class Group extends Component {
           timeShareContainer = holidayContainer;
         } else {
           const groupData = this.props.timeshare.data || {};
+          const freeTimeText = (groupData && groupData.freeTimeMessage) ? groupData.freeTimeMessage : ''; 
           timeShareContainer = <TimeShareContainer group={groupData} freeTimeText={this.state.freeTimeText}/>;
         }
       } else {

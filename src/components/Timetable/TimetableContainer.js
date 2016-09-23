@@ -73,7 +73,13 @@ class TimetableContainer extends Component {
       const moduleDetail = activeLesson.moduleDetail;
       const moduleCode = activeLesson.ModuleCode;
 
-      const moduleTimetable = JSON.parse(activeLesson.moduleDetail.timetable || null);
+      let moduleTimetable = {};
+      if (typeof activeLesson.moduleDetail.timetable === 'string') {
+        moduleTimetable = JSON.parse(activeLesson.moduleDetail.timetable);
+      } else {
+        moduleTimetable = activeLesson.moduleDetail.timetable || null;
+      }
+
       const lessons = lessonsForLessonType(moduleTimetable, activeLesson.LessonType)
         .map(lesson => (
           // Inject module detail in
