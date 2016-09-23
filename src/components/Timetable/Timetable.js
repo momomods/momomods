@@ -87,10 +87,10 @@ class Timetable extends Component {
                 return (
                   <div
                     className="timetable-day"
-                    key={day}
+                    key={day.substring(0, 3)}
                     style={{ width: `${dayRowWidth * size}%` }}
                   >
-                    {day}
+                    {day.substring(0, 3)}
                   </div>
                 );
               })}
@@ -101,7 +101,7 @@ class Timetable extends Component {
                 const size = dayLessonRows ? dayLessonRows.length : 1;
                 return (
                   <TimetableDayRow
-                    key={day}
+                    key={day.substring(0, 3)}
                     width={`${dayRowWidth * size}%`}
                     size={size}
                     day={day.substring(0, 3)}
