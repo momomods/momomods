@@ -88,12 +88,13 @@ export default function timetable(state = defaultState, action) {
       }
 
       // otherwise we update state with the backend version
-      const ttForDisplay = timetableModules.map(tm => {
+      const ttForDisplayTemp = timetableModules.map(tm => {
         const { classNumber, lessonType, module } = tm;
         const tt = JSON.parse(module.timetable);
         const l = tt.find(t => (
           t.ClassNo === String(classNumber)
           && t.LessonType === lessonType));
+
         return {
           ...l,
           ModuleCode: module.code,
@@ -101,6 +102,32 @@ export default function timetable(state = defaultState, action) {
           moduleDetail: module,
         };
       });
+
+      const ttForDisplay = [];
+
+      // for each lesson type, push a class onto timetable
+      ttForDisplayTemp.forEach(k => {
+        const moduleTimetable = k.moduleDetail.timetable || null;
+        const lessons = lessonsForLessonType(moduleTimetable, k.LessonType)
+          .map(lesson => ({
+            ...lesson,
+            // Inject module detail in
+            moduleDetail: k.moduleDetail,
+            ModuleCode: k.ModuleCode,
+            ModuleTitle: k.title,
+          }));
+        // one class can have multiple periods
+        const selectedLessons = lessons
+          .filter(lesson => (
+            // Get all classes from the same class group
+            lesson.LessonType === k.LessonType
+            && lesson.ClassNo === k.ClassNo
+          ));
+
+        selectedLessons.forEach(m => ttForDisplay.push(m));
+      });
+
+      console.log('ttForDisplay', ttForDisplay);
       return {
         ...state,
         data: {
@@ -163,7 +190,6 @@ export default function timetable(state = defaultState, action) {
 
       // for each lesson type, push a class onto timetable
       Object.keys(lessonTypeToX).forEach(k => {
-        // one class can have multiple periods
         const moduleTimetable = JSON.parse(module.timetable || null);
         const lessons = lessonsForLessonType(moduleTimetable, lessonTypeToX[k].LessonType)
           .map(lesson => ({
@@ -173,16 +199,15 @@ export default function timetable(state = defaultState, action) {
             ModuleCode: module.code,
             ModuleTitle: module.title,
           }));
+        // one class can have multiple periods
         const selectedLesson = lessons
           .filter(lesson => (
             // Get all classes from the same class group
-            lesson.ModuleCode === lessonTypeToX[k].ModuleCode
-            && lesson.LessonType === lessonTypeToX[k].LessonType
+            lesson.LessonType === lessonTypeToX[k].LessonType
             && lesson.ClassNo === lessonTypeToX[k].ClassNo
           ));
 
         selectedLesson.forEach(m => data[year][semester].push(m));
-        // state.data[year][semester].push(lessonTypeToX[k])
       });
       return {
         ...state,
