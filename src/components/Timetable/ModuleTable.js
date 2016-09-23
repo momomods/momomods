@@ -25,16 +25,15 @@ class ModuleTable extends Component {
   render() {
     const { isDialogOpen, selectedModule } = this.state;
     const { modules, removeModule } = this.props;
-
     return (
       <div className="module-table">
         <List style={{ width: '100%', paddingLeft: '15%' }}>
           {modules.map(module =>
             <ListItem
-              key={module.ModuleCode}
+              key={module.moduleDetail.code}
               rightIconButton={
                 <IconButton
-                  onTouchTap={() => removeModule(module.ModuleCode)}
+                  onTouchTap={() => removeModule(module.moduleDetail.code)}
                   touch
                   tooltip="Remove module"
                   tooltipPosition="bottom-left"
@@ -42,8 +41,8 @@ class ModuleTable extends Component {
                   <ActionDelete color={red700} />
                 </IconButton>
               }
-              primaryText={module.ModuleCode}
-              secondaryText={module.ModuleTitle}
+              primaryText={module.moduleDetail.code}
+              secondaryText={module.moduleDetail.title}
               onTouchTap={() => this.handleOpen(module)}
             />
           )}
