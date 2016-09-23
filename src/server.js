@@ -575,7 +575,7 @@ function updateTimetable(timetableId, year, semester, allNewMods) {
     },
   }).then(tts => {
     tts.forEach(tm => {
-      if (!allNewMods.map(m => m.ModuleCode).includes(tm.code)) {
+      if (!allNewMods.map(m => m.ModuleCode).includes(tm.module.code)) {
         tm.destroy();
       }
     });
@@ -690,7 +690,7 @@ app.route('/api/:year/:semester/friends')
     include: [{
       model: UserModel,
       as: 'user',
-    }]
+    }],
   }).then((result) => {
     const myFriends = [];
     for (let i = 0; i < result.length; ++i) {
@@ -702,7 +702,7 @@ app.route('/api/:year/:semester/friends')
       }
     }
     res.json(myFriends);
-  })
+  });
   // Uncomment to implement find friends who take same module(s)
   // TimetableModel.find({
   //   where: {
