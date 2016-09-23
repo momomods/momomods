@@ -117,6 +117,7 @@ class GroupToolbar extends Component {
               hintText="Meeting Date"
               autoOk
               defaultDate={new Date()}
+              value={this.props.selectedDate}
               onChange={handleDateChange}
               disabled={!isGroupSelected}
               minDate={minDate}

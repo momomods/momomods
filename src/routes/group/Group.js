@@ -18,6 +18,7 @@ import TimeShareContainer from '../../components/Timetable/TimeShareContainer';
 import s from './Group.css';
 import { fetchGroups } from '../../actions/group';
 import { fetchFriends } from '../../actions/friend';
+import { changeDate } from '../../actions/selection';
 import { fetchGroupTimetable } from '../../actions/timeshare';
 
 const title = 'Groups';
@@ -79,10 +80,15 @@ class Group extends Component {
   }
 
   handleDateChange = (event, date) => {
-    this.state.date = this.formatDate(date);
-    if (this.state.groupId) {
-      this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
-    }
+    // this.state.date = this.formatDate(date);
+    this.props.changeDate({ date });
+    this.setState({
+      date: this.formatDate(date),
+    }, () => {
+      if (this.state.groupId) {
+        this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
+      }
+    });
     return { event, date };
   }
 
@@ -271,6 +277,7 @@ class Group extends Component {
           groups={this.props.group.data}
           handleGroupChange={this.handleGroupChange}
           handleDateChange={this.handleDateChange}
+          selectedDate={new Date(this.props.date)}
         />
         {timeShareContainer}
       </div>
@@ -285,6 +292,7 @@ Group.propTypes = {
 const mapState = (state) => ({
   year: state.selection.year,
   semester: state.selection.semester,
+  date: state.selection.date,
   isLoggedIn: !!state.user.data.id,
   group: state.group,
   friend: state.friend,
@@ -295,6 +303,7 @@ const mapDispatch = {
   fetchGroups,
   fetchFriends,
   fetchGroupTimetable,
+  changeDate,
 };
 
 export default connect(mapState, mapDispatch)(withStyles(s)(Group));
