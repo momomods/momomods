@@ -57,7 +57,7 @@ const maybeAddNewColorForModuleCode = (state, newState) => (moduleCode) => (
 function loadTimetableColor(state, action) {
   const newState = {};
   const addColor = maybeAddNewColorForModuleCode(state, newState);
-  const timetableModules = action.payload.timetable || [];
+  const timetableModules = (action.payload && action.payload.timetable) || [];
   timetableModules
     .map(tm => tm.ModuleCode)
     .forEach(addColor)
@@ -71,7 +71,7 @@ function loadTimetableColor(state, action) {
 function fetchTimetableColor(state, action) {
   const newState = {};
   const addColor = maybeAddNewColorForModuleCode(state, newState);
-  const timetableModules = action.payload.timetableModules || [];
+  const timetableModules = (action.payload && action.payload.timetableModules) || [];
   timetableModules
     .map(tm => tm.module && tm.module.code)
     .forEach(addColor)
