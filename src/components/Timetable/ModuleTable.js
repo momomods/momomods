@@ -43,7 +43,7 @@ class ModuleTable extends Component {
                 </IconButton>
               }
               primaryText={module.ModuleCode}
-              secondaryText={module.title}
+              secondaryText={module.ModuleTitle}
               onTouchTap={() => this.handleOpen(module)}
             />
           )}
