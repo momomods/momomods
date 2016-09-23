@@ -62,7 +62,7 @@ class Timeshare extends Component {
     if (minInnerContainerWidth > width) {
       style.minWidth = `${minInnerContainerWidth}px`;
     } else {
-      style.width = '90%';
+      style.width = `90%`;
     }
 
     const headerStyle = {
@@ -72,6 +72,14 @@ class Timeshare extends Component {
     const timetableStyle = {
       width: '100%',
     };
+
+    const nameLabelStyle = {
+      textOverflow: `ellipsis`,
+      whiteSpace: `nowrap`,
+      overflow: `hidden`,
+      height: `20px`,
+      width: `100%`
+    }
 
     // Massage member's lessons to fit what we need
     let i = 0;
@@ -101,7 +109,7 @@ class Timeshare extends Component {
                     key={member.name}
                     style={{ width: `${dayRowWidth * size}%` }}
                   >
-                    {member.name}
+                    <p style={ nameLabelStyle }>{member.name}</p>
                   </div>
                 );
               })}
