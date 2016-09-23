@@ -48,7 +48,9 @@ class Group extends Component {
     // Initialize timesharing table
     this.state.groupShown = this.props.group.data[0] || {};
     this.state.groupId = this.state.groupShown.teamId;
-    this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
+    if (this.state.groupId && this.state.date) {
+      this.props.fetchGroupTimetable({ groupId: this.state.groupId, date: this.state.date });
+    }
   }
 
   componentDidMount() {
