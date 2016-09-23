@@ -135,6 +135,8 @@ class GroupToolbarDialog extends Component {
             users={this.props.users}
             onChange={this.handleSelectedUsersChange}
           />
+          {this.isCreateInfoValid() ? '' :
+            <div className={s.errorMsg}>Please add at least one group member to create a group!</div>}
         </div>
         {this.isCreateMode() ? '' :
           <div className={s.inputContainer}>

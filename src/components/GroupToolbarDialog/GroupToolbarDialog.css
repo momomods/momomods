@@ -5,3 +5,7 @@
 .inputField {
   width: 100% !important;
 }
+
+.errorMsg {
+    color: red;
+}
