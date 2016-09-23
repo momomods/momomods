@@ -12,7 +12,6 @@ import TimeRow from './TimeRow';
 // Ref: https://github.com/yangshun/nusmods-v3/tree/master/src/js
 
 const minColWidth = 100;
-const dayRowWidth = 16.6666666666666;
 const types = [
   'scroll',
   'mousewheel',
@@ -57,6 +56,7 @@ class Timeshare extends Component {
     const members = group.members || [];
     const numCols = members.length || 0;
     const width = window.innerWidth * 0.85;
+    const dayRowWidth = (numCols) ? 100 / numCols : 100;
     const style = {};
     const minInnerContainerWidth = minColWidth * numCols;
     if (minInnerContainerWidth > width) {
